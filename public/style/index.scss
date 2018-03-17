@@ -1,0 +1,10 @@
+$grey: #999;
+
+.test {
+    color: $grey;
+    transition: all 1.5s;
+}
+
+@import "./_navbar.scss";
+@import "./_body.scss";
+@import "./_footer.scss";

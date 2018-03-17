@@ -10,7 +10,7 @@ module.exports = function(app) {
         app.use(helmet_csp({
                 directives: { defaultSrc: ["'self'"],
                               scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-                              styleSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+                              styleSrc: ["'self'", "localhost:3000", "https://cdnjs.cloudflare.com"],
                               fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
                               imgSrc: ["'self'", 'data:'],
                               sandbox: ['allow-forms', 'allow-scripts']
