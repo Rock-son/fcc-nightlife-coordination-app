@@ -2,9 +2,8 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { LOGIN, LOGOUT } from "InitialStateVariables";
 
-const LOGIN = "login";
-const LOGOUT = "logout";
 
 export class Navbar extends React.Component {
 	constructor(props) {
@@ -16,10 +15,10 @@ export class Navbar extends React.Component {
 		
 		switch(e.target.id) {
 		case LOGIN:			
-			this.props.state._login();
+			this.props.login();
 			break;
 		case LOGOUT:
-			this.props.state._logout();
+			this.props.logout();
 			break;
 		default:
 			break;
@@ -27,16 +26,15 @@ export class Navbar extends React.Component {
 	}
 
 	render() {
-		const isAuth = this.props.state.auth.authenticated;
+		const isAuth = this.props.auth;
 
 		return (
 			<div className="navbar">
 				<div className="navbar__left">
 					<i className="fa fa-home" title="Home"></i>
-					<div>{this.props.authorised}</div>
 				</div>
 				<div className="navbar__right">
-					<div id="login"  onClick={this._handleClick} style={{display: isAuth ? "none" : "inline-block"}} className="navbar__right__login">Login</div>
+					<div id="login"  onClick={this._handleClick} style={{display: isAuth ? "none" : "inline-block"}} className="navbar__right__login">Sign In</div>
 					<div id="logout" onClick={this._handleClick} style={{display: isAuth ? "inline-block" : "none"}} className="navbar__right__login">Logout</div>
 					<div id="user"   onClick={this._handleClick} style={{display: isAuth ? "inline-block" : "none"}} className="navbar__right__login">Welcome, Rok</div>
 				</div>  
@@ -47,8 +45,8 @@ export class Navbar extends React.Component {
 
 Navbar.propTypes = {
 
-	_login: PropTypes.func,
-	_logout: PropTypes.func,
+	login: PropTypes.func,
+	logout: PropTypes.func,
 	state: PropTypes.object,
 	authorised: PropTypes.bool,
 	auth: PropTypes.object
