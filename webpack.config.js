@@ -34,10 +34,11 @@ const config = {
 	resolve: {
 		// using aliases makes components reusable! - with no relative paths, i.e. just "require("App")"
 		alias: {
+			App: path.join(__dirname, "public/components/App.jsx"),
 			Navbar: path.join(__dirname, "public/components/Navbar.jsx"),
-			Main: path.join(__dirname, "public/components/Container.jsx"),
-			SearchBar: path.join(__dirname, "public/components/sub/SearchBar.jsx"),
-			Footer: path.join(__dirname, "public/components/Footer.jsx")
+			Content: path.join(__dirname, "public/components/Content.jsx"),
+			Footer: path.join(__dirname, "public/components/Footer.jsx"),
+			InitialStateVariables: path.join(__dirname, "public/state/initialState.js")
 		},
 		extensions: [".js", ".jsx"]
 	},
