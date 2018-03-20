@@ -1,6 +1,6 @@
 "use strict";
 
-import { Main } from "./Main";
+import { App } from "./App";
 import { connect } from "react-redux";
 import { loginUser, logoutUser } from "../state/actionCreators";
 
@@ -20,4 +20,4 @@ const mapDispatchToProps = (dispatch) => {
 export const MainWrapper = connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Main);
+)(App);

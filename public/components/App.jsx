@@ -5,10 +5,11 @@ import PropTypes from "prop-types";
 
 import { Navbar } from "Navbar";
 import { Footer } from "Footer";
+import { Content } from "Content";
 
 //import PropTypes from "prop-types";
 
-export class Main extends React.Component {
+export class App extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -16,14 +17,17 @@ export class Main extends React.Component {
 		
 		return (
 			<div>
-				<Navbar state={this.props} />
+				<Navbar auth={this.props.auth} login={this.props._login} logout={this.props._logout} />
+				<Content />
 				<Footer />
 			</div>
 		);
 	}
 }
 
-Main.propTypes = {
+App.propTypes = {
 
-	state: PropTypes.object
+	auth: PropTypes.object,
+	_login: PropTypes.func,
+	_logout: PropTypes.func
 };
