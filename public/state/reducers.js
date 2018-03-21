@@ -1,11 +1,11 @@
 "use strict";
 
 import { combineReducers } from "redux";
-import { initialAuth, initialSearch } from "./initialState";
-import { LOGIN, LOGOUT, SEARCH } from "./static_vars";
+import { LOGIN, LOGOUT, SEARCH, INITIAL_AUTH, INITIAL_SEARCH } from "StateVariables";
 
 
-const authReducer = (state = initialAuth, action) => {
+const authReducer = (state = INITIAL_AUTH, action) => {
+	
 	switch(action.type) {
 	case LOGIN:
 		return { // TODO: REPLACE with function that will return true after successful login!
@@ -22,7 +22,7 @@ const authReducer = (state = initialAuth, action) => {
 	}
 };
 
-const searchReducer = (state = initialSearch, action) => {
+const searchReducer = (state = INITIAL_SEARCH, action) => {
 	switch(action.type) {
 	case SEARCH:
 		return {

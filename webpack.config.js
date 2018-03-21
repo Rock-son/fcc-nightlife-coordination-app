@@ -38,7 +38,8 @@ const config = {
 			Navbar: path.join(__dirname, "public/components/Navbar.jsx"),
 			Content: path.join(__dirname, "public/components/Content.jsx"),
 			Footer: path.join(__dirname, "public/components/Footer.jsx"),
-			InitialStateVariables: path.join(__dirname, "public/state/initialState.js")
+			StateVariables: path.join(__dirname, "public/state/stateVariables.js"),
+			RootReducer: path.join(__dirname, "public/state/reducers.js")
 		},
 		extensions: [".js", ".jsx"]
 	},

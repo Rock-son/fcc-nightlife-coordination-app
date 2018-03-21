@@ -7,7 +7,6 @@ import { Navbar } from "Navbar";
 import { Footer } from "Footer";
 import { Content } from "Content";
 
-//import PropTypes from "prop-types";
 
 export class App extends React.Component {
 	constructor(props) {

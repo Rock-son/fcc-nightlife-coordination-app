@@ -9,7 +9,7 @@ import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom"
 
 import { App as Home } from "App";
 import css from "./style/index.scss";
-import { rootReducer } from "./state/reducers";
+import { rootReducer } from "RootReducer";
 
 
 ReactDOM.render(

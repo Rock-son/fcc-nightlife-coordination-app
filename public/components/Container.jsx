@@ -1,6 +1,6 @@
 "use strict";
 
-import { App } from "./App";
+import { App } from "App";
 import { connect } from "react-redux";
 import { loginUser, logoutUser } from "../state/actionCreators";
 

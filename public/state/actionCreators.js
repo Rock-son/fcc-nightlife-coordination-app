@@ -1,6 +1,6 @@
 "use strict";
 
-import { LOGIN, LOGOUT, SEARCH } from "./static_vars";
+import { LOGIN, LOGOUT, SEARCH } from "StateVariables";
 /**
  * Auth action creater
 */

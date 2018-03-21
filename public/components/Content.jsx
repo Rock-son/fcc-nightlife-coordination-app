@@ -2,7 +2,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { LOGIN, LOGOUT } from "InitialStateVariables";
+import { LOGIN, LOGOUT } from "StateVariables";
 
 
 export class Content extends React.Component {
