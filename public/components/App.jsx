@@ -1,32 +1,23 @@
 "use strict";
 
-import React from "react";
-import PropTypes from "prop-types";
-
-import { Navbar } from "Navbar";
-import { Footer } from "Footer";
-import { Content } from "Content";
+import { Home } from "Home";
+import { connect } from "react-redux";
+import { loginUser, logoutUser } from "../state/actionCreators";
 
 
-export class App extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	render() {
-		
-		return (
-			<div>
-				<Navbar auth={this.props.auth} login={this.props._login} logout={this.props._logout} />
-				<Content />
-				<Footer />
-			</div>
-		);
-	}
-}
-
-App.propTypes = {
-
-	auth: PropTypes.object,
-	_login: PropTypes.func,
-	_logout: PropTypes.func
+// Redux connect to props and dispatch actions
+const mapStateToProps = (state) => {
+	return {...state};
 };
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		_login:  () => dispatch(loginUser()),
+		_logout: (user) => dispatch(logoutUser(user))
+	};
+};
+
+export const App = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Home);
