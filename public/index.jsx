@@ -7,9 +7,9 @@ import { Provider } from "react-redux";
 
 import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
-import { App as Home } from "App";
 import css from "./style/index.scss";
 import { rootReducer } from "RootReducer";
+import { App as Home } from "App";
 
 
 ReactDOM.render(
