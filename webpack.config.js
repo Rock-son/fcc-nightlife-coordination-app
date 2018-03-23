@@ -35,6 +35,7 @@ const config = {
 		// using aliases makes components reusable! - with no relative paths, i.e. just "require("App")"
 		alias: {
 			App: path.join(__dirname, "public/components/App.jsx"),
+			Home: path.join(__dirname, "public/components/Home.jsx"),
 			Navbar: path.join(__dirname, "public/components/Navbar.jsx"),
 			Content: path.join(__dirname, "public/components/Content.jsx"),
 			Footer: path.join(__dirname, "public/components/Footer.jsx"),
