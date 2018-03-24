@@ -8,11 +8,11 @@ module.exports = function(app) {
 	app.use(helmet({dnsPrefetchControl: {allow: true}}));
 	app.use(helmet.hidePoweredBy());
 	app.use(helmet_csp({
-		directives: { defaultSrc: ["'self'", "https://api.yelp.com"],
+		directives: { defaultSrc: ["'self'", "https://api.yelp.com/*"],
 			scriptSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			styleSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			fontSrc:	["'self'", "https://cdnjs.cloudflare.com"],
-			connectSrc: ["'self'", "https://api.yelp.com"],
+			connectSrc: ["'self'", "https://api.yelp.com/*"],
 			imgSrc:		["'self'", "data:"],
 			sandbox:	["allow-forms", "allow-scripts"]
 			//reportUri: '/report-violation' // set up a POST route for notifying / logging data to server
