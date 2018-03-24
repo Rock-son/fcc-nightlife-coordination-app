@@ -47,7 +47,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 // SECURITY
 app.use(csrf({cookie: true}));
-helmet(app);
+//helmet(app);
 // CSRF ERROR HANDLER
 app.use(function (err, req, res, next) {
 	if (err.code !== "EBADCSRFTOKEN") return next(err)
