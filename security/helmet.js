@@ -29,7 +29,7 @@ module.exports = function(app) {
 	app.use(function(req, res, next) {
 		res.set({
 			"Access-Control-Allow-Origin" : "*",
-			"Access-Control-Allow-Headers" : "Origin, X-Requested-With, content-type, Accept"
+			"Access-Control-Allow-Headers" : "Origin, X-Requested-With, content-type, Accept, Authorisation"
 		});
 		app.disable("x-powered-by");
 		next();
