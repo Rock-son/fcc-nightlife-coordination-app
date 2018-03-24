@@ -10,7 +10,7 @@ export default {
 	INITIAL_AUTH: { authenticated: false },
 	INITIAL_SEARCH_RESULTS: { results: "dela"},
 	GET_BARS_ON_LOCATION: function(location) {
-	/*
+	
 		const client = yelp.client(process.env.YELP_KEY);
 
 		client.search({
@@ -20,11 +20,10 @@ export default {
 		}).catch(e => {
 			console.log(e);
 		});
-	*/
+	
 
 
-
-
+/*
 		
 		axios({
 			method: "get",
@@ -60,5 +59,6 @@ export default {
 					return error.message;
 				}
 			});
+			*/
 	}
 };
