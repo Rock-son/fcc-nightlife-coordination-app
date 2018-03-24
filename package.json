@@ -11,7 +11,10 @@
     "build": "npm run clean && webpack",
     "dev": "webpack-dev-server"
   },
-  "eslintIgnore": ["server.js", "webpack.config.js"],
+  "eslintIgnore": [
+    "server.js",
+    "webpack.config.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Rock-son/fcc-nightlife-coordination-app.git"
@@ -47,7 +50,8 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "validator": "^9.4.1"
+    "validator": "^9.4.1",
+    "yelp-fusion": "^2.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^7.2.5",
