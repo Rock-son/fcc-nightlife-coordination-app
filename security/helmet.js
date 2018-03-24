@@ -8,7 +8,7 @@ module.exports = function(app) {
 	app.use(helmet({dnsPrefetchControl: {allow: true}}));
 	app.use(helmet.hidePoweredBy());
 	app.use(helmet_csp({
-		directives: { defaultSrc: ["'self'", "https://api.yelp.com/*"],
+		directives: { defaultSrc: ["'self'", "https://fcc-nightlife-coordination-app.herokuapp.com/*", "https://api.yelp.com/*"],
 			scriptSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			styleSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			fontSrc:	["'self'", "https://cdnjs.cloudflare.com"],
