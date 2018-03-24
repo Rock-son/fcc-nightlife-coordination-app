@@ -16,7 +16,7 @@ export class Home extends React.Component {
 		return (
 			<div>
 				<Navbar auth={this.props.auth} login={this.props._login} logout={this.props._logout} />
-				<Content />
+				<Content bars={this.props.bars} getBars={this.props._getBarsOnLocation} />
 				<Footer />
 			</div>
 		);
@@ -24,8 +24,12 @@ export class Home extends React.Component {
 }
 
 Home.propTypes = {
-
+	
+	// REDUCERS
 	auth: PropTypes.object,
+	bars: PropTypes.object,
+	// DISPATCHED FUNCTIONS
 	_login: PropTypes.func,
-	_logout: PropTypes.func
+	_logout: PropTypes.func,
+	_getBarsOnLocation: PropTypes.func
 };

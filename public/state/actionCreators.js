@@ -6,20 +6,20 @@ import { LOGIN, LOGOUT, SEARCH } from "StateVariables";
 */
 export default {
 
-	loginUser: function() { 
+	DISPATCH_LOGIN_ACTION: function() { 
 		return {
 			type: LOGIN
 		};
 	},
 
-	logoutUser: function(user) { 
+	DISPATCH_LOGOUT_ACTION: function(user) { 
 		return {
 			type: LOGOUT,
 			user   
 		};
 	},
 
-	searchLocation: function(location) { 
+	DISPATCH_SEARCH_ACTION: function(location) { 
 		return {
 			type: SEARCH,
 			location

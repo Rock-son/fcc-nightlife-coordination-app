@@ -1,7 +1,7 @@
 "use strict";
 
 import { combineReducers } from "redux";
-import { LOGIN, LOGOUT, SEARCH, INITIAL_AUTH, INITIAL_SEARCH } from "StateVariables";
+import { LOGIN, LOGOUT, SEARCH, INITIAL_AUTH, INITIAL_SEARCH_RESULTS, GET_BARS_ON_LOCATION } from "StateVariables";
 
 
 const authReducer = (state = INITIAL_AUTH, action) => {
@@ -22,11 +22,11 @@ const authReducer = (state = INITIAL_AUTH, action) => {
 	}
 };
 
-const searchReducer = (state = INITIAL_SEARCH, action) => {
+const searchReducer = (state = INITIAL_SEARCH_RESULTS, action) => {
 	switch(action.type) {
 	case SEARCH:
 		return {
-			location: action.location
+			results: GET_BARS_ON_LOCATION(action.location)
 		};
 	default:
 		return state;
@@ -37,5 +37,5 @@ const searchReducer = (state = INITIAL_SEARCH, action) => {
 
 export const rootReducer = combineReducers({
 	auth: authReducer,
-	search: searchReducer
+	bars: searchReducer
 });
