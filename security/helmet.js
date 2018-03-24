@@ -12,6 +12,7 @@ module.exports = function(app) {
 			scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
 			styleSrc: ["'self'", "https://cdnjs.cloudflare.com"],
 			fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+			connectSrc: ["'self'", "https://api.yelp.com"],
 			imgSrc: ["'self'", "data:"],
 			sandbox: ["allow-forms", "allow-scripts"]
 			//reportUri: '/report-violation' // set up a POST route for notifying / logging data to server
