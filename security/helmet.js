@@ -8,13 +8,13 @@ module.exports = function(app) {
 	app.use(helmet({dnsPrefetchControl: {allow: true}}));
 	app.use(helmet.hidePoweredBy());
 	app.use(helmet_csp({
-		directives: { defaultSrc: ["'self'"],
-			scriptSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-			styleSrc: ["'self'", "https://cdnjs.cloudflare.com"],
-			fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+		directives: { defaultSrc: ["'self'", "https://api.yelp.com"],
+			scriptSrc:	["'self'", "https://cdnjs.cloudflare.com"],
+			styleSrc:	["'self'", "https://cdnjs.cloudflare.com"],
+			fontSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			connectSrc: ["'self'", "https://api.yelp.com"],
-			imgSrc: ["'self'", "data:"],
-			sandbox: ["allow-forms", "allow-scripts"]
+			imgSrc:		["'self'", "data:"],
+			sandbox:	["allow-forms", "allow-scripts"]
 			//reportUri: '/report-violation' // set up a POST route for notifying / logging data to server
 		},
 		reportOnly: function (req, res) {
@@ -30,7 +30,7 @@ module.exports = function(app) {
 	app.use(function(req, res, next) {
 		res.set({
 			"Access-Control-Allow-Origin" : "*",
-			"Access-Control-Allow-Headers" : "Origin, X-Requested-With, content-type, Accept, Authorisation"
+			"Access-Control-Allow-Headers" : "Origin, X-Requested-With, content-type, Accept, Authorization"
 		});
 		app.disable("x-powered-by");
 		next();
