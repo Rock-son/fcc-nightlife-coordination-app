@@ -2,7 +2,7 @@
 
 import { Home } from "Home";
 import { connect } from "react-redux";
-import { DISPATCH_LOGIN_ACTION, DISPATCH_LOGOUT_ACTION, DISPATCH_SEARCH_ACTION } from "../state/actionCreators";
+import { DISPATCH_LOGIN_ACTION, DISPATCH_LOGOUT_ACTION, DISPATCH_SEARCH_ACTION } from "../state/actions";
 
 
 // Redux connect to props and dispatch actions
