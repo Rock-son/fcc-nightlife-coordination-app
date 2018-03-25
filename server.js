@@ -47,7 +47,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 // SECURITY
 app.use(csrf({cookie: true}));
-//helmet(app);
+helmet(app);
 // CSRF ERROR HANDLER
 app.use(function (err, req, res, next) {
 	if (err.code !== "EBADCSRFTOKEN") return next(err)
@@ -72,7 +72,18 @@ mongoose.connect(dbUrl);
 // LOG (Helmet-csp) CSP blocked requests
 // app.post("/report-violation", Log.logged);
 
+app.post("/api/searchBars", (req, res) => {
+	
+	const key = req.body.location || null;
 
+	console.log(req.body, req.params, req, query);
+	res.json({"data": "sent"});
+
+});
+app.get("/api/searchBars", (req, res) => {
+	console.log("hello");
+	res.send({"data": "sent"});
+});
 
 // WEBPACK MIDDLEWARE || EXPRESS STATIC for production   -   IMPORTANT!!!  PUT ALL ROUTES ABOVE THIS LINE OF CODE (because of app.get("*") route!!!!!)
 if (process.env.NODE_ENV !== "production") {
@@ -85,9 +96,7 @@ if (process.env.NODE_ENV !== "production") {
 } else {
 	app.use(express.static(path.join(__dirname, "dist")));
 	// IMPORTANT!!!  - NEEDED FOR REACT ROUTER HISTORY LIB
-	app.get("*", (req, res) => {
-		res.sendFile(path.join(__dirname, "dist/index.html"));
-	});
+
 }
 
 

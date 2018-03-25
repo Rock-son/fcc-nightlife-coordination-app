@@ -1,7 +1,6 @@
 "use strict";
 
 import axios from "axios";
-import yelp from "yelp-fusion";
 
 export default {
 	LOGIN: "login",
@@ -10,34 +9,15 @@ export default {
 	INITIAL_AUTH: { authenticated: false },
 	INITIAL_SEARCH_RESULTS: { results: "dela"},
 	GET_BARS_ON_LOCATION: function(location) {
-	
-		const client = yelp.client(process.env.YELP_KEY);
-
-		client.search({
-			location: location
-		}).then(response => {
-			console.log(response.jsonBody.businesses[0].name);
-		}).catch(e => {
-			console.log(e);
-		});
-	
-
-
-/*
 		
 		axios({
-			method: "get",
-			url: "https://api.yelp.com/v3/businesses/search",
-			params: {
-				location: location
+			method: "post",
+			url: "/api/searchBars",
+			data: {
+				location
 			},
 			validateStatus: function (status) {
 				return status < 500; // Reject only if the status code is greater than or equal to 500
-			},
-			headers: {
-				"Authorization": "Bearer " + process.env.YELP_KEY,
-				"Access-Control-Allow-Origin" : "*",
-				"Access-Control-Allow-Headers" : "Origin, X-Requested-With, content-type, Accept, Authorization"
 			}
 		})
 			.then(response => {
@@ -59,6 +39,5 @@ export default {
 					return error.message;
 				}
 			});
-			*/
 	}
 };
