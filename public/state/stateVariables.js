@@ -7,7 +7,7 @@ export default {
 	LOGOUT: "logout",
 	SEARCH: "search",
 	INITIAL_AUTH: { authenticated: false },
-	INITIAL_SEARCH_RESULTS: { results: "dela"},
+	INITIAL_SEARCH_RESULTS: { results: process.env.NODE_ENV},
 	GET_BARS_ON_LOCATION: function(location) {
 		
 		axios({

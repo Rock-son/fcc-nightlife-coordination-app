@@ -25,7 +25,7 @@ export class Content extends React.Component {
 		
 		return (
 			<section className="content">
-				<img className="content__hero" srcSet="/public/assets/images/pexels-photo-260920.jpeg 640w, /public/assets/images/pexels-photo-260921.jpeg 1280w, /public/assets/images/pexels-photo-260922.jpeg 1920w" alt="barcle"/>
+				<img className="content__hero" srcSet="./assets/images/pexels-photo-260920.jpeg 640w, ./assets/images/pexels-photo-260921.jpeg 1280w, ./assets/images/pexels-photo-260922.jpeg 1920w" alt="barcle"/>
 				<article className="content__main">
 					<h2 className="content__main__header">Ready for a party night out?</h2>
 					<div className="content__main__img-container">

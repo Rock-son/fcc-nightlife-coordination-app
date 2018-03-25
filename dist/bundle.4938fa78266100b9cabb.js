@@ -618,7 +618,7 @@ exports.default = {
 	LOGOUT: "logout",
 	SEARCH: "search",
 	INITIAL_AUTH: { authenticated: false },
-	INITIAL_SEARCH_RESULTS: { results: "dela" },
+	INITIAL_SEARCH_RESULTS: { results: "development" },
 	GET_BARS_ON_LOCATION: function GET_BARS_ON_LOCATION(location) {
 
 		(0, _axios2.default)({
@@ -6606,7 +6606,7 @@ var Content = exports.Content = function (_React$Component) {
 			return _react2.default.createElement(
 				"section",
 				{ className: "content" },
-				_react2.default.createElement("img", { className: "content__hero", srcSet: "../public/assets/images/pexels-photo-260920.jpeg 640w, ../public/assets/images/pexels-photo-260921.jpeg 1280w, ../public/assets/images/pexels-photo-260922.jpeg 1920w", alt: "barcle" }),
+				_react2.default.createElement("img", { className: "content__hero", srcSet: "./assets/images/pexels-photo-260920.jpeg 640w, ./assets/images/pexels-photo-260921.jpeg 1280w, ./assets/images/pexels-photo-260922.jpeg 1920w", alt: "barcle" }),
 				_react2.default.createElement(
 					"article",
 					{ className: "content__main" },
@@ -6692,4 +6692,4 @@ module.exports = exports["default"];
 
 /***/ })
 ],[50]);
-//# sourceMappingURL=bundle.d7f75f9334dfebd688d9.js.map
+//# sourceMappingURL=bundle.4938fa78266100b9cabb.js.map
