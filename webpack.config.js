@@ -42,9 +42,12 @@ const config = {
 			StateVariables: path.join(__dirname, "public/state/stateVariables.js"),
 			RootReducer: path.join(__dirname, "public/state/reducers.js")
 		},
-		extensions: [".js", ".jsx"]
+		extensions: [".js", ".jsx", ".scss"]
 	},
 	devtool: "source-map",
+	devServer: {
+		contentBase: path.join(__dirname, "dist"),
+	},
 	module: {
 		rules: [
 			{
@@ -94,8 +97,7 @@ const config = {
 			compress:{
 				warnings: true
 			}
-		}),*/
-					
+		}),*/					
 		new webpack.DefinePlugin({
 			"process.env": {
 				"NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
