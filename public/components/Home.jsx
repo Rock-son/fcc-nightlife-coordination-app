@@ -2,34 +2,37 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { hot } from "react-hot-loader";
 
-import { Navbar } from "Navbar";
-import { Footer } from "Footer";
-import { Content } from "Content";
+import Navbar from "Navbar";
+import Footer from "Footer";
+import Content from "Content";
 
 
-export class Home extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-	render() {
-		return (
-			<div>
-				<Navbar auth={this.props.auth} login={this.props._login} logout={this.props._logout} />
-				<Content bars={this.props.bars} getBars={this.props._getBarsOnLocation} />
-				<Footer />
-			</div>
-		);
-	}
+function Home(props) {
+	return (
+		<div>
+			<Navbar auth={props.auth} login={props.login} logout={props.logout} />
+			<Content bars={props.bars} getBars={props.getBarsOnLocation} />
+			<Footer />
+		</div>
+	);
 }
 
 Home.propTypes = {
-	
 	// REDUCERS
-	auth: PropTypes.object,
-	bars: PropTypes.object,
+	auth: PropTypes.instanceOf(Object).isRequired,
+	bars: PropTypes.instanceOf(Object).isRequired,
 	// DISPATCHED FUNCTIONS
-	_login: PropTypes.func,
-	_logout: PropTypes.func,
-	_getBarsOnLocation: PropTypes.func
+	login: PropTypes.func,
+	logout: PropTypes.func,
+	getBarsOnLocation: PropTypes.func
 };
+
+Home.defaultProps = {
+	login: () => true,
+	logout: () => true,
+	getBarsOnLocation: () => {}
+};
+
+export default hot(module)(Home);

@@ -5,16 +5,15 @@ import PropTypes from "prop-types";
 import { LOGIN, LOGOUT } from "StateVariables";
 
 
-export class Navbar extends React.Component {
+export default class Navbar extends React.Component {
 	constructor(props) {
 		super(props);
-		this._handleClick = this._handleClick.bind(this);
+		this.handleClick = this.handleClick.bind(this);
 	}
 
-	_handleClick(e) {
-		
-		switch(e.target.id) {
-		case LOGIN:			
+	handleClick(e) {
+		switch (e.target.id) {
+		case LOGIN:
 			this.props.login();
 			break;
 		case LOGOUT:
@@ -22,7 +21,7 @@ export class Navbar extends React.Component {
 			break;
 		default:
 			break;
-		}	
+		}
 	}
 
 	render() {
@@ -31,23 +30,29 @@ export class Navbar extends React.Component {
 		return (
 			<div className="navbar">
 				<div className="navbar__left">
-					<i className="fa fa-home" title="Home"></i>
+					<i className="fa fa-home" title="Home" />
 				</div>
 				<div className="navbar__right">
-					<div id="login"  onClick={this._handleClick} style={{display: isAuth ? "none" : "inline-block"}} className="navbar__right__login">Sign In</div>
-					<div id="logout" onClick={this._handleClick} style={{display: isAuth ? "inline-block" : "none"}} className="navbar__right__login">Logout</div>
-					<div id="user"   onClick={this._handleClick} style={{display: isAuth ? "inline-block" : "none"}} className="navbar__right__login">Welcome, Rok</div>
-				</div>  
+					<button id="login" tabIndex="0" onClick={this.handleClick} style={{ display: isAuth ? "none" : "inline-block" }} className="navbar__right__login">Sign In</button>
+					<button id="logout" tabIndex="0" onClick={this.handleClick} style={{ display: isAuth ? "inline-block" : "none" }} className="navbar__right__login">Logout</button>
+					<a id="user" href="https://twitter.com/settings/applications" tabIndex="0" onClick={this.handleClick} style={{ display: isAuth ? "inline-block" : "none" }} className="navbar__right__login">Welcome, Rok</a>
+				</div>
 			</div>
 		);
 	}
 }
 
 Navbar.propTypes = {
-
 	login: PropTypes.func,
 	logout: PropTypes.func,
-	state: PropTypes.object,
-	authorised: PropTypes.bool,
-	auth: PropTypes.object
+	auth: PropTypes.instanceOf(Object),
+	authenticated: PropTypes.bool
+};
+
+Navbar.defaultProps = {
+
+	login: () => true,
+	logout: () => true,
+	auth: { authenticated: false },
+	authenticated: false
 };
