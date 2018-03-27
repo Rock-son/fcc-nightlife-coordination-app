@@ -21,7 +21,7 @@ const express = require("express"),
 	mongoose = require("mongoose"),      
 	dbUrl = process.env.DBLINK,
 	// PORT & ROUTER
-	port = process.env.PORT || 3000,
+	port = process.env.PORT || 8080,
 	app = express(),
 	// LIMITER
 	RateLimiter = require("express-rate-limit"),
@@ -81,20 +81,34 @@ app.post("/api/searchBars", (req, res) => {
 });
 app.get("/api/searchBars", (req, res) => {
 	console.log("hello");
-	res.send({"data": "sent"});
+	//https://api.yelp.com/v3/businesses/search?location=london
+	res.send([{"data": "sent"}]);
 });
 app.get("/test", (req, res) => {
 		res.json({"naj bi delalo": "true"});
 	}
 );
 // WEBPACK MIDDLEWARE || EXPRESS STATIC for production   -   IMPORTANT!!!  PUT ALL ROUTES ABOVE THIS LINE OF CODE (because of app.get("*") route!!!!!)
-if (process.env.NODE_ENV !== "production") { //production
+if (process.env.NODE_ENV !== "development") { //production
 	
-	const webpackMiddleware = require("webpack-dev-middleware"),
-		webpack = require("webpack"),
-		webpackConfig = require("./webpack.config.js");
+	const webpackMiddleware = require("webpack-dev-middleware");
+	const webpackHotMiddleware = require('webpack-hot-middleware');
+	const webpack = require("webpack");
+	const webpackConfig  = require("./webpack.config.js");
 
-	app.use(webpackMiddleware(webpack(webpackConfig)));
+	const compiler = webpack(webpackConfig );
+	
+
+	app.use(webpackDevMiddleware(compiler, {
+		publicPath: webpackConfig .output.path,
+		stats: {colors: true}
+		}
+	));
+
+	app.use(webpackHotMiddleware(compiler, {
+    	log: console.log
+		}
+	));
 } else {
 	app.use(express.static(path.join(__dirname, "dist")));
 	app.use(express.static(path.join(__dirname, "public")));
