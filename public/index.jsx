@@ -16,10 +16,10 @@ ReactDOM.render(
 	<Provider store={createStore(rootReducer)}>
 		<Router>
 			<Switch>
-				<Route exact path="/" component={Home}/>
-				<Redirect path="*" to="/"/>
+				<Route exact path="/" component={Home} />
+				<Redirect path="*" to="/" />
 			</Switch>
 		</Router>
-	</Provider>,                
+	</Provider>,
 	document.getElementById("root")
 );

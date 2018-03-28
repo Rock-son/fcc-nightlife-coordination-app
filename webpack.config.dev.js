@@ -18,12 +18,9 @@ const OUTPUT = path.join(__dirname, "dist");
 const VENDOR_LIBS = ["react", "react-dom", "redux", "react-redux", "redux-thunk"];
 
 
-
-
-      
-const config = { 
+const config = {
 	entry: {
-		bundle: BUNDLE,
+		bundle: [BUNDLE, "webpack-hot-middleware/client"],
 		vendor: VENDOR_LIBS
 	},
 	output: {
@@ -58,7 +55,6 @@ const config = {
 			{
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract({
-					
 					fallback: "style-loader",
 					use: [{
 						loader: "css-loader",
@@ -81,26 +77,22 @@ const config = {
 		]
 	},
 	plugins: [
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.NoEmitOnErrorsPlugin(),
 		new ExtractTextPlugin({
 			filename: "[name].[contenthash].css"
-			//disable: isDevEnv
+			// disable: isDevEnv
 		}),
-		
 		new webpack.optimize.CommonsChunkPlugin({
 			names: ["vendor", "manifest"]
 		}),
-		new HtmlWebpackPlugin({ 
+		new HtmlWebpackPlugin({
 			template: TEMPLATE_IN,
 			filename: TEMPLATE_OUT// target path
 		}),
-		/*new webpack.optimize.UglifyJsPlugin({
-			compress:{
-				warnings: true
-			}
-		}),*/					
 		new webpack.DefinePlugin({
 			"process.env": {
-				"NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
+				NODE_ENV: JSON.stringify(process.env.NODE_ENV || "development")
 			}
 		})
 	]

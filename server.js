@@ -4,28 +4,28 @@ if (process.env.HEROKU_RUN == null) {
       require("dotenv").config();
 }
 
-const express = require("express"),
-	http = require("http"),
-	path = require("path"),
-	fs = require("fs"),
-	bodyParser = require("body-parser"),
+const express = require("express");
+const http = require("http");
+const path = require("path");
+const fs = require("fs");
+const bodyParser = require("body-parser");
 	// ROUTES
 
 	// SECURITY
-	helmet = require("./security/helmet"),
-	csrf = require("csurf"),
-	cookieParser = require("cookie-parser"),
-	cookieEncrypter = require("cookie-encrypter"),
+const helmet = require("./security/helmet");
+const csrf = require("csurf");
+const cookieParser = require("cookie-parser");
+const cookieEncrypter = require("cookie-encrypter");
 	// LOGGING:  morgan = require("morgan"),  Log = require("./logs/services/morganLog"), accessLogStream = fs.createWriteStream(path.join(__dirname, "logs", "access.log"), {flags: "a"}), // writable stream - for MORGAN logging
 	// DB
-	mongoose = require("mongoose"),      
-	dbUrl = process.env.DBLINK,
+const mongoose = require("mongoose");
+const dbUrl = process.env.DBLINK;
 	// PORT & ROUTER
-	port = process.env.PORT || 8080,
-	app = express(),
+let port = process.env.PORT || 3000;
+const app = express();
 	// LIMITER
-	RateLimiter = require("express-rate-limit"),
-	limiter = new RateLimiter({
+const RateLimiter = require("express-rate-limit");
+const limiter = new RateLimiter({
 		windowMs: 15*60*1000, // 15 minutes
 		max: 200, // limit each IP to 200 requests per windowMs (fonts, jpeg, css)
 		delayMs: 0 // disable delaying - full speed until the max limit is reached
@@ -36,7 +36,9 @@ const express = require("express"),
 // COOKIES
 app.use(cookieParser(process.env.CRYPTO_KEY));
 app.use(cookieEncrypter(process.env.CRYPTO_KEY));
-
+// ROUTES
+app.use(express.static(path.join(__dirname, "dist")));
+app.use(express.static(path.join(__dirname, "public")));
 // BODY PARSERS
 app.use(bodyParser.json({type: "application/json"}));
 app.use(bodyParser.json({ type: ["json", "application/csp-report"] }));
@@ -64,13 +66,11 @@ app.use(limiter);
 mongoose.Promise = global.Promise;
 mongoose.connect(dbUrl);
 
-
-// ROUTES
-// no need - React does the routing!
-	
 // LOG (Helmet-csp) CSP blocked requests
 // app.post("/report-violation", Log.logged);
 
+
+// CUSTOM ROUTES
 app.post("/api/searchBars", (req, res) => {
 	
 	const key = req.body.location || null;
@@ -88,33 +88,29 @@ app.get("/test", (req, res) => {
 		res.json({"naj bi delalo": "true"});
 	}
 );
-// WEBPACK MIDDLEWARE || EXPRESS STATIC for production   -   IMPORTANT!!!  PUT ALL ROUTES ABOVE THIS LINE OF CODE (because of app.get("*") route!!!!!)
-if (process.env.NODE_ENV !== "development") { //production
+// PUT ALL ROUTES ABOVE THIS LINE OF CODE!
+if (process.env.NODE_ENV !== "production") {
 	
-	const webpackMiddleware = require("webpack-dev-middleware");
+	port = 8080;
+	const webpackDevMiddleware = require("webpack-dev-middleware");
 	const webpackHotMiddleware = require('webpack-hot-middleware');
 	const webpack = require("webpack");
-	const webpackConfig  = require("./webpack.config.js");
+	const webpackConfig  = require("./webpack.config.dev.js");
 
-	const compiler = webpack(webpackConfig );
-	
+	const compiler = webpack(webpackConfig);	
 
 	app.use(webpackDevMiddleware(compiler, {
-		publicPath: webpackConfig .output.path,
+		publicPath: webpackConfig.output.path,
 		stats: {colors: true}
-		}
-	));
-
+		})
+	);
 	app.use(webpackHotMiddleware(compiler, {
     	log: console.log
-		}
-	));
+		})
+	);
 } else {
-	app.use(express.static(path.join(__dirname, "dist")));
-	app.use(express.static(path.join(__dirname, "public")));
-	// IMPORTANT!!!  - NEEDED FOR REACT ROUTER HISTORY LIB??????????????????? - NOT ABLE TO GET IMAGE & OTHER ROUTES
-	
-	app.get("/", (req, res) => {
+	// IMPORTANT!!!  - NEEDED FOR REACT ROUTER HISTORY LIB	
+	app.get("*", (req, res) => {
 		res.sendFile(path.join(__dirname, "dist/index.html"));
 	});
 }
