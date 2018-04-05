@@ -44,18 +44,35 @@
 				color: #d38a1e;
 			}
 		}
-		&__searchbar {
-			display: inline-block;
-			width: 80%;
-			padding: 5px;
-			border-radius: 5px 0 0 5px;
+		&__form {
+			display: block;
+			width: 100%;
+			&__searchbar {
+				display: inline-block;
+				width: 80%;
+				padding: .4rem;
+				border-radius: 5px 0 0 5px;
+			}
+			&__search-button {				
+				display: inline-block;
+				width: 15%;
+				padding: .4rem;
+				border-radius: 0 5px 5px 0;
+				cursor: pointer;
+			}
 		}
-		&__search-button {
+	}
+	&__spinner {
+		display: none;
+		position: relative;
+		width: 3rem;
+		margin: .5rem auto;
+		&--show {
+			display: block;
+		}
+		&__item {			
 			display: inline-block;
-			width: 15%;
-			padding: 5px;
-			border-radius: 0 5px 5px 0;
-			cursor: pointer;
+			color: #817e7e;
 		}
 	}
 	&__results {
