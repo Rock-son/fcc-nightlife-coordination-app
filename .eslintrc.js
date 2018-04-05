@@ -10,7 +10,11 @@ module.exports = {
 		"airbnb"
 	],
 	settings: {
-		"import/resolver": "webpack"
+		"import/resolver": {
+			"webpack": {
+				"config": "webpack.config.js"
+			}
+		}
 	},
     "parserOptions": {
 		"ecmaVersion": 6,
@@ -24,6 +28,10 @@ module.exports = {
         "react"
     ],
     "rules": {
+		"quote-props": [
+			"error", 
+			"consistent"
+		],
 		"max-len": [
 			"error",
 			{"code": 250}
@@ -54,9 +62,9 @@ module.exports = {
             "windows"
         ],
         "quotes": [
-            "error",
+            0,
             "double"
-        ],
+		],
         "semi": [
             "error",
             "always"
