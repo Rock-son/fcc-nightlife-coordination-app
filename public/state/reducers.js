@@ -1,10 +1,11 @@
 "use strict";
 
 import { combineReducers } from "redux";
-import { LOGIN, LOGOUT, SEARCH, INITIAL_AUTH, INITIAL_BARS, GET_BARS_ON_LOCATION } from "StateVariables";
+import { LOGIN, LOGOUT, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED } from "Actions";
+import { INITIAL_AUTH_REDUCER, INITIALIZE_BAR_REDUCER } from "InitialState";
 
 
-const authReducer = (state = INITIAL_AUTH, action) => {
+const authReducer = (state = INITIAL_AUTH_REDUCER, action) => {
 	switch (action.type) {
 	case LOGIN:
 		return { // TODO: REPLACE with function that will return true after successful login!
@@ -21,11 +22,30 @@ const authReducer = (state = INITIAL_AUTH, action) => {
 	}
 };
 
-const searchReducer = (state = INITIAL_BARS, action) => {
+
+const searchReducer = (state = INITIALIZE_BAR_REDUCER, action) => {
 	switch (action.type) {
-	case SEARCH:
+	case FETCHING_START:
 		return {
-			results: GET_BARS_ON_LOCATION(action.location)
+			...state,
+			isFetching: true,
+			errorFetching: false,
+			errorMsg: "",
+			lastSrcLocation: action.location
+		};
+	case FETCHING_FAILURE:
+		return {
+			...state,
+			isFetching: false,
+			errorFetching: true,
+			errorMsg: action.error
+
+		};
+	case FETCHING_RECEIVED:
+		return {
+			...state,
+			isFetching: false,
+			businesses: action.businesses
 		};
 	default:
 		return state;
@@ -35,5 +55,5 @@ const searchReducer = (state = INITIAL_BARS, action) => {
 
 export default combineReducers({
 	auth: authReducer,
-	bars: searchReducer
+	bar: searchReducer
 });
