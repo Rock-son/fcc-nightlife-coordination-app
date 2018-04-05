@@ -13,7 +13,7 @@ function Home(props) {
 	return (
 		<div>
 			<Navbar auth={props.auth} login={props.login} logout={props.logout} />
-			<Content bars={props.bars} getBars={props.getBarsOnLocation} />
+			<Content bar={props.bar} search={props.search} />
 			<Footer />
 		</div>
 	);
@@ -22,17 +22,17 @@ function Home(props) {
 Home.propTypes = {
 	// REDUCERS
 	auth: PropTypes.instanceOf(Object).isRequired,
-	bars: PropTypes.instanceOf(Object).isRequired,
+	bar: PropTypes.instanceOf(Object).isRequired,
 	// DISPATCHED FUNCTIONS
 	login: PropTypes.func,
 	logout: PropTypes.func,
-	getBarsOnLocation: PropTypes.func
+	search: PropTypes.func
 };
 
 Home.defaultProps = {
 	login: () => true,
 	logout: () => true,
-	getBarsOnLocation: () => {}
+	search: () => {}
 };
 
 export default hot(module)(Home);
