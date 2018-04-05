@@ -2,8 +2,11 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { createStore } from "redux";
+
 import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import thunkMiddleware from 'redux-thunk';
+import loggerMiddleware from 'redux-logger';
 
 import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
@@ -13,7 +16,7 @@ import css from "./style/index";
 
 
 ReactDOM.render(
-	<Provider store={createStore(rootReducer)}>
+	<Provider store={createStore(rootReducer, applyMiddleware(thunkMiddleware, loggerMiddleware))}>
 		<Router>
 			<Switch>
 				<Route exact path="/" component={Home} />
