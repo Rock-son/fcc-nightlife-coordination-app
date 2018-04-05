@@ -2,23 +2,25 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-// import { LOGIN, LOGOUT } from "StateVariables";
+// import { LOGIN, LOGOUT } from "Actions";
 
 
 export default class Content extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { input: "" };
+		this.input = "";
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleInput = this.handleInput.bind(this);
 	}
 
-	handleSearch() {
-		this.props.getBars(this.state.input);
+	handleSearch(e) {
+		e.preventDefault();
+		this.props.search(this.input);
 	}
 
 	handleInput(e) {
-		this.setState({ input: e.target.value });
+		e.preventDefault();
+		this.input = e.target.value;
 	}
 
 	render() {
@@ -35,10 +37,24 @@ export default class Content extends React.Component {
 						<i className="fa fa-coffee content__main__img-container__img" />
 						<i className="fa fa-beer content__main__img-container__img" />
 					</div>
-					<input className="content__main__searchbar" onChange={this.handleInput} type="text" size="50" placeholder="Where are you at?" />
-					<button className="content__main__search-button" onClick={this.handleSearch}>Search</button>
+					<input type="text" className="content__main__form__searchbar" name="location" size="50" onChange={this.handleInput} placeholder="Where are you at?" />
+					<input type="submit" className="content__main__form__search-button" name="submit" value="Submit" onClick={this.handleSearch} />
 				</article>
-				{Object.keys(this.props.bars).map((key, index) => <article key={index.toString()} className="content__results">{this.props.bars[key]}</article>)}
+				<div className={this.props.bar.isFetching ? "content__spinner content__spinner--show" : "content__spinner"} >
+					<i className="fa fa-spinner fa-spin fa-3x content__spinner__item" />
+				</div>
+				{ this.props.bar.businesses.map((business, index) => {
+					let container = null;
+					if (business) {
+						container = (
+							<article key={`${business.name || ""} ${index.toString()}`} className="content__results">
+								{business.name}
+							</article>
+						);
+					}
+					return container;
+				})
+				}
 			</section>
 		);
 	}
@@ -46,7 +62,7 @@ export default class Content extends React.Component {
 
 Content.propTypes = {
 
-	getBars: PropTypes.func.isRequired,
-	bars: PropTypes.instanceOf(Object).isRequired
+	search: PropTypes.func.isRequired,
+	bar: PropTypes.instanceOf(Object).isRequired
 };
 
