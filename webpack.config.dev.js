@@ -35,7 +35,9 @@ const config = {
 			Navbar: path.join(__dirname, "public/components/Navbar.jsx"),
 			Content: path.join(__dirname, "public/components/Content.jsx"),
 			Footer: path.join(__dirname, "public/components/Footer.jsx"),
-			StateVariables: path.join(__dirname, "public/state/stateVariables.js"),
+			InitialState: path.join(__dirname, "public/state/initialState.js"),
+			Actions: path.join(__dirname, "public/state/actions.js"),
+			ActionCreators: path.join(__dirname, "public/state/actionCreators.js"),
 			RootReducer: path.join(__dirname, "public/state/reducers.js")
 		},
 		extensions: [".js", ".jsx", ".scss"]
@@ -96,6 +98,6 @@ const config = {
 			}
 		})
 	]
-}
+};
 
 module.exports = config;
