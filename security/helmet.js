@@ -20,12 +20,11 @@ module.exports = function a(app) {
 			sandbox:	["allow-forms", "allow-scripts", "allow-same-origin"]
 			// reportUri: '/report-violation' // set up a POST route for notifying / logging data to server
 		},
-		reportOnly: (req, res) => {
+		reportOnly: (req) => {
 			if (req.query.cspmode === "debug") {
 				return true;
-			} else {
-				return false;
 			}
+			return false;
 		}
 	}));
 

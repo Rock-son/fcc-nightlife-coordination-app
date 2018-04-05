@@ -6908,7 +6908,7 @@ var Content = function (_React$Component) {
 		key: "render",
 		value: function render() {
 			var responseImg = "./assets/images/pexels-photo-260920.jpeg 640w, ./assets/images/pexels-photo-260921.jpeg 1280w, ./assets/images/pexels-photo-260922.jpeg 1920w";
-			console.log(this.props.bar.businesses);
+
 			return _react2.default.createElement(
 				"section",
 				{ className: "content" },
@@ -7044,7 +7044,7 @@ function fetchFail(error) {
 function fetchReceived(json) {
 	return {
 		type: _Actions.FETCHING_RECEIVED,
-		businesses: json,
+		businesses: json.businesses || [],
 		receivedAt: Date.now()
 	};
 }
@@ -7103,4 +7103,4 @@ function FETCH_BUSINESSES(location) {
 
 /***/ })
 ],[54]);
-//# sourceMappingURL=bundle.cb2f15fab606ddec52e7.js.map
+//# sourceMappingURL=bundle.aa6dd3274cd12557eeb6.js.map

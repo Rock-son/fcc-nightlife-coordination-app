@@ -9,8 +9,8 @@ const http = require("http");
 const path = require("path");
 const fs = require("fs");
 const bodyParser = require("body-parser");
-	// ROUTES
-
+// ROUTES
+const axios = require("axios");
 // SECURITY
 const helmet = require("./security/helmet");
 const csrf = require("csurf");
@@ -75,46 +75,37 @@ mongoose.connect(dbUrl);
 // CUSTOM ROUTES
 app.post("/api/searchBars", (req, res) => {
 	
-	console.log(req.body.location);
-	res.send([
-			{
-				"name": "Four Barrel Coffee",
-				"image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
-				"location": {
-					"city": "San Francisco",
-					"country": "US",
-					"address2": "",
-					"address3": "",
-					"state": "CA",
-					"address1": "375 Valencia St",
-					"zip_code": "94103"
-				},
-			},
-			{
-				"name": "Four Barrel Pint",
-				"image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
-				"location": {
-					"city": "San Francisco",
-					"country": "US",
-					"address2": "",
-					"address3": "",
-					"state": "CA",
-					"address1": "375 Valencia St",
-					"zip_code": "94103"
-				},
+	axios({
+		method: "get",
+		url: "https://api.yelp.com/v3/businesses/search?location=" + req.body.location,
+		timeout: 2000,
+  		headers: {"Authorization": "Bearer " + process.env.YELP_KEY},
+		validateStatus: status => status < 500 // Reject if the status code < 500
+		})
+		.then(response => {
+			console.log(response);
+			res.send(response.data);
+		})
+		.catch(error => {
+			if (error.response) {
+				// The request was made and the server responded with a status code
+				// that falls out of the range of 2xx
+				res.send(error.response.data, error.response.status, error.response.header);
 			}
-		]
-	);
-});
-app.get("/api/searchBars", (req, res) => {
-	console.log("hello");
-	//https://api.yelp.com/v3/businesses/search?location=london
-	res.send([{"data": "sent"}]);
-});
-app.get("/test", (req, res) => {
-		res.json({"naj bi delalo": "true"});
+			if (error.request) {
+				// The request was made but no response was received
+				// `error.request` is an instance of http.ClientRequest in node.js
+				res.send(error.request);
+			}
+			res.send(error.message);
+		});
 	}
 );
+
+app.get("/test", (req, res) => {
+	res.json({"naj bi delalo": "true"});
+});
+
 // PUT ALL ROUTES ABOVE THIS LINE OF CODE!
 if (process.env.NODE_ENV !== "production") {
 	

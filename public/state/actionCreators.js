@@ -35,7 +35,7 @@ function fetchFail(error) {
 function fetchReceived(json) {
 	return {
 		type: FETCHING_RECEIVED,
-		businesses: json,
+		businesses: json.businesses || [],
 		receivedAt: Date.now()
 	};
 }
