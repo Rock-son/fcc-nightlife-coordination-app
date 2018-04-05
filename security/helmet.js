@@ -1,36 +1,38 @@
-module.exports = function(app) {
+"use strict";
 
-	const helmet = require("helmet");
-	const helmet_csp = require("helmet-csp");
+const helmet = require("helmet");
+const helmetCsp = require("helmet-csp");
+
+module.exports = function a(app) {
 
 
 	// SECURITY middleware (Helmet, Helmet-csp)
-	app.use(helmet({dnsPrefetchControl: {allow: true}}));
+	app.use(helmet({ dnsPrefetchControl: { allow: true } }));
 	app.use(helmet.hidePoweredBy());
-	app.use(helmet_csp({
-		directives: { defaultSrc: ["'self'", "https://fcc-nightlife-coordination-app.herokuapp.com/*", "https://api.yelp.com/*"],
+	app.use(helmetCsp({
+		directives: {
+			defaultSrc: ["'self'", "https://fcc-nightlife-coordination-app.herokuapp.com/*", "https://api.yelp.com/*"],
 			scriptSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			styleSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			fontSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			connectSrc: ["'self'", "https://api.yelp.com/*"],
 			imgSrc:		["'self'", "data:"],
-			sandbox:	["allow-forms", "allow-scripts"]
-			//reportUri: '/report-violation' // set up a POST route for notifying / logging data to server
+			sandbox:	["allow-forms", "allow-scripts", "allow-same-origin"]
+			// reportUri: '/report-violation' // set up a POST route for notifying / logging data to server
 		},
-		reportOnly: function (req, res) {
+		reportOnly: (req, res) => {
 			if (req.query.cspmode === "debug") {
 				return true;
 			} else {
 				return false;
 			}
 		}
-	})
-	);
-	
-	app.use(function(req, res, next) {
+	}));
+
+	app.use((req, res, next) => {
 		res.set({
-			"Access-Control-Allow-Origin" : "*",
-			"Access-Control-Allow-Headers" : "Origin, X-Requested-With, content-type, Accept, Authorization"
+			"Access-Control-Allow-Origin": "*",
+			"Access-Control-Allow-Headers": "Origin, X-Requested-With, content-type, Accept, Authorization"
 		});
 		app.disable("x-powered-by");
 		next();
