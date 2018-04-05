@@ -11,19 +11,19 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 	// ROUTES
 
-	// SECURITY
+// SECURITY
 const helmet = require("./security/helmet");
 const csrf = require("csurf");
 const cookieParser = require("cookie-parser");
 const cookieEncrypter = require("cookie-encrypter");
-	// LOGGING:  morgan = require("morgan"),  Log = require("./logs/services/morganLog"), accessLogStream = fs.createWriteStream(path.join(__dirname, "logs", "access.log"), {flags: "a"}), // writable stream - for MORGAN logging
-	// DB
+// LOGGING:  morgan = require("morgan"),  Log = require("./logs/services/morganLog"), accessLogStream = fs.createWriteStream(path.join(__dirname, "logs", "access.log"), {flags: "a"}), // writable stream - for MORGAN logging
+// DB
 const mongoose = require("mongoose");
 const dbUrl = process.env.DBLINK;
-	// PORT & ROUTER
+// PORT & ROUTER
 let port = process.env.PORT || 3000;
 const app = express();
-	// LIMITER
+// LIMITER
 const RateLimiter = require("express-rate-limit");
 const limiter = new RateLimiter({
 		windowMs: 15*60*1000, // 15 minutes
@@ -32,7 +32,9 @@ const limiter = new RateLimiter({
 	}
 );
 
-
+// APP
+app.set("views", path.join(__dirname, "dist"));
+app.set("view engine", "pug");
 // COOKIES
 app.use(cookieParser(process.env.CRYPTO_KEY));
 app.use(cookieEncrypter(process.env.CRYPTO_KEY));
@@ -47,16 +49,16 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // app.use(morgan({stream: accessLogStream}));
 
 // SECURITY
-app.use(csrf({cookie: true}));
 helmet(app);
+/* app.use(csrf({cookie: true}));
 // CSRF ERROR HANDLER
 app.use(function (err, req, res, next) {
 	if (err.code !== "EBADCSRFTOKEN") return next(err)
-
+	console.log(req._csrf, req.body, req.csrfToken());
 	// handle CSRF token errors here 
 	res.status(403).send("form tampered with")
 });
-
+*/
 
 //LIMITER
 app.use(limiter);
@@ -73,11 +75,36 @@ mongoose.connect(dbUrl);
 // CUSTOM ROUTES
 app.post("/api/searchBars", (req, res) => {
 	
-	const key = req.body.location || null;
-
-	console.log(req.body, req.params, req, query);
-	res.json({"data": "sent"});
-
+	console.log(req.body.location);
+	res.send([
+			{
+				"name": "Four Barrel Coffee",
+				"image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
+				"location": {
+					"city": "San Francisco",
+					"country": "US",
+					"address2": "",
+					"address3": "",
+					"state": "CA",
+					"address1": "375 Valencia St",
+					"zip_code": "94103"
+				},
+			},
+			{
+				"name": "Four Barrel Pint",
+				"image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
+				"location": {
+					"city": "San Francisco",
+					"country": "US",
+					"address2": "",
+					"address3": "",
+					"state": "CA",
+					"address1": "375 Valencia St",
+					"zip_code": "94103"
+				},
+			}
+		]
+	);
 });
 app.get("/api/searchBars", (req, res) => {
 	console.log("hello");
@@ -109,9 +136,9 @@ if (process.env.NODE_ENV !== "production") {
 		})
 	);
 } else {
-	// IMPORTANT!!!  - NEEDED FOR REACT ROUTER HISTORY LIB	
+	// NEEDED FOR REACT ROUTER HISTORY LIB	
 	app.get("*", (req, res) => {
-		res.sendFile(path.join(__dirname, "dist/index.html"));
+		res.sendFile(path.join(__dirname, "dist", "index.html"));
 	});
 }
 
@@ -120,7 +147,3 @@ if (process.env.NODE_ENV !== "production") {
 // SERVER
 http.createServer(app)
 	.listen(port, () => console.log("Listening on port: " + port));
-
-
-
-module.exports.app = app;
