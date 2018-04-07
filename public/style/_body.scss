@@ -10,7 +10,7 @@
 		width: 100%;
 		height: 100%;
 	}
-	&__main {
+	&__search {
 		display: block;
 		top: 0;
 		right: 0;
@@ -44,39 +44,31 @@
 				color: #d38a1e;
 			}
 		}
-		&__form {
-			display: block;
-			width: 100%;
-			&__searchbar {
-				display: inline-block;
-				width: 80%;
-				padding: .4rem;
-				border-radius: 5px 0 0 5px;
-			}
-			&__search-button {				
-				display: inline-block;
-				width: 15%;
-				padding: .4rem;
-				border-radius: 0 5px 5px 0;
-				cursor: pointer;
-			}
-		}
-	}
-	&__spinner {
-		display: none;
-		position: relative;
-		width: 3rem;
-		margin: .5rem auto;
-		&--show {
-			display: block;
-		}
-		&__item {			
+		&__input {
 			display: inline-block;
-			color: #817e7e;
+			width: 80%;
+			padding: .4rem;
+			border-radius: 5px 0 0 5px;
+		}
+		&__button {
+			display: inline-block;
+			width: 15%;
+			padding: .4rem;
+			border-radius: 0 5px 5px 0;
+			cursor: pointer;
+			background-color: #ce0c0c;
+			color: #fff;
+			border: 3px inset #ce0c0c;
+			&:hover {
+				border: 3px inset #a50c0c;
+			}
+			&:active {
+				border: 3px inset #a50c0c;
+			}
+		}
+		&__spinner {
+			color: #fff;
 		}
 	}
-	&__results {
-		position: relative;
-		display: block;
-	}
+	@import "./__cards_container.scss";
 }

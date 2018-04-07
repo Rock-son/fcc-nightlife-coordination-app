@@ -5,9 +5,9 @@ import React from "react";
 export default function Footer() {
 	return (
 		<section className="footer">
-			<footer>Coded with &nbsp;
+			<footer className="footer__codedby" >Coded with &nbsp;
 				<span />
-				<i className="fa fa-heart-o"/>
+				<i className="fa fa-heart-o" />
 				<span>&nbsp; by </span>
 				<a className="footer__codedby__link" href="https://codepen.io/Roky/full/YqGqWg" target="_blank" rel="noopener noreferrer"> Roky </a>
 				<span> | </span>
