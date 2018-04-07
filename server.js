@@ -56,7 +56,7 @@ helmet(app);
 app.use(function (err, req, res, next) {
 	if (err.code !== "EBADCSRFTOKEN") return next(err)
 	console.log(req._csrf, req.body, req.csrfToken());
-	// handle CSRF token errors here 
+	// handle CSRF token errors here
 	res.status(403).send("form tampered with")
 });
 */
@@ -79,7 +79,7 @@ app.post("/api/searchBars", (req, res) => {
 	if (req.body.location.trim() === "") {
 		return setTimeout(() => res.status(400).send("You need to input location!"), 300);
 	}
-	
+
 	axios({
 		method: "get",
 		url: "https://api.foursquare.com/v2/venues/explore",
@@ -88,6 +88,8 @@ app.post("/api/searchBars", (req, res) => {
 			client_id: process.env.FSQ_CLIENT_ID,
 			client_secret: process.env.FSQ_SECRET,
 			near: req.body.location,
+			section: "drinks",
+			venuePhotos: 1,
 			v: fsq_version,
 			limit: 50
 		},
@@ -114,14 +116,14 @@ app.post("/api/searchBars", (req, res) => {
 
 // PUT ALL ROUTES ABOVE THIS LINE OF CODE!
 if (process.env.NODE_ENV !== "production") {
-	
+
 	port = 8080;
 	const webpackDevMiddleware = require("webpack-dev-middleware");
 	const webpackHotMiddleware = require('webpack-hot-middleware');
 	const webpack = require("webpack");
 	const webpackConfig  = require("./webpack.config.dev.js");
 
-	const compiler = webpack(webpackConfig);	
+	const compiler = webpack(webpackConfig);
 
 	app.use(webpackDevMiddleware(compiler, {
 		publicPath: webpackConfig.output.path,
@@ -133,7 +135,7 @@ if (process.env.NODE_ENV !== "production") {
 		})
 	);
 } else {
-	// NEEDED FOR REACT ROUTER HISTORY LIB	
+	// NEEDED FOR REACT ROUTER HISTORY LIB
 	app.get("*", (req, res) => {
 		res.sendFile(path.join(__dirname, "dist", "index.html"));
 	});
