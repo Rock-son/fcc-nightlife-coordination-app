@@ -49,16 +49,17 @@ export default class Content extends React.Component {
 							let container = null;
 							if (business) {
 								container = (
-									<div key={business.venue.id} className="content__cards__container">
-										<div className="content__cards__container__header" >
+									<div key={business.venue.id} className="content__cards__card">
+										<div className="content__cards__card__header" >
 											<h3>{business.venue.name}</h3>
 											<p>{business.venue.location.address}</p>
 										</div>
-										<div className="content__cards__container__body" >
+										<div className="content__cards__card__body" >
+											<img src={`${business.venue.photos.groups[0].items[0].prefix}${business.venue.photos.groups[0].items[0].height}${business.venue.photos.groups[0].items[0].suffix}`} className="content__cards__card__body__image" alt={business.venue.name} />>
 											<p>{business.venue.rating}</p>
 										</div>
-										<div className="content__card-container__footer" >
-
+										<div className="content__cards__card__footer" >
+											<p>This is a footer</p>
 										</div>
 									</div>
 								);

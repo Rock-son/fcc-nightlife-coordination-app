@@ -6575,7 +6575,6 @@ var Home = function (_React$Component) {
 		value: function componentDidCatch(error, info) {
 			// Display fallback UI
 			this.setState({ hasError: true });
-			console.log(info);
 		}
 	}, {
 		key: "render",
@@ -6980,10 +6979,10 @@ var Content = function (_React$Component) {
 						if (business) {
 							container = _react2.default.createElement(
 								"div",
-								{ key: business.venue.id, className: "content__cards__container" },
+								{ key: business.venue.id, className: "content__cards__card" },
 								_react2.default.createElement(
 									"div",
-									{ className: "content__cards__container__header" },
+									{ className: "content__cards__card__header" },
 									_react2.default.createElement(
 										"h3",
 										null,
@@ -6997,14 +6996,24 @@ var Content = function (_React$Component) {
 								),
 								_react2.default.createElement(
 									"div",
-									{ className: "content__cards__container__body" },
+									{ className: "content__cards__card__body" },
+									_react2.default.createElement("img", { src: "" + business.venue.photos.groups[0].items[0].prefix + business.venue.photos.groups[0].items[0].height + business.venue.photos.groups[0].items[0].suffix, className: "content__cards__card__body__image", alt: business.venue.name }),
+									">",
 									_react2.default.createElement(
 										"p",
 										null,
 										business.venue.rating
 									)
 								),
-								_react2.default.createElement("div", { className: "content__card-container__footer" })
+								_react2.default.createElement(
+									"div",
+									{ className: "content__cards__card__footer" },
+									_react2.default.createElement(
+										"p",
+										null,
+										"This is a footer"
+									)
+								)
 							);
 						}
 						return container;
@@ -7170,4 +7179,4 @@ function FETCH_BUSINESSES(location) {
 
 /***/ })
 ],[54]);
-//# sourceMappingURL=bundle.ef6fbf30559c46a8e904.js.map
+//# sourceMappingURL=bundle.28939b5f285ea3277830.js.map

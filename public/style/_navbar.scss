@@ -13,16 +13,23 @@
         height: 100%;
         & .fa-home {
             color: #222;
-            display: block;
+            display: inline-block;
             top: 0;
             width: 2rem;
             margin-left: 5rem;
             font-size: 2rem;
-            transform: translateY(-40%);
+			transform: translateY(-40%);
+			transition: color .3s;
             &:hover {
-                cursor: pointer;                
+                cursor: pointer;
                 color: #eee;
-            }
+			}
+			&:after {
+				content: "Home";
+				font-size: 1rem;
+				font-weight: 300;
+				margin-left: 2px;
+			}
         }
     }
     &__right {

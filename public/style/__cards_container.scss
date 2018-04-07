@@ -1,17 +1,22 @@
 &__cards {
-	display: flex;
+	display: inline-flex;
 	&__error {
 		text-align: center;
 		margin: 10% auto;
 	}
-	&__container {
-		width: 20vw;
-		height: 20vh;
+	&__card {
+		display: block;
+		width: 24vw;
+		height: 25vh;
+		border: 1px solid #999;
+		border-right: none;
 		&__header {
+			display: block;
 			width: 100%;
 			height: 30%;
 		}
 		&__body {
+			display: inline-flex;
 			width: 100%;
 			height: 60%;
 			&__image {
@@ -20,6 +25,7 @@
 			}
 		}
 		&__footer {
+			display: block;
 			width: 100%;
 			height: 20%;
 		}
