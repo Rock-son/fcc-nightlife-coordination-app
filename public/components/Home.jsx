@@ -9,14 +9,34 @@ import Footer from "Footer";
 import Content from "Content";
 
 
-function Home(props) {
-	return (
-		<div>
-			<Navbar auth={props.auth} login={props.login} logout={props.logout} />
-			<Content bar={props.bar} search={props.search} />
-			<Footer />
-		</div>
-	);
+class Home extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = { hasError: false };
+	}
+
+	componentDidCatch(error, info) {
+		// Display fallback UI
+		this.setState({ hasError: true });
+	}
+	render() {
+		if (this.state.hasError) {
+			return (
+				<div>
+					<Navbar auth={this.props.auth} login={this.props.login} logout={this.props.logout} />
+					<Content bar={this.props.bar} search={this.props.search} error={this.state.hasError} />
+					<Footer />
+				</div>
+			);
+		}
+		return (
+			<div>
+				<Navbar auth={this.props.auth} login={this.props.login} logout={this.props.logout} />
+				<Content bar={this.props.bar} search={this.props.search} error={false} />
+				<Footer />
+			</div>
+		);
+	}
 }
 
 Home.propTypes = {
