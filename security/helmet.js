@@ -11,7 +11,7 @@ module.exports = function a(app) {
 	app.use(helmet.hidePoweredBy());
 	app.use(helmetCsp({
 		directives: {
-			defaultSrc: ["'self'", "https://fcc-nightlife-coordination-app.herokuapp.com/*", "https://api.yelp.com/*"],
+			defaultSrc: ["'self'", "https://fcc-nightlife-coordination-app.herokuapp.com/*", "https://api.yelp.com/*", "https://api.foursquare.com/*"],
 			scriptSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			styleSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			fontSrc:	["'self'", "https://cdnjs.cloudflare.com"],
@@ -30,8 +30,9 @@ module.exports = function a(app) {
 
 	app.use((req, res, next) => {
 		res.set({
-			"Access-Control-Allow-Origin": "*",
-			"Access-Control-Allow-Headers": "Origin, X-Requested-With, content-type, Accept, Authorization"
+			"Access-Control-Allow-Origin": "https://api.foursquare.com/",
+			"Access-Control-Allow-Headers": "Origin, X-Requested-With, content-type, Accept, Authorization",
+			"Vary": "Origin"
 		});
 		app.disable("x-powered-by");
 		next();

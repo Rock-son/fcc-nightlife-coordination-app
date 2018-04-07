@@ -20,8 +20,8 @@ const VENDOR_LIBS = ["react", "react-dom", "redux", "react-redux", "redux-thunk"
 
 
 
-      
-const config = { 
+
+const config = {
 	entry: {
 		bundle: BUNDLE,
 		vendor: VENDOR_LIBS
@@ -60,7 +60,7 @@ const config = {
 			{
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract({
-					
+
 					fallback: "style-loader",
 					use: [{
 						loader: "css-loader",
@@ -87,11 +87,11 @@ const config = {
 			filename: "[name].[contenthash].css"
 			//disable: isDevEnv
 		}),
-		
+
 		new webpack.optimize.CommonsChunkPlugin({
 			names: ["vendor", "manifest"]
 		}),
-		new HtmlWebpackPlugin({ 
+		new HtmlWebpackPlugin({
 			template: TEMPLATE_IN,
 			filename: TEMPLATE_OUT// target path
 		}),
@@ -99,7 +99,7 @@ const config = {
 			compress:{
 				warnings: true
 			}
-		}),*/					
+		}),*/
 		new webpack.DefinePlugin({
 			"process.env": {
 				"NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")

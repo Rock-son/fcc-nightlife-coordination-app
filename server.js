@@ -11,6 +11,7 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 // ROUTES
 const axios = require("axios");
+const fsq_version = "1428278400";
 // SECURITY
 const helmet = require("./security/helmet");
 const csrf = require("csurf");
@@ -74,37 +75,42 @@ mongoose.connect(dbUrl);
 
 // CUSTOM ROUTES
 app.post("/api/searchBars", (req, res) => {
+
+	if (req.body.location.trim() === "") {
+		return setTimeout(() => res.status(400).send("You need to input location!"), 300);
+	}
 	
 	axios({
 		method: "get",
-		url: "https://api.yelp.com/v3/businesses/search?location=" + req.body.location,
+		url: "https://api.foursquare.com/v2/venues/explore",
 		timeout: 2000,
-  		headers: {"Authorization": "Bearer " + process.env.YELP_KEY},
+		params: {
+			client_id: process.env.FSQ_CLIENT_ID,
+			client_secret: process.env.FSQ_SECRET,
+			near: req.body.location,
+			v: fsq_version,
+			limit: 50
+		},
 		validateStatus: status => status < 500 // Reject if the status code < 500
 		})
 		.then(response => {
-			console.log(response);
 			res.send(response.data);
 		})
 		.catch(error => {
 			if (error.response) {
 				// The request was made and the server responded with a status code
 				// that falls out of the range of 2xx
-				res.send(error.response.data, error.response.status, error.response.header);
+				res.status(error.response.status).send(error.response.data, error.response.header);
 			}
 			if (error.request) {
 				// The request was made but no response was received
 				// `error.request` is an instance of http.ClientRequest in node.js
-				res.send(error.request);
+				res.status(error.response.status).send(error.request);
 			}
-			res.send(error.message);
+			res.status(400).send(error.message);
 		});
 	}
 );
-
-app.get("/test", (req, res) => {
-	res.json({"naj bi delalo": "true"});
-});
 
 // PUT ALL ROUTES ABOVE THIS LINE OF CODE!
 if (process.env.NODE_ENV !== "production") {

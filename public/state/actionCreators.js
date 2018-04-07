@@ -35,7 +35,7 @@ function fetchFail(error) {
 function fetchReceived(json) {
 	return {
 		type: FETCHING_RECEIVED,
-		businesses: json.businesses || [],
+		businesses: json.response.groups[0].items || [],
 		receivedAt: Date.now()
 	};
 }
@@ -57,9 +57,13 @@ export function FETCH_BUSINESSES(location) {
 		dispatch(fetchStart());
 
 		return getBarsOnLocation(location)
-			.then(
-				json => dispatch(fetchReceived(json.data)),
-				error => dispatch(fetchFail(error))
-			);
+			.then((json) => {
+				if (json.status !== 200) {
+					dispatch(fetchFail(json.data));
+				} else {
+					dispatch(fetchReceived(json.data));
+				}
+			})
+			.catch(error => dispatch(fetchFail(error)));
 	};
 }

@@ -1824,19 +1824,7 @@ var _default = {
 		errorFetching: false,
 		errorMsg: "",
 		lastSrcLocation: "",
-		businesses: [{
-			"name": "Four Barrel Coffee",
-			"image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/MmgtASP3l_t4tPCL1iAsCg/o.jpg",
-			"location": {
-				"city": "San Francisco",
-				"country": "US",
-				"address2": "",
-				"address3": "",
-				"state": "CA",
-				"address1": "375 Valencia St",
-				"zip_code": "94103"
-			}
-		}]
+		businesses: []
 	},
 	getBarsOnLocation: function getBarsOnLocation(location) {
 		return (0, _axios2.default)({
@@ -6532,6 +6520,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
@@ -6562,15 +6552,60 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 	enterModule && enterModule(module);
 })();
 
-function Home(props) {
-	return _react2.default.createElement(
-		"div",
-		null,
-		_react2.default.createElement(_Navbar2.default, { auth: props.auth, login: props.login, logout: props.logout }),
-		_react2.default.createElement(_Content2.default, { bar: props.bar, search: props.search }),
-		_react2.default.createElement(_Footer2.default, null)
-	);
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Home = function (_React$Component) {
+	_inherits(Home, _React$Component);
+
+	function Home(props) {
+		_classCallCheck(this, Home);
+
+		var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
+
+		_this.state = { hasError: false };
+		return _this;
+	}
+
+	_createClass(Home, [{
+		key: "componentDidCatch",
+		value: function componentDidCatch(error, info) {
+			// Display fallback UI
+			this.setState({ hasError: true });
+			console.log(info);
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			if (this.state.hasError) {
+				return _react2.default.createElement(
+					"div",
+					null,
+					_react2.default.createElement(_Navbar2.default, { auth: this.props.auth, login: this.props.login, logout: this.props.logout }),
+					_react2.default.createElement(_Content2.default, { bar: this.props.bar, search: this.props.search, error: this.state.hasError }),
+					_react2.default.createElement(_Footer2.default, null)
+				);
+			}
+			return _react2.default.createElement(
+				"div",
+				null,
+				_react2.default.createElement(_Navbar2.default, { auth: this.props.auth, login: this.props.login, logout: this.props.logout }),
+				_react2.default.createElement(_Content2.default, { bar: this.props.bar, search: this.props.search, error: false }),
+				_react2.default.createElement(_Footer2.default, null)
+			);
+		}
+	}, {
+		key: "__reactstandin__regenerateByEval",
+		value: function __reactstandin__regenerateByEval(key, code) {
+			this[key] = eval(code);
+		}
+	}]);
+
+	return Home;
+}(_react2.default.Component);
 
 Home.propTypes = {
 	// REDUCERS
@@ -6794,7 +6829,7 @@ function Footer() {
 		{ className: "footer" },
 		_react2.default.createElement(
 			"footer",
-			null,
+			{ className: "footer__codedby" },
 			"Coded with \xA0",
 			_react2.default.createElement("span", null),
 			_react2.default.createElement("i", { className: "fa fa-heart-o" }),
@@ -6875,9 +6910,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// import { LOGIN, LOGOUT } from "Actions";
-
-
 var Content = function (_React$Component) {
 	_inherits(Content, _React$Component);
 
@@ -6915,39 +6947,69 @@ var Content = function (_React$Component) {
 				_react2.default.createElement("img", { className: "content__hero", srcSet: responseImg, alt: "barcle" }),
 				_react2.default.createElement(
 					"article",
-					{ className: "content__main" },
+					{ className: "content__search" },
 					_react2.default.createElement(
 						"h2",
-						{ className: "content__main__header" },
+						{ className: "content__search__header" },
 						"Ready for a party night out?"
 					),
 					_react2.default.createElement(
 						"div",
-						{ className: "content__main__img-container" },
-						_react2.default.createElement("i", { className: "fa fa-thumbs-up content__main__img-container__img" }),
-						_react2.default.createElement("i", { className: "fa fa-glass content__main__img-container__img" }),
-						_react2.default.createElement("i", { className: "fa fa-coffee content__main__img-container__img" }),
-						_react2.default.createElement("i", { className: "fa fa-beer content__main__img-container__img" })
+						{ className: "content__search__img-container" },
+						_react2.default.createElement("i", { className: "fa fa-thumbs-up content__search__img-container__img" }),
+						_react2.default.createElement("i", { className: "fa fa-glass content__search__img-container__img" }),
+						_react2.default.createElement("i", { className: "fa fa-coffee content__search__img-container__img" }),
+						_react2.default.createElement("i", { className: "fa fa-beer content__search__img-container__img" })
 					),
-					_react2.default.createElement("input", { type: "text", className: "content__main__form__searchbar", name: "location", size: "50", onChange: this.handleInput, placeholder: "Where are you at?" }),
-					_react2.default.createElement("input", { type: "submit", className: "content__main__form__search-button", name: "submit", value: "Submit", onClick: this.handleSearch })
+					_react2.default.createElement("input", { type: "text", className: "content__search__input", name: "location", size: "50", onChange: this.handleInput, placeholder: "Where are you at?" }),
+					_react2.default.createElement(
+						"button",
+						{ type: "button", className: "content__search__button", onClick: this.handleSearch },
+						this.props.bar.isFetching ? _react2.default.createElement("i", { className: "fa fa-spinner fa-spin content__search__spinner" }) : "Search"
+					)
 				),
 				_react2.default.createElement(
-					"div",
-					{ className: this.props.bar.isFetching ? "content__spinner content__spinner--show" : "content__spinner" },
-					_react2.default.createElement("i", { className: "fa fa-spinner fa-spin fa-3x content__spinner__item" })
-				),
-				this.props.bar.businesses.map(function (business, index) {
-					var container = null;
-					if (business) {
-						container = _react2.default.createElement(
-							"article",
-							{ key: (business.name || "") + " " + index.toString(), className: "content__results" },
-							business.name
-						);
-					}
-					return container;
-				})
+					"article",
+					{ className: "content__cards" },
+					this.props.error || this.props.bar.errorFetching ? _react2.default.createElement(
+						"h2",
+						{ className: "content__cards__error" },
+						this.props.bar.errorMsg || "Something went wrong, please try again later!"
+					) : this.props.bar.businesses.map(function (business) {
+						var container = null;
+						if (business) {
+							container = _react2.default.createElement(
+								"div",
+								{ key: business.venue.id, className: "content__cards__container" },
+								_react2.default.createElement(
+									"div",
+									{ className: "content__cards__container__header" },
+									_react2.default.createElement(
+										"h3",
+										null,
+										business.venue.name
+									),
+									_react2.default.createElement(
+										"p",
+										null,
+										business.venue.location.address
+									)
+								),
+								_react2.default.createElement(
+									"div",
+									{ className: "content__cards__container__body" },
+									_react2.default.createElement(
+										"p",
+										null,
+										business.venue.rating
+									)
+								),
+								_react2.default.createElement("div", { className: "content__card-container__footer" })
+							);
+						}
+						return container;
+					})
+				)
 			);
 		}
 	}, {
@@ -6967,7 +7029,8 @@ exports.default = _default;
 Content.propTypes = {
 
 	search: _propTypes2.default.func.isRequired,
-	bar: _propTypes2.default.instanceOf(Object).isRequired
+	bar: _propTypes2.default.instanceOf(Object).isRequired,
+	error: _propTypes2.default.bool.isRequired
 };
 module.exports = exports["default"];
 ;
@@ -7044,7 +7107,7 @@ function fetchFail(error) {
 function fetchReceived(json) {
 	return {
 		type: _Actions.FETCHING_RECEIVED,
-		businesses: json.businesses || [],
+		businesses: json.response.groups[0].items || [],
 		receivedAt: Date.now()
 	};
 }
@@ -7065,8 +7128,12 @@ function FETCH_BUSINESSES(location) {
 		dispatch(fetchStart());
 
 		return (0, _InitialState.getBarsOnLocation)(location).then(function (json) {
-			return dispatch(fetchReceived(json.data));
-		}, function (error) {
+			if (json.status !== 200) {
+				dispatch(fetchFail(json.data));
+			} else {
+				dispatch(fetchReceived(json.data));
+			}
+		}).catch(function (error) {
 			return dispatch(fetchFail(error));
 		});
 	};
@@ -7103,4 +7170,4 @@ function FETCH_BUSINESSES(location) {
 
 /***/ })
 ],[54]);
-//# sourceMappingURL=bundle.aa6dd3274cd12557eeb6.js.map
+//# sourceMappingURL=bundle.ef6fbf30559c46a8e904.js.map
