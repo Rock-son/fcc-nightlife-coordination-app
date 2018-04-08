@@ -11,12 +11,12 @@ module.exports = function a(app) {
 	app.use(helmet.hidePoweredBy());
 	app.use(helmetCsp({
 		directives: {
-			defaultSrc: ["'self'", "https://fcc-nightlife-coordination-app.herokuapp.com/*", "https://api.yelp.com/*", "https://api.foursquare.com/*"],
+			defaultSrc: ["'self'", "https://fcc-nightlife-coordination-app.herokuapp.com/*"],
 			scriptSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			styleSrc:	["'self'", "https://cdnjs.cloudflare.com"],
 			fontSrc:	["'self'", "https://cdnjs.cloudflare.com"],
-			connectSrc: ["'self'", "https://api.yelp.com/*"],
-			imgSrc:		["'self'", "data:"],
+			connectSrc: ["'self'", "https://api.foursquare.com/*"],
+			imgSrc:		["'self'", "data:", "https://api.foursquare.com/*", "https://igx.4sqi.net/*"],
 			sandbox:	["allow-forms", "allow-scripts", "allow-same-origin"]
 			// reportUri: '/report-violation' // set up a POST route for notifying / logging data to server
 		},

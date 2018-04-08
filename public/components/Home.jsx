@@ -3,10 +3,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { hot } from "react-hot-loader";
+import { whyDidYouUpdate } from "why-did-you-update";
 
 import Navbar from "Navbar";
 import Footer from "Footer";
 import Content from "Content";
+
+if (process.env.NODE_ENV !== 'production') {
+	whyDidYouUpdate(React);
+}
 
 
 class Home extends React.Component {
@@ -20,19 +25,10 @@ class Home extends React.Component {
 		this.setState({ hasError: true });
 	}
 	render() {
-		if (this.state.hasError) {
-			return (
-				<div>
-					<Navbar auth={this.props.auth} login={this.props.login} logout={this.props.logout} />
-					<Content bar={this.props.bar} search={this.props.search} error={this.state.hasError} />
-					<Footer />
-				</div>
-			);
-		}
 		return (
 			<div>
 				<Navbar auth={this.props.auth} login={this.props.login} logout={this.props.logout} />
-				<Content bar={this.props.bar} search={this.props.search} error={false} />
+				<Content bar={this.props.bar} search={this.props.search} error={this.state.hasError} />
 				<Footer />
 			</div>
 		);

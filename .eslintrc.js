@@ -29,7 +29,7 @@ module.exports = {
     ],
     "rules": {
 		"quote-props": [
-			"error", 
+			"error",
 			"consistent"
 		],
 		"max-len": [
@@ -37,19 +37,25 @@ module.exports = {
 			{"code": 250}
 		],
 		"import/extensions": [
-			"error", 
+			"error",
 			"never"
 		],
+		"react/jsx-no-bind": [2, {
+			"ignoreRefs": false,
+			"allowArrowFunctions": false,
+			"allowFunctions": false,
+			"allowBind": false
+		}],
 		"react/jsx-indent": [
 			2,
 			"tab"
 		],
 		"comma-dangle": [
-			"error", 
+			"error",
 			"only-multiline"
 		],
 		"strict": [
-			0, 
+			0,
 			"global"
 		],
 		"no-tabs": 0,
