@@ -4,14 +4,27 @@ import React from "react";
 import PropTypes from "prop-types";
 
 
-export default class Content extends React.Component {
+export default class Content extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.input = "";
+		//this.searchBtn = React.createRef();
+
+		this.handleEnterPress = this.handleEnterPress.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleInput = this.handleInput.bind(this);
 	}
 
+	componentDidMount() {
+		//this.textInput.current.focus();
+	}
+
+	handleEnterPress(e) {
+		if (e.keyCode === 13) {
+			console.log(e.keyCode);
+			//this.searchBtn.current.focus()
+		}
+	}
 	handleSearch(e) {
 		e.preventDefault();
 		this.props.search(this.input);
@@ -36,26 +49,34 @@ export default class Content extends React.Component {
 						<i className="fa fa-coffee content__search__img-container__img" />
 						<i className="fa fa-beer content__search__img-container__img" />
 					</div>
-					<input type="text" className="content__search__input" name="location" size="50" onChange={this.handleInput} placeholder="Where are you at?" />
-					<button type="button" className="content__search__button" onClick={this.handleSearch} >
+					<input type="text" className="content__search__input" name="location" size="50" onChange={this.handleInput} onKeyUp={this.handleEnterPress} placeholder="Where are you at?" />
+					<button type="button" ref={this.searchBtn} className="content__search__button" onClick={this.handleSearch} >
 						{this.props.bar.isFetching ? (<i className="fa fa-spinner fa-spin content__search__spinner" />) : "Search"}
 					</button>
 				</article>
 				<article className="content__cards">
+				{/********************************************************* SEARCH RESULTS **********************************************************/}
 					{(this.props.error || this.props.bar.errorFetching) ?
 						(<h2 className="content__cards__error">{this.props.bar.errorMsg || "Something went wrong, please try again later!"}</h2>) :
 
 						(this.props.bar.businesses.map((business) => {
-							let container = null;
+							let container = null,
+								imagePath = "";
+
 							if (business) {
+								try {
+									imagePath = `${business.venue.photos.groups[0].items[0].prefix}350x200${business.venue.photos.groups[0].items[0].suffix}`;
+								} catch (error) {
+
+								}
 								container = (
-									<div key={business.venue.id} className="content__cards__card">
+									<div key={business.venue.id} className="content__cards__card" >
 										<div className="content__cards__card__header" >
 											<h3>{business.venue.name}</h3>
 											<p>{business.venue.location.address}</p>
 										</div>
 										<div className="content__cards__card__body" >
-											<img src={`${business.venue.photos.groups[0].items[0].prefix}${business.venue.photos.groups[0].items[0].height}${business.venue.photos.groups[0].items[0].suffix}`} className="content__cards__card__body__image" alt={business.venue.name} />>
+											<img src={imagePath} className="content__cards__card__body__image" alt={business.venue.name} />
 											<p>{business.venue.rating}</p>
 										</div>
 										<div className="content__cards__card__footer" >
@@ -65,8 +86,7 @@ export default class Content extends React.Component {
 								);
 							}
 							return container;
-						})
-						)
+						}))
 					}
 				</article>
 			</section>

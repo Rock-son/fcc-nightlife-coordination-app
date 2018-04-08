@@ -1,5 +1,5 @@
 "use strict";
-
+// if development
 if (process.env.HEROKU_RUN == null) {
       require("dotenv").config();
 }
