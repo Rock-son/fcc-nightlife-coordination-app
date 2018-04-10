@@ -1,33 +1,98 @@
 &__cards {
 	display: inline-flex;
+	flex-wrap: wrap;
 	&__error {
 		text-align: center;
 		margin: 10% auto;
 	}
 	&__card {
 		display: block;
-		width: 24vw;
-		height: 25vh;
-		border: 1px solid #999;
-		border-right: none;
+		font-family: "Helvetica Neue",Colibri, sans-serif;
+		margin: 1% 0 1% 1%;
+		width: 23.5vw;
+		height: 50vh;
+		border: 1px solid #f5f1ee;
+		border-radius: 5px;
 		&__header {
 			display: block;
 			width: 100%;
-			height: 30%;
+			height: 17%;
+			&__container {
+				display: block;
+				&__name {
+					display: inline-block;
+					color: red;
+					font-weight: 300;
+					margin-bottom: 1%;
+					padding-left: 1.5%;
+				}
+				&__rating {
+					border: 1px inline green;
+					color: #e6e6e6;
+					font-size: 1.3rem;
+					padding: 2.3%;
+					border-radius: 5px;
+					float: right;
+					margin-right: 3%;
+					margin-top: 2%;
+				}
+			}
+			&__address {
+				display: block;
+				color: #bbb;
+				padding-left: 1.5%;
+			}
 		}
 		&__body {
-			display: inline-flex;
+			display: block;
 			width: 100%;
-			height: 60%;
+			height: 50%;
+			&__category {
+				color: #cc7504;
+				margin-left: 2%;
+			}
 			&__image {
-				width: 50%;
-				height: 80%;
+				display: inline-block;
+				width: 70%;
+				height: 90%;
+				margin-left: 1.5%;
+				border-radius: 5px;
+			}
+			&__special {
+				display: inline-flex;
+				vertical-align: top;
+				flex-wrap: wrap;
+				text-align: right;
+				margin-left: 5%;
+				&__fb {
+					color: #3b5998;
+					margin-left: 2%;
+					& .fa-facebook {
+						color: #3b5998;
+						&:visited, &:active, &:hover {
+							color: #3b5998;
+						}
+					}
+				}
 			}
 		}
 		&__footer {
 			display: block;
 			width: 100%;
 			height: 20%;
+			font-family: Calibri, sans-serif;
+			font-size: 1.1rem;
+			font-style: oblique;
+			&__tip {
+				text-align: left;
+				padding: 5% 1% 1% 2%;
+				color: #bbb;
+			}
+			&__user {
+				text-align: right;
+				padding: 0 10% 1% 2%;
+				color: #777;
+			}
 		}
 	}
 }
