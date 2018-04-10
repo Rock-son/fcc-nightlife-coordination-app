@@ -91,12 +91,12 @@ app.post("/api/searchBars", (req, res) => {
 			section: "drinks",
 			venuePhotos: 1,
 			v: fsq_version,
-			limit: 50
+			limit: 5
 		},
 		validateStatus: status => status < 500 // Reject if the status code < 500
 		})
 		.then(response => {
-			res.send(response.data);
+			res.send(response.data.response.groups[0].items);
 		})
 		.catch(error => {
 			if (error.response) {
