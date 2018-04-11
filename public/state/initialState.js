@@ -146,49 +146,13 @@ export default {
 		{
 			reasons: {},
 			referralId: "e-4-4b68a117f964a520c8832be3-0",
-			tips: [{
-				agreeCount: 9,
-				canonicalUrl: "https://foursquare.com/item/5086458de4b07645f1beedad",
-				createdAt: 1350976909,
-				disagreeCount: 0,
-				id: "5086458de4b07645f1beedad",
-				likes: {
-					count: 8,
-					groups: [],
-					summary: "8 likes"
-				},
-				logView: true,
-				text: "A no brainer to enjoy an excellent night with some friends, without spending a fortune. Beware, the bar is often very crowded, book a table!",
-				todo: {
-					count: 1
-				},
-				type: "user",
-				user: {
-					id: "34655409",
-					firstName: "Paris by wine",
-					gender: "none",
-					photo: {},
-					type: "page"
-				}
-			}],
 			venue: {
 				allowMenuUrlEdit: true,
 				beenHere: { count: 0, marked: false, lastCheckinExpiredAt: 0 },
-				categories: [{
-					icon: {
-						prefix: "https://ss3.4sqi.net/img/categories_v2/food/winery_",
-						suffix: ".png"
-					},
-					id: "4bf58dd8d48988d123941732",
-					name: "Wine Bar",
-					pluralName: "Wine Bars",
-					primary: true,
-					shortName: "Wine Bar"
-				}],
 				contact: {
 					phone: "+33148045759",
 					formattedPhone: "+33 1 48 04 57 59",
-					facebook: "158634264155651",
+					facebook: "",
 					facebookName: "Le Barav"
 				},
 				featuredPhotos: {
@@ -274,11 +238,6 @@ export default {
 				createdAt: 1350976909,
 				disagreeCount: 0,
 				id: "5086458de4b07645f1beedad",
-				likes: {
-					count: 8,
-					groups: [],
-					summary: "8 likes"
-				},
 				logView: true,
 				text: "A no brainer to enjoy an excellent night with some friends, without spending a fortune. Beware, the bar is often very crowded, book a table!",
 				todo: {
@@ -336,7 +295,7 @@ export default {
 				hours: {
 					status: "Open until Midnight",
 					richStatus: {},
-					isOpen: true,
+					isOpen: false,
 					isLocalHoliday: false
 				},
 				id: "4b68a117f964a520c8832be3",
@@ -390,31 +349,6 @@ export default {
 		{
 			reasons: {},
 			referralId: "e-4-4b68a117f964a520c8832be3-0",
-			tips: [{
-				agreeCount: 9,
-				canonicalUrl: "https://foursquare.com/item/5086458de4b07645f1beedad",
-				createdAt: 1350976909,
-				disagreeCount: 0,
-				id: "5086458de4b07645f1beedad",
-				likes: {
-					count: 8,
-					groups: [],
-					summary: "8 likes"
-				},
-				logView: true,
-				text: "A no brainer to enjoy an excellent night with some friends, without spending a fortune. Beware, the bar is often very crowded, book a table!",
-				todo: {
-					count: 1
-				},
-				type: "user",
-				user: {
-					id: "34655409",
-					firstName: "Paris by wine",
-					gender: "none",
-					photo: {},
-					type: "page"
-				}
-			}],
 			venue: {
 				allowMenuUrlEdit: true,
 				beenHere: { count: 0, marked: false, lastCheckinExpiredAt: 0 },

@@ -3,8 +3,15 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const noTip = "No tips found!";
 
+const defaultMenuObj = { url: "" };
+const defaultHoursObj = { isOpen: false, status: "" };
+const defaultPriceObj = { message: "Moderate", currency: "/" };
+const defaultTipsArray = [{ text: "", user: { firstName: "" }, canonicalUrl: ""}];
+const defaultCountObj = { count: 0 };
+const defaultCategoryArray = [{ name: "No category" }];
+const defaultContactObj = { phone: "", facebook: "" };
+const defaultStatsObj = { tipCount: 0, usersCount: 0, checkinsCount: 0 };
 
 export default class Content extends React.PureComponent {
 	constructor(props) {
@@ -57,6 +64,9 @@ export default class Content extends React.PureComponent {
 							{this.props.bar.isFetching ? (<i className="fa fa-spinner fa-spin content__search__input-container__spinner" />) : "Search"}
 						</button>
 					</div>
+					<a className="content__search__foursquare" href="https://foursquare.com/" target="_blank" rel="noreferrer noopener" >Powered by{" "}
+						<i className="fa fa-foursquare" >OURSQUARE</i>
+					</a>
 				</article>
 				<article className="content__cards">
 					{/* ******************************************************* SEARCH RESULTS ********************************************************* */}
@@ -71,36 +81,61 @@ export default class Content extends React.PureComponent {
 									const imagePath = `${business.venue.featuredPhotos.items[0].prefix}350x200${business.venue.featuredPhotos.items[0].suffix}`;
 									const ratingColorStyle = { backgroundColor: `#${business.venue.ratingColor}` };
 									const ratingCount = business.venue.ratingSignals;
-									const { text: tip, user: { firstName: user } } = business.tips[0];
-									const { name } = business.venue.categories[0];
-									const { phone, facebook: fbNr } = business.venue.contact;
+									const { text: tip, user: { firstName: user }, canonicalUrl: fsqUrl } = (business.tips || defaultTipsArray)[0];
+									const { count } = (business.tips || defaultTipsArray)[0].likes || defaultCountObj;
+									const { name: category } = (business.venue.categories || defaultCategoryArray)[0];
+									const { phone, facebook: fbNr } = business.venue.contact || defaultContactObj;
+									const { url: menuUrl } = business.venue.menu || defaultMenuObj;
+									const { isOpen, status } = business.venue.hours || defaultHoursObj;
+									const { currency, message } = business.venue.price || defaultPriceObj;
+									const { tipCount: tips, usersCount: users, checkinsCount: checkins } = business.venue.stats || defaultStatsObj;
+									const { url: website, name: venueName } = business.venue;
 
 									container = (
 										<div key={business.venue.id} className="content__cards__card" >
 											<div className="content__cards__card__header" >
 												<div className="content__cards__card__header__container">
-													<h3 className="content__cards__card__header__container__name">{business.venue.name}</h3>
-													<div className="content__cards__card__header__container__rating" title={`${ratingCount} votes`} style={ratingColorStyle}>{business.venue.rating}</div>
+													<a className="content__cards__card__header__container__name" href={website} target="_blank" rel="noreferrer noopener" >{venueName}</a>
+													<div className="content__cards__card__header__container__rating" data={`${message} - ${currency}`} title={`${ratingCount} votes`} style={ratingColorStyle}>{business.venue.rating}</div>
 												</div>
 												<div className="content__cards__card__header__address">{business.venue.location.address}</div>
 											</div>
 											<div className="content__cards__card__body" >
-												<div className="content__cards__card__body__category">{name}</div>
-												<img src={imagePath} className="content__cards__card__body__image" alt={business.venue.name} />
+												<div style={{ display: "block" }}>
+													<div className="content__cards__card__body__category">{category}</div>
+													<div className={`content__cards__card__body__hours${isOpen ? "-open" : "-closed"}`} title={status || "No data!"} >{`${isOpen ? "open" : "closed"}`}</div>
+												</div>
+												<a href={fsqUrl} target="_blank" rel="noreferrer noopener" >
+													<img src={imagePath} className="content__cards__card__body__image" alt={venueName} title="CONTINUE TO FOURSQUARE" />
+												</a>
 												<div className="content__cards__card__body__special" >
-													<a className="content__cards__card__body__special__fb" href={`https://facebook.com/${fbNr}`} target="_blank" >
+													<a className={`content__cards__card__body__special__menu${menuUrl ? "" : "-no-show"}`} href={menuUrl} target="_blank" rel="noreferrer noopener" >Menu</a>
+													<a className={`content__cards__card__body__special__fb${fbNr ? "" : "-no-show"}`} href={`https://facebook.com/${fbNr}`} target="_blank" rel="noreferrer noopener" >
 														<i className="fa fa-facebook-square fa-2x" />
 													</a>
+													<div className="content__cards__card__body__special__phone1" style={phone ? ({ display: 'block' }) : ({ display: 'none' })}>Phone:</div>
+													<a className="content__cards__card__body__special__phone2" href={`callto://${phone}`} target="_blank" rel="noreferrer noopener" >{phone}</a>
 												</div>
+												<div className="content__cards__card__body__underImage" >
+													Tips: <span className="content__cards__card__body__underImage__item" style={{ backgroundColor: "#2d5be3" }} >{ tips}</span>
+													, Users: <span className="content__cards__card__body__underImage__item" style={{ backgroundColor: "#0732a2" }} >{ users}</span>
+													, Checkins: <span className="content__cards__card__body__underImage__item" style={{ backgroundColor: "#f94877" }} >{ checkins}</span>
+												</div>
+												<hr className="content__cards__card__body__line" />
 											</div>
 											<div className="content__cards__card__footer" >
-												<div className="content__cards__card__footer__tip" >{tip || noTip}</div>
-												<div className="content__cards__card__footer__user" >{`- ${user || ""}`}</div>
+												<div className="content__cards__card__footer__tip" >{tip || `${venueName} has no user tips yet.`}</div>
+												<div className="content__cards__card__footer__user">
+													<div className="content__cards__card__footer__user__txt" >{`- ${user || ""} (${count} `}</div>
+													<i className="fa fa-thumbs-up content__cards__card__footer__user__txt" />
+													<div className="content__cards__card__footer__user__txt"> )</div>
+												</div>
+
 											</div>
 										</div>
 									);
 								} catch (error) {
-									container = <div key={error} className="content__cards__card" >No data!</div>;
+									container = <div key={error} className="content__cards__card" >{`No data available! ${error}`}</div>;
 								}
 							}
 							return container;
