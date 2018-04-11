@@ -2,7 +2,7 @@
 
 import React from "react";
 
-export default function Footer() {
+export default function () {
 	return (
 		<section className="footer">
 			<footer className="footer__codedby" >Coded with &nbsp;
