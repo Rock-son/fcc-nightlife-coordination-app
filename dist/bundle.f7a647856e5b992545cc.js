@@ -1959,49 +1959,13 @@ var _default = {
 		}, {
 			reasons: {},
 			referralId: "e-4-4b68a117f964a520c8832be3-0",
-			tips: [{
-				agreeCount: 9,
-				canonicalUrl: "https://foursquare.com/item/5086458de4b07645f1beedad",
-				createdAt: 1350976909,
-				disagreeCount: 0,
-				id: "5086458de4b07645f1beedad",
-				likes: {
-					count: 8,
-					groups: [],
-					summary: "8 likes"
-				},
-				logView: true,
-				text: "A no brainer to enjoy an excellent night with some friends, without spending a fortune. Beware, the bar is often very crowded, book a table!",
-				todo: {
-					count: 1
-				},
-				type: "user",
-				user: {
-					id: "34655409",
-					firstName: "Paris by wine",
-					gender: "none",
-					photo: {},
-					type: "page"
-				}
-			}],
 			venue: {
 				allowMenuUrlEdit: true,
 				beenHere: { count: 0, marked: false, lastCheckinExpiredAt: 0 },
-				categories: [{
-					icon: {
-						prefix: "https://ss3.4sqi.net/img/categories_v2/food/winery_",
-						suffix: ".png"
-					},
-					id: "4bf58dd8d48988d123941732",
-					name: "Wine Bar",
-					pluralName: "Wine Bars",
-					primary: true,
-					shortName: "Wine Bar"
-				}],
 				contact: {
 					phone: "+33148045759",
 					formattedPhone: "+33 1 48 04 57 59",
-					facebook: "158634264155651",
+					facebook: "",
 					facebookName: "Le Barav"
 				},
 				featuredPhotos: {
@@ -2082,11 +2046,6 @@ var _default = {
 				createdAt: 1350976909,
 				disagreeCount: 0,
 				id: "5086458de4b07645f1beedad",
-				likes: {
-					count: 8,
-					groups: [],
-					summary: "8 likes"
-				},
 				logView: true,
 				text: "A no brainer to enjoy an excellent night with some friends, without spending a fortune. Beware, the bar is often very crowded, book a table!",
 				todo: {
@@ -2144,7 +2103,7 @@ var _default = {
 				hours: {
 					status: "Open until Midnight",
 					richStatus: {},
-					isOpen: true,
+					isOpen: false,
 					isLocalHoliday: false
 				},
 				id: "4b68a117f964a520c8832be3",
@@ -2193,31 +2152,6 @@ var _default = {
 		}, {
 			reasons: {},
 			referralId: "e-4-4b68a117f964a520c8832be3-0",
-			tips: [{
-				agreeCount: 9,
-				canonicalUrl: "https://foursquare.com/item/5086458de4b07645f1beedad",
-				createdAt: 1350976909,
-				disagreeCount: 0,
-				id: "5086458de4b07645f1beedad",
-				likes: {
-					count: 8,
-					groups: [],
-					summary: "8 likes"
-				},
-				logView: true,
-				text: "A no brainer to enjoy an excellent night with some friends, without spending a fortune. Beware, the bar is often very crowded, book a table!",
-				todo: {
-					count: 1
-				},
-				type: "user",
-				user: {
-					id: "34655409",
-					firstName: "Paris by wine",
-					gender: "none",
-					photo: {},
-					type: "page"
-				}
-			}],
 			venue: {
 				allowMenuUrlEdit: true,
 				beenHere: { count: 0, marked: false, lastCheckinExpiredAt: 0 },
@@ -19452,7 +19386,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var noTip = "No tips found!";
+var defaultMenuObj = { url: "" };
+var defaultHoursObj = { isOpen: false, status: "" };
+var defaultPriceObj = { message: "Moderate", currency: "/" };
+var defaultTipsArray = [{ text: "", user: { firstName: "" }, canonicalUrl: "" }];
+var defaultCountObj = { count: 0 };
+var defaultCategoryArray = [{ name: "No category" }];
+var defaultContactObj = { phone: "", facebook: "" };
+var defaultStatsObj = { tipCount: 0, usersCount: 0, checkinsCount: 0 };
 
 var Content = function (_React$PureComponent) {
 	_inherits(Content, _React$PureComponent);
@@ -19530,6 +19471,17 @@ var Content = function (_React$PureComponent) {
 							{ type: "button", ref: this.searchBtn, className: "content__search__input-container__button", onClick: this.handleSearch },
 							this.props.bar.isFetching ? _react2.default.createElement("i", { className: "fa fa-spinner fa-spin content__search__input-container__spinner" }) : "Search"
 						)
+					),
+					_react2.default.createElement(
+						"a",
+						{ className: "content__search__foursquare", href: "https://foursquare.com/", target: "_blank", rel: "noreferrer noopener" },
+						"Powered by",
+						" ",
+						_react2.default.createElement(
+							"i",
+							{ className: "fa fa-foursquare" },
+							"OURSQUARE"
+						)
 					)
 				),
 				_react2.default.createElement(
@@ -19547,13 +19499,39 @@ var Content = function (_React$PureComponent) {
 								var imagePath = business.venue.featuredPhotos.items[0].prefix + "350x200" + business.venue.featuredPhotos.items[0].suffix;
 								var ratingColorStyle = { backgroundColor: "#" + business.venue.ratingColor };
 								var ratingCount = business.venue.ratingSignals;
-								var _business$tips$ = business.tips[0],
-								    tip = _business$tips$.text,
-								    user = _business$tips$.user.firstName;
-								var name = business.venue.categories[0].name;
-								var _business$venue$conta = business.venue.contact,
-								    phone = _business$venue$conta.phone,
-								    fbNr = _business$venue$conta.facebook;
+								var _ = (business.tips || defaultTipsArray)[0],
+								    tip = _.text,
+								    user = _.user.firstName,
+								    fsqUrl = _.canonicalUrl;
+
+								var _ref = (business.tips || defaultTipsArray)[0].likes || defaultCountObj,
+								    count = _ref.count;
+
+								var category = (business.venue.categories || defaultCategoryArray)[0].name;
+
+								var _ref2 = business.venue.contact || defaultContactObj,
+								    phone = _ref2.phone,
+								    fbNr = _ref2.facebook;
+
+								var _ref3 = business.venue.menu || defaultMenuObj,
+								    menuUrl = _ref3.url;
+
+								var _ref4 = business.venue.hours || defaultHoursObj,
+								    isOpen = _ref4.isOpen,
+								    status = _ref4.status;
+
+								var _ref5 = business.venue.price || defaultPriceObj,
+								    currency = _ref5.currency,
+								    message = _ref5.message;
+
+								var _ref6 = business.venue.stats || defaultStatsObj,
+								    tips = _ref6.tipCount,
+								    users = _ref6.usersCount,
+								    checkins = _ref6.checkinsCount;
+
+								var _business$venue = business.venue,
+								    website = _business$venue.url,
+								    venueName = _business$venue.name;
 
 
 								container = _react2.default.createElement(
@@ -19566,13 +19544,13 @@ var Content = function (_React$PureComponent) {
 											"div",
 											{ className: "content__cards__card__header__container" },
 											_react2.default.createElement(
-												"h3",
-												{ className: "content__cards__card__header__container__name" },
-												business.venue.name
+												"a",
+												{ className: "content__cards__card__header__container__name", href: website, target: "_blank", rel: "noreferrer noopener" },
+												venueName
 											),
 											_react2.default.createElement(
 												"div",
-												{ className: "content__cards__card__header__container__rating", title: ratingCount + " votes", style: ratingColorStyle },
+												{ className: "content__cards__card__header__container__rating", data: message + " - " + currency, title: ratingCount + " votes", style: ratingColorStyle },
 												business.venue.rating
 											)
 										),
@@ -19587,19 +19565,70 @@ var Content = function (_React$PureComponent) {
 										{ className: "content__cards__card__body" },
 										_react2.default.createElement(
 											"div",
-											{ className: "content__cards__card__body__category" },
-											name
+											{ style: { display: "block" } },
+											_react2.default.createElement(
+												"div",
+												{ className: "content__cards__card__body__category" },
+												category
+											),
+											_react2.default.createElement(
+												"div",
+												{ className: "content__cards__card__body__hours" + (isOpen ? "-open" : "-closed"), title: status || "No data!" },
+												"" + (isOpen ? "open" : "closed")
+											)
 										),
-										_react2.default.createElement("img", { src: imagePath, className: "content__cards__card__body__image", alt: business.venue.name }),
+										_react2.default.createElement(
+											"a",
+											{ href: fsqUrl, target: "_blank", rel: "noreferrer noopener" },
+											_react2.default.createElement("img", { src: imagePath, className: "content__cards__card__body__image", alt: venueName, title: "CONTINUE TO FOURSQUARE" })
+										),
 										_react2.default.createElement(
 											"div",
 											{ className: "content__cards__card__body__special" },
 											_react2.default.createElement(
 												"a",
-												{ className: "content__cards__card__body__special__fb", href: "https://facebook.com/" + fbNr, target: "_blank" },
+												{ className: "content__cards__card__body__special__menu" + (menuUrl ? "" : "-no-show"), href: menuUrl, target: "_blank", rel: "noreferrer noopener" },
+												"Menu"
+											),
+											_react2.default.createElement(
+												"a",
+												{ className: "content__cards__card__body__special__fb" + (fbNr ? "" : "-no-show"), href: "https://facebook.com/" + fbNr, target: "_blank", rel: "noreferrer noopener" },
 												_react2.default.createElement("i", { className: "fa fa-facebook-square fa-2x" })
+											),
+											_react2.default.createElement(
+												"div",
+												{ className: "content__cards__card__body__special__phone1", style: phone ? { display: 'block' } : { display: 'none' } },
+												"Phone:"
+											),
+											_react2.default.createElement(
+												"a",
+												{ className: "content__cards__card__body__special__phone2", href: "callto://" + phone, target: "_blank", rel: "noreferrer noopener" },
+												phone
 											)
-										)
+										),
+										_react2.default.createElement(
+											"div",
+											{ className: "content__cards__card__body__underImage" },
+											"Tips: ",
+											_react2.default.createElement(
+												"span",
+												{ className: "content__cards__card__body__underImage__item", style: { backgroundColor: "#2d5be3" } },
+												tips
+											),
+											", Users: ",
+											_react2.default.createElement(
+												"span",
+												{ className: "content__cards__card__body__underImage__item", style: { backgroundColor: "#0732a2" } },
+												users
+											),
+											", Checkins: ",
+											_react2.default.createElement(
+												"span",
+												{ className: "content__cards__card__body__underImage__item", style: { backgroundColor: "#f94877" } },
+												checkins
+											)
+										),
+										_react2.default.createElement("hr", { className: "content__cards__card__body__line" })
 									),
 									_react2.default.createElement(
 										"div",
@@ -19607,12 +19636,22 @@ var Content = function (_React$PureComponent) {
 										_react2.default.createElement(
 											"div",
 											{ className: "content__cards__card__footer__tip" },
-											tip || noTip
+											tip || venueName + " has no user tips yet."
 										),
 										_react2.default.createElement(
 											"div",
 											{ className: "content__cards__card__footer__user" },
-											"- " + (user || "")
+											_react2.default.createElement(
+												"div",
+												{ className: "content__cards__card__footer__user__txt" },
+												"- " + (user || "") + " (" + count + " "
+											),
+											_react2.default.createElement("i", { className: "fa fa-thumbs-up content__cards__card__footer__user__txt" }),
+											_react2.default.createElement(
+												"div",
+												{ className: "content__cards__card__footer__user__txt" },
+												" )"
+											)
 										)
 									)
 								);
@@ -19620,7 +19659,7 @@ var Content = function (_React$PureComponent) {
 								container = _react2.default.createElement(
 									"div",
 									{ key: error, className: "content__cards__card" },
-									"No data!"
+									"No data available! " + error
 								);
 							}
 						}
@@ -19661,7 +19700,14 @@ module.exports = exports["default"];
 		return;
 	}
 
-	reactHotLoader.register(noTip, "noTip", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
+	reactHotLoader.register(defaultMenuObj, "defaultMenuObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
+	reactHotLoader.register(defaultHoursObj, "defaultHoursObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
+	reactHotLoader.register(defaultPriceObj, "defaultPriceObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
+	reactHotLoader.register(defaultTipsArray, "defaultTipsArray", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
+	reactHotLoader.register(defaultCountObj, "defaultCountObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
+	reactHotLoader.register(defaultCategoryArray, "defaultCategoryArray", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
+	reactHotLoader.register(defaultContactObj, "defaultContactObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
+	reactHotLoader.register(defaultStatsObj, "defaultStatsObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
 	reactHotLoader.register(Content, "Content", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
 	reactHotLoader.register(_default, "default", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
 	leaveModule(module);
@@ -19788,4 +19834,4 @@ function FETCH_BUSINESSES(location) {
 
 /***/ })
 ],[55]);
-//# sourceMappingURL=bundle.460ba53fc912e38366b6.js.map
+//# sourceMappingURL=bundle.f7a647856e5b992545cc.js.map

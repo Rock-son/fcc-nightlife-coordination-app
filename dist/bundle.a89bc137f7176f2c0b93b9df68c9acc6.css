@@ -1,3 +1,7 @@
+body {
+  font-family: "Helvetica Neue", Calibri, sans-serif;
+}
+
 .test {
   color: #999;
   -webkit-transition: all 1.5s;
@@ -418,8 +422,9 @@ template {
 .navbar__left .fa-home:after {
   content: "Home";
   font-size: 1rem;
-  font-weight: 300;
+  font-weight: 700;
   margin-left: 2px;
+  font-family: "Helvetica Neue", Calibri, sans-serif;
 }
 
 .navbar__right {
@@ -472,6 +477,8 @@ template {
   z-index: -1;
   width: 100%;
   height: 100%;
+  -webkit-box-shadow: 5px 5px 25px #b16214, 5px 5px 25px #85480c;
+  box-shadow: 5px 5px 25px #b16214, 5px 5px 25px #85480c;
 }
 
 .content__search {
@@ -479,7 +486,7 @@ template {
   top: 0;
   right: 0;
   left: 0;
-  margin: 10% auto 0 auto;
+  margin: 20vh auto 0 auto;
   -webkit-transform: translateY(-40%);
   transform: translateY(-40%);
   height: 20vh;
@@ -490,6 +497,7 @@ template {
   display: block;
   text-align: center;
   color: #eee;
+  text-shadow: 1px 1px 20px #e88565, 1px 1px 2px #e88565, 0px 1px 15px #e88565;
 }
 
 .content__search__img-container {
@@ -501,20 +509,26 @@ template {
 .content__search__img-container__img {
   display: inline-block;
   font-size: 2rem;
-  color: #e917de;
   padding: 0 5px;
 }
 
 .content__search__img-container .fa-thumbs-up {
-  color: #ddd0d0;
+  color: #fff;
+}
+
+.content__search__img-container .fa-glass {
+  color: #e917de;
+  text-shadow: 0px 0px 20px #400988;
 }
 
 .content__search__img-container .fa-coffee {
   color: #555;
+  text-shadow: 0px 0px 2px #fff;
 }
 
 .content__search__img-container .fa-beer {
   color: #d38a1e;
+  text-shadow: 0px 0px 5px #fff;
 }
 
 .content__search__input-container {
@@ -552,12 +566,43 @@ template {
   color: #fff;
 }
 
+.content__search__foursquare {
+  display: block;
+  font-size: 1rem;
+  font-style: oblique;
+  color: #fff;
+  font-weight: 300;
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none;
+  margin-top: 1%;
+  text-shadow: 1px 1px 20px #2d5be2, 1px 1px 2px #2d5be2, 0px 1px 15px #2D5BE4;
+  -webkit-transition: -webkit-transform .3s;
+  transition: -webkit-transform .3s;
+  transition: transform .3s;
+  transition: transform .3s, -webkit-transform .3s;
+}
+
+.content__search__foursquare:hover {
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+}
+
+.content__search__foursquare .fa {
+  font-style: italic;
+  color: #fff;
+  font-weight: 700;
+}
+
 .content__cards {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+  -webkit-box-pack: space-evenly;
+  -ms-flex-pack: space-evenly;
+  justify-content: space-evenly;
 }
 
 .content__cards__error {
@@ -567,12 +612,14 @@ template {
 
 .content__cards__card {
   display: block;
-  font-family: "Helvetica Neue",Colibri, sans-serif;
-  margin: 1% 0 1% 1%;
-  width: 23.5vw;
+  font-family: "Helvetica Neue", Calibri, sans-serif;
+  margin: 1% 0;
+  width: 450px;
   height: 50vh;
-  border: 1px solid #f5f1ee;
+  border: 1px solid #f1e1d6;
   border-radius: 5px;
+  -webkit-box-shadow: -1px 1px 25px #bbb;
+  box-shadow: -1px 1px 25px #bbb;
 }
 
 .content__cards__card__header {
@@ -589,12 +636,25 @@ template {
   display: inline-block;
   color: red;
   font-weight: 300;
-  margin-bottom: 1%;
-  padding-left: 1.5%;
+  font-size: 1.4rem;
+  margin: 1% 0;
+  padding-left: 3%;
+  text-decoration: none;
+}
+
+.content__cards__card__header__container__name:visited {
+  color: red;
+}
+
+.content__cards__card__header__container__name:hover,
+.content__cards__card__header__container__name:active {
+  color: #bb1111;
+  text-decoration: underline;
 }
 
 .content__cards__card__header__container__rating {
   border: 1px inline green;
+  cursor: help;
   color: #e6e6e6;
   font-size: 1.3rem;
   padding: 2.3%;
@@ -602,12 +662,32 @@ template {
   float: right;
   margin-right: 3%;
   margin-top: 2%;
+  min-width: 2rem;
+  text-align: center;
+  text-shadow: -0.5px 0.5px 1px #333;
+}
+
+.content__cards__card__header__container__rating:after {
+  content: attr(data);
+  position: absolute;
+  display: block;
+  color: #777;
+  -webkit-transform: translate(-25%, 100%);
+  transform: translate(-25%, 100%);
+  font-size: .8rem;
+  text-shadow: none;
+}
+
+.content__cards__card__header__container__rating[data~="Cheap"]:after {
+  -webkit-transform: translate(-15%, 100%);
+  transform: translate(-15%, 100%);
+  text-shadow: none;
 }
 
 .content__cards__card__header__address {
   display: block;
   color: #bbb;
-  padding-left: 1.5%;
+  padding-left: 3%;
 }
 
 .content__cards__card__body {
@@ -617,16 +697,43 @@ template {
 }
 
 .content__cards__card__body__category {
+  display: inline-block;
   color: #cc7504;
-  margin-left: 2%;
+  margin-left: 3%;
+}
+
+.content__cards__card__body__hours-open {
+  display: inline-block;
+  cursor: help;
+  padding: 0px 5px;
+  color: #fff;
+  background-color: #00b551;
+  border-radius: 5px;
+  margin: 0 1% 1% 2%;
+  -webkit-transform: rotate(-5deg);
+  transform: rotate(-5deg);
+}
+
+.content__cards__card__body__hours-closed {
+  display: inline-block;
+  cursor: help;
+  padding: 0px 5px;
+  color: #fff;
+  background-color: #d72355;
+  border-radius: 5px;
+  margin: 0 1% 1% 2%;
+  -webkit-transform: rotate(-5deg);
+  transform: rotate(-5deg);
 }
 
 .content__cards__card__body__image {
   display: inline-block;
   width: 70%;
   height: 90%;
-  margin-left: 1.5%;
+  margin-left: 3%;
   border-radius: 5px;
+  -webkit-box-shadow: -2px 2px 15px black;
+  box-shadow: -2px 2px 15px black;
 }
 
 .content__cards__card__body__special {
@@ -636,13 +743,42 @@ template {
   vertical-align: top;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
   text-align: right;
-  margin-left: 5%;
+  margin-left: 1%;
+  width: 25%;
+}
+
+.content__cards__card__body__special__menu {
+  display: block;
+  text-align: left;
+  text-decoration: none;
+  color: #999;
+  margin-bottom: 10%;
+}
+
+.content__cards__card__body__special__menu:active,
+.content__cards__card__body__special__menu:visited {
+  color: #999;
+}
+
+.content__cards__card__body__special__menu:hover {
+  color: #777;
+  text-decoration: underline;
+}
+
+.content__cards__card__body__special__menu-no-show {
+  visibility: hidden;
 }
 
 .content__cards__card__body__special__fb {
+  display: block;
+  text-align: left;
   color: #3b5998;
-  margin-left: 2%;
+  margin: 0 2% 0 2%;
 }
 
 .content__cards__card__body__special__fb .fa-facebook {
@@ -653,6 +789,49 @@ template {
 .content__cards__card__body__special__fb .fa-facebook:active,
 .content__cards__card__body__special__fb .fa-facebook:hover {
   color: #3b5998;
+}
+
+.content__cards__card__body__special__fb-no-show {
+  visibility: hidden;
+}
+
+.content__cards__card__body__special__phone1 {
+  display: block;
+  font-size: .8rem;
+  text-align: left;
+  margin-top: 115%;
+  color: #999;
+}
+
+.content__cards__card__body__special__phone2 {
+  display: block;
+  font-size: .8rem;
+  text-align: left;
+  color: #00aff0;
+  text-decoration: none;
+}
+
+.content__cards__card__body__special__phone2:hover {
+  text-decoration: underline;
+}
+
+.content__cards__card__body__underImage {
+  padding-left: 3%;
+  font-size: .8rem;
+  color: #555;
+}
+
+.content__cards__card__body__underImage__item {
+  color: #fff;
+  border-radius: 5px;
+  padding: 0 2px;
+}
+
+.content__cards__card__body__line {
+  width: 84%;
+  opacity: .2;
+  margin-left: 4%;
+  margin-top: 2.5%;
 }
 
 .content__cards__card__footer {
@@ -666,14 +845,29 @@ template {
 
 .content__cards__card__footer__tip {
   text-align: left;
-  padding: 5% 1% 1% 2%;
+  margin: 7% 10% 1% 0;
+  padding-left: 3%;
   color: #bbb;
+  border-left: 3px solid #f1e1d6;
 }
 
 .content__cards__card__footer__user {
+  display: block;
   text-align: right;
+  width: 85%;
   padding: 0 10% 1% 2%;
+  margin-top: -1%;
+  padding-top: 2%;
   color: #777;
+  border-left: 3px solid #f1e1d6;
+}
+
+.content__cards__card__footer__user__txt {
+  display: inline-block;
+}
+
+.content__cards__card__footer__user__txt:first-child {
+  margin-right: 1%;
 }
 
 .footer {
@@ -707,4 +901,4 @@ template {
 .footer__codedby__link:visited {
   color: #333;
 }
-/*# sourceMappingURL=bundle.3559b96769694d6d4e36c6144ec9b721.css.map*/
+/*# sourceMappingURL=bundle.a89bc137f7176f2c0b93b9df68c9acc6.css.map*/
