@@ -688,6 +688,17 @@ template {
   display: block;
   color: #bbb;
   padding-left: 3%;
+  text-decoration: none;
+}
+
+.content__cards__card__header__address:hover {
+  text-decoration: underline;
+  color: #bbb;
+}
+
+.content__cards__card__header__address:visited,
+.content__cards__card__header__address:active {
+  color: #bbb;
 }
 
 .content__cards__card__body {
@@ -901,4 +912,4 @@ template {
 .footer__codedby__link:visited {
   color: #333;
 }
-/*# sourceMappingURL=bundle.a89bc137f7176f2c0b93b9df68c9acc6.css.map*/
+/*# sourceMappingURL=bundle.ec8b02376784539d3af78adcec6ddd98.css.map*/

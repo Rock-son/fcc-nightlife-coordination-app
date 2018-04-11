@@ -19531,8 +19531,13 @@ var Content = function (_React$PureComponent) {
 
 								var _business$venue = business.venue,
 								    website = _business$venue.url,
-								    venueName = _business$venue.name;
+								    venueName = _business$venue.name,
+								    _business$venue$locat = _business$venue.location,
+								    address = _business$venue$locat.address,
+								    city = _business$venue$locat.city,
+								    country = _business$venue$locat.country;
 
+								var formattedAddress = address + " " + city + " " + country;
 
 								container = _react2.default.createElement(
 									"div",
@@ -19555,9 +19560,9 @@ var Content = function (_React$PureComponent) {
 											)
 										),
 										_react2.default.createElement(
-											"div",
-											{ className: "content__cards__card__header__address" },
-											business.venue.location.address
+											"a",
+											{ className: "content__cards__card__header__address", href: "https://www.google.com/maps/place/" + formattedAddress, target: "_blank", rel: "noreferrer noopener" },
+											address
 										)
 									),
 									_react2.default.createElement(
@@ -19834,4 +19839,4 @@ function FETCH_BUSINESSES(location) {
 
 /***/ })
 ],[55]);
-//# sourceMappingURL=bundle.f7a647856e5b992545cc.js.map
+//# sourceMappingURL=bundle.03bb727efae3be2192af.js.map
