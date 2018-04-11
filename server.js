@@ -22,7 +22,7 @@ const cookieEncrypter = require("cookie-encrypter");
 const mongoose = require("mongoose");
 const dbUrl = process.env.DBLINK;
 // PORT & ROUTER
-let port = process.env.PORT || 3000;
+let port = process.env.PORT || 8080;
 const app = express();
 // LIMITER
 const RateLimiter = require("express-rate-limit");
@@ -91,7 +91,7 @@ app.post("/api/searchBars", (req, res) => {
 			section: "drinks",
 			venuePhotos: 1,
 			v: fsq_version,
-			limit: 5
+			limit: 50
 		},
 		validateStatus: status => status < 500 // Reject if the status code < 500
 		})
