@@ -89,7 +89,8 @@ export default class Content extends React.PureComponent {
 									const { isOpen, status } = business.venue.hours || defaultHoursObj;
 									const { currency, message } = business.venue.price || defaultPriceObj;
 									const { tipCount: tips, usersCount: users, checkinsCount: checkins } = business.venue.stats || defaultStatsObj;
-									const { url: website, name: venueName } = business.venue;
+									const { url: website, name: venueName, location: { address, city, country } } = business.venue;
+									const formattedAddress = `${address} ${city} ${country}`;
 
 									container = (
 										<div key={business.venue.id} className="content__cards__card" >
@@ -98,7 +99,7 @@ export default class Content extends React.PureComponent {
 													<a className="content__cards__card__header__container__name" href={website} target="_blank" rel="noreferrer noopener" >{venueName}</a>
 													<div className="content__cards__card__header__container__rating" data={`${message} - ${currency}`} title={`${ratingCount} votes`} style={ratingColorStyle}>{business.venue.rating}</div>
 												</div>
-												<div className="content__cards__card__header__address">{business.venue.location.address}</div>
+												<a className="content__cards__card__header__address" href={`https://www.google.com/maps/place/${formattedAddress}`} target="_blank" rel="noreferrer noopener" >{address}</a>
 											</div>
 											<div className="content__cards__card__body" >
 												<div style={{ display: "block" }}>

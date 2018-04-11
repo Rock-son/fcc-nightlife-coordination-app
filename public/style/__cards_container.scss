@@ -72,6 +72,14 @@ $cardMarginLeft: 3%;
 				display: block;
 				color: #bbb;
 				padding-left: $cardMarginLeft;
+				text-decoration: none;
+				&:hover{
+					text-decoration: underline;
+					color: #bbb;
+				}
+				&:visited, &:active {
+					color: #bbb;
+				}
 			}
 		}
 		&__body {
