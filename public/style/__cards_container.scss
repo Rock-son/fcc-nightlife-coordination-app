@@ -1,18 +1,23 @@
+$edgeColor: #f1e1d6;
+$cardMarginLeft: 3%;
+
 &__cards {
 	display: inline-flex;
 	flex-wrap: wrap;
+	justify-content: space-evenly;
 	&__error {
 		text-align: center;
 		margin: 10% auto;
 	}
 	&__card {
 		display: block;
-		font-family: "Helvetica Neue",Colibri, sans-serif;
-		margin: 1% 0 1% 1%;
-		width: 23.5vw;
+		font-family: "Helvetica Neue", Calibri, sans-serif;
+		margin: 1% 0;
+		width: 450px;
 		height: 50vh;
-		border: 1px solid #f5f1ee;
+		border: 1px solid $edgeColor;
 		border-radius: 5px;
+		box-shadow: -1px 1px 25px #bbb;
 		&__header {
 			display: block;
 			width: 100%;
@@ -23,11 +28,21 @@
 					display: inline-block;
 					color: red;
 					font-weight: 300;
-					margin-bottom: 1%;
-					padding-left: 1.5%;
+					font-size: 1.4rem;
+					margin: 1% 0;
+					padding-left: $cardMarginLeft;
+					text-decoration: none;
+					&:visited {
+						color: red;
+					}
+					&:hover, &:active {
+						color: #bb1111;
+						text-decoration: underline;
+					}
 				}
 				&__rating {
 					border: 1px inline green;
+					cursor: help;
 					color: #e6e6e6;
 					font-size: 1.3rem;
 					padding: 2.3%;
@@ -35,12 +50,28 @@
 					float: right;
 					margin-right: 3%;
 					margin-top: 2%;
+					min-width: 2rem;
+					text-align: center;
+					text-shadow: -0.5px 0.5px 1px #333;
+					&:after {
+						content: attr(data);
+						position: absolute;
+						display: block;
+						color: #777;
+						transform: translate(-25%, 100%);
+						font-size: .8rem;
+						text-shadow: none;
+					}
+					&[data~="Cheap"]:after {
+						transform: translate(-15%, 100%);
+						text-shadow: none;
+					}
 				}
 			}
 			&__address {
 				display: block;
 				color: #bbb;
-				padding-left: 1.5%;
+				padding-left: $cardMarginLeft;
 			}
 		}
 		&__body {
@@ -48,25 +79,68 @@
 			width: 100%;
 			height: 50%;
 			&__category {
+				display: inline-block;
 				color: #cc7504;
-				margin-left: 2%;
+				margin-left: $cardMarginLeft;
+			}
+			&__hours-open {
+				display: inline-block;
+				cursor: help;
+				padding: 0px 5px;
+				color: #fff;
+				background-color: #00b551;
+				border-radius: 5px;
+				margin: 0 1% 1% 2%;
+				transform: rotate(-5deg);
+			}
+			&__hours-closed {
+				display: inline-block;
+				cursor: help;
+				padding: 0px 5px;
+				color: #fff;
+				background-color: #d72355;
+				border-radius: 5px;
+				margin: 0 1% 1% 2%;
+				transform: rotate(-5deg);
 			}
 			&__image {
 				display: inline-block;
 				width: 70%;
 				height: 90%;
-				margin-left: 1.5%;
+				margin-left: $cardMarginLeft;
 				border-radius: 5px;
+				box-shadow: -2px 2px 15px black;
 			}
 			&__special {
 				display: inline-flex;
 				vertical-align: top;
 				flex-wrap: wrap;
+				flex-direction: column;
 				text-align: right;
-				margin-left: 5%;
+				margin-left: 1%;
+				width: 25%;
+				&__menu {
+					display: block;
+					text-align: left;
+					text-decoration: none;
+					color:#999;
+					margin-bottom: 10%;
+					&:active, &:visited{
+						color: #999;
+					}
+					&:hover {
+						color: #777;
+						text-decoration: underline;
+					}
+				}
+				&__menu-no-show {
+					visibility: hidden;
+				}
 				&__fb {
+					display: block;
+					text-align: left;
 					color: #3b5998;
-					margin-left: 2%;
+					margin: 0 2% 0 2%;
 					& .fa-facebook {
 						color: #3b5998;
 						&:visited, &:active, &:hover {
@@ -74,6 +148,42 @@
 						}
 					}
 				}
+				&__fb-no-show {
+					visibility: hidden;
+				}
+				&__phone1 {
+					display: block;
+					font-size: .8rem;
+					text-align: left;
+					margin-top: 115%;
+					color: #999;
+				}
+				&__phone2 {
+					display: block;
+					font-size: .8rem;
+					text-align: left;
+					color: #00aff0;
+					text-decoration: none;
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+			}
+			&__underImage {
+				padding-left: $cardMarginLeft;
+				font-size: .8rem;
+				color: #555;
+				&__item {
+					color: #fff;
+					border-radius: 5px;
+					padding: 0 2px;
+				}
+			}
+			&__line {
+				width: 84%;
+				opacity: .2;
+				margin-left: 4%;
+				margin-top: 2.5%;
 			}
 		}
 		&__footer {
@@ -85,13 +195,26 @@
 			font-style: oblique;
 			&__tip {
 				text-align: left;
-				padding: 5% 1% 1% 2%;
+				margin: 7% 10% 1% 0;
+				padding-left: 3%;
 				color: #bbb;
+				border-left: 3px solid $edgeColor;
 			}
 			&__user {
+				display: block;
 				text-align: right;
+				width: 85%;
 				padding: 0 10% 1% 2%;
+				margin-top: -1%;
+				padding-top: 2%;
 				color: #777;
+				border-left: 3px solid $edgeColor;
+				&__txt {
+					display: inline-block;
+				}
+				&__txt:first-child {
+					margin-right: 1%;
+				}
 			}
 		}
 	}
