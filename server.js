@@ -79,7 +79,7 @@ app.post("/api/searchBars", (req, res) => {
 	if (req.body.location.trim() === "") {
 		return setTimeout(() => res.status(400).send("You need to input location!"), 300);
 	}
-
+	// in case of Async function, use try - catch block!!! and no need for then -> catch block
 	axios({
 		method: "get",
 		url: "https://api.foursquare.com/v2/venues/explore",
