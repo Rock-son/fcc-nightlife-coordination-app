@@ -117,7 +117,7 @@ $cardMarginLeft: 3%;
 				height: 90%;
 				margin-left: $cardMarginLeft;
 				border-radius: 5px;
-				box-shadow: -2px 2px 15px black;
+				box-shadow: -1px 1px 25px #000;
 			}
 			&__special {
 				display: inline-flex;
@@ -203,7 +203,7 @@ $cardMarginLeft: 3%;
 			font-style: oblique;
 			&__tip {
 				text-align: left;
-				margin: 7% 10% 1% 0;
+				margin: 7.5% 10% 1% 0;
 				padding-left: 3%;
 				color: #bbb;
 				border-left: 3px solid $edgeColor;

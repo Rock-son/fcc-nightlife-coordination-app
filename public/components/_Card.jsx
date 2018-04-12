@@ -40,7 +40,7 @@ export default function (props) {
 					<a className="content__cards__card__header__address" href={`https://www.google.com/maps/place/${formattedAddress}`} target="_blank" rel="noreferrer noopener" >{address}</a>
 				</div>
 				<div className="content__cards__card__body" >
-					<div style={{ display: "block" }}>
+					<div style={{ display: "block", paddingBottom: "1px" }}>
 						<div className="content__cards__card__body__category">{category}</div>
 						<div className={`content__cards__card__body__hours${isOpen ? "-open" : "-closed"}`} title={status || "No data!"} >{`${isOpen ? "open" : "closed"}`}</div>
 					</div>
