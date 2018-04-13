@@ -4,7 +4,7 @@ import React from "react";
 
 
 const defaultMenuObj = { url: "" };
-const defaultHoursObj = { isOpen: false, status: "" };
+const defaultHoursObj = { isOpen: undefined, status: "" };
 const defaultPriceObj = { message: "Moderate", currency: "/" };
 const defaultTipsArray = [{ text: "", user: { firstName: "" }, canonicalUrl: ""}];
 const defaultCountObj = { count: 0 };
@@ -19,6 +19,7 @@ export default function (props) {
 		const imagePath = `${props.business.venue.featuredPhotos.items[0].prefix}350x200${props.business.venue.featuredPhotos.items[0].suffix}`;
 		const ratingColorStyle = { backgroundColor: `#${props.business.venue.ratingColor}` };
 		const ratingCount = props.business.venue.ratingSignals;
+
 		const { text: tip, user: { firstName: user }, canonicalUrl: fsqUrl } = (props.business.tips || defaultTipsArray)[0];
 		const { count } = (props.business.tips || defaultTipsArray)[0].likes || defaultCountObj;
 		const { name: category } = (props.business.venue.categories || defaultCategoryArray)[0];
@@ -28,7 +29,19 @@ export default function (props) {
 		const { currency, message } = props.business.venue.price || defaultPriceObj;
 		const { tipCount: tips, usersCount: users, checkinsCount: checkins } = props.business.venue.stats || defaultStatsObj;
 		const { url: website, name: venueName, location: { address, city, country } } = props.business.venue;
+
 		const formattedAddress = `${address} ${city} ${country}`;
+		const going = "none";
+		const active = "active";
+		const notActive = "";
+		const formattedIsOpen = (() => {
+			if (isOpen) {
+				return "open";
+			} else if (isOpen == null) {
+				return "no-data";
+			}
+			return "closed";
+		})();
 
 		container = (
 			<div key={props.business.venue.id} className="content__cards__card" >
@@ -42,7 +55,8 @@ export default function (props) {
 				<div className="content__cards__card__body" >
 					<div style={{ display: "block", paddingBottom: "1px" }}>
 						<div className="content__cards__card__body__category">{category}</div>
-						<div className={`content__cards__card__body__hours${isOpen ? "-open" : "-closed"}`} title={status || "No data!"} >{`${isOpen ? "open" : "closed"}`}</div>
+						<div className={`content__cards__card__body__hours ${formattedIsOpen}`} title={status || "No data"} >{`${formattedIsOpen.replace("-", " ")}`}</div>
+						<div className={`content__cards__card__body__going ${going}`} title="0 GOING" >0 going</div>
 					</div>
 					<a href={fsqUrl} target="_blank" rel="noreferrer noopener" >
 						<img src={imagePath} className="content__cards__card__body__image" alt={venueName} title="CONTINUE TO FOURSQUARE" />
@@ -69,7 +83,12 @@ export default function (props) {
 						<i className="fa fa-thumbs-up content__cards__card__footer__user__txt" />
 						<div className="content__cards__card__footer__user__txt"> {")"}</div>
 					</div>
-
+				</div>
+				<div className={`content__cards__card__footer__checkBox ${notActive}`} >
+					<div className={`content__cards__card__footer__checkBox__btn go ${notActive}`} />
+					<div className={`content__cards__card__footer__checkBox__label go ${notActive}`} >Going</div>
+					<div className={`content__cards__card__footer__checkBox__btn nogo ${active}`} />
+					<div className={`content__cards__card__footer__checkBox__label nogo ${active}`} >Not Going</div>
 				</div>
 			</div>
 		);
