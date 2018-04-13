@@ -114,7 +114,7 @@ app.post("/api/searchBars", (req, res) => {
 	}
 );
 
-// PUT ALL ROUTES ABOVE THIS LINE OF CODE!
+// PUT ALL ROUTES ABOVE THIS LINE OF CODE! - NOT IN USE
 if (process.env.NODE_ENV !== "production") {
 
 	port = 8080;

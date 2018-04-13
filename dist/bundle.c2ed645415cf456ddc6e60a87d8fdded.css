@@ -682,6 +682,17 @@ template {
   -webkit-transform: translate(-15%, 100%);
   transform: translate(-15%, 100%);
   text-shadow: none;
+  color: #01c76d;
+}
+
+.content__cards__card__header__container__rating[data~="Moderate"]:after {
+  text-shadow: none;
+  color: #ffb406;
+}
+
+.content__cards__card__header__container__rating[data~="Expensive"]:after {
+  text-shadow: none;
+  color: red;
 }
 
 .content__cards__card__header__address {
@@ -713,28 +724,47 @@ template {
   margin-left: 3%;
 }
 
-.content__cards__card__body__hours-open {
+.content__cards__card__body__hours {
   display: inline-block;
   cursor: help;
   padding: 0px 5px;
   color: #fff;
-  background-color: #00b551;
   border-radius: 5px;
   margin: 0 1% 1% 2%;
   -webkit-transform: rotate(-5deg);
   transform: rotate(-5deg);
 }
 
-.content__cards__card__body__hours-closed {
-  display: inline-block;
-  cursor: help;
-  padding: 0px 5px;
-  color: #fff;
+.content__cards__card__body__hours.open {
+  background-color: #00b551;
+}
+
+.content__cards__card__body__hours.closed {
   background-color: #d72355;
-  border-radius: 5px;
-  margin: 0 1% 1% 2%;
-  -webkit-transform: rotate(-5deg);
-  transform: rotate(-5deg);
+}
+
+.content__cards__card__body__hours.no-data {
+  background-color: #e8c60c;
+}
+
+.content__cards__card__body__going {
+  padding: 0 10px;
+  font-size: 1rem;
+  float: right;
+  color: #abaaa6;
+  cursor: help;
+  border-radius: .6rem;
+  font-variant: all-petite-caps;
+  margin-right: 27.3%;
+  margin-top: 1px;
+}
+
+.content__cards__card__body__going.none {
+  border: 1px solid red;
+}
+
+.content__cards__card__body__going.some {
+  border: 1px solid #08f343;
 }
 
 .content__cards__card__body__image {
@@ -743,8 +773,8 @@ template {
   height: 90%;
   margin-left: 3%;
   border-radius: 5px;
-  -webkit-box-shadow: -2px 2px 15px black;
-  box-shadow: -2px 2px 15px black;
+  -webkit-box-shadow: -1px 1px 25px #000;
+  box-shadow: -1px 1px 25px #000;
 }
 
 .content__cards__card__body__special {
@@ -856,7 +886,7 @@ template {
 
 .content__cards__card__footer__tip {
   text-align: left;
-  margin: 7% 10% 1% 0;
+  margin: 7.5% 10% 1% 0;
   padding-left: 3%;
   color: #bbb;
   border-left: 3px solid #f1e1d6;
@@ -879,6 +909,79 @@ template {
 
 .content__cards__card__footer__user__txt:first-child {
   margin-right: 1%;
+}
+
+.content__cards__card__footer__checkBox {
+  font-variant: small-caps;
+  font-size: .8rem;
+  width: 32%;
+  margin-left: 3%;
+  height: 1.1rem;
+  padding: 2px 5px;
+  display: block;
+  border: 1px outset #fcb5b5;
+  border-radius: .8rem;
+}
+
+.content__cards__card__footer__checkBox.active {
+  -webkit-box-shadow: 0px 0px 15px #01ff01;
+  box-shadow: 0px 0px 15px #01ff01;
+}
+
+.content__cards__card__footer__checkBox__btn {
+  display: inline-block;
+  border-radius: 50%;
+  width: 1rem;
+  height: 1rem;
+}
+
+.content__cards__card__footer__checkBox__btn.go {
+  float: left;
+  cursor: pointer;
+  border: .5px solid #aeb1ae;
+}
+
+.content__cards__card__footer__checkBox__btn.go.active {
+  background-color: #1cff1c;
+  -webkit-box-shadow: 0px 0px 20px #01ff01;
+  box-shadow: 0px 0px 20px #01ff01;
+}
+
+.content__cards__card__footer__checkBox__btn.nogo {
+  float: right;
+  cursor: pointer;
+  border: .5px solid #aeb1ae;
+}
+
+.content__cards__card__footer__checkBox__btn.nogo.active {
+  background-color: #f36975;
+}
+
+.content__cards__card__footer__checkBox__label {
+  display: inline-block;
+}
+
+.content__cards__card__footer__checkBox__label.go {
+  float: left;
+  color: #999;
+  margin-left: 2%;
+  padding-right: 4%;
+  border-right: 1px solid #ccc;
+}
+
+.content__cards__card__footer__checkBox__label.go.active {
+  color: #86e486;
+  text-shadow: 1px 1px 1px #777;
+}
+
+.content__cards__card__footer__checkBox__label.nogo {
+  float: right;
+  color: #999;
+  margin-right: 2%;
+}
+
+.content__cards__card__footer__checkBox__label.nogo.active {
+  color: #f36975;
 }
 
 .footer {
@@ -912,4 +1015,4 @@ template {
 .footer__codedby__link:visited {
   color: #333;
 }
-/*# sourceMappingURL=bundle.ec8b02376784539d3af78adcec6ddd98.css.map*/
+/*# sourceMappingURL=bundle.c2ed645415cf456ddc6e60a87d8fdded.css.map*/
