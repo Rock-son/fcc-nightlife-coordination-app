@@ -128,7 +128,7 @@ export default {
 				photos: { count: 1, groups: [] },
 				price: {
 					tier: 2,
-					message: "Moderate",
+					message: "Cheap",
 					currency: "€"
 				},
 				rating: 9.5,
@@ -331,7 +331,7 @@ export default {
 				photos: { count: 1, groups: [] },
 				price: {
 					tier: 2,
-					message: "Moderate",
+					message: "Cheap",
 					currency: "€"
 				},
 				rating: 9.5,
@@ -389,12 +389,6 @@ export default {
 					}]
 				},
 				hereNow: { count: 0, summary: "Nobody here", groups: [] },
-				hours: {
-					status: "Open until Midnight",
-					richStatus: {},
-					isOpen: true,
-					isLocalHoliday: false
-				},
 				id: "4b68a117f964a520c8832be4",
 				location: {
 					address: "6 rue Charles-François Dupuis",
@@ -428,7 +422,7 @@ export default {
 				photos: { count: 1, groups: [] },
 				price: {
 					tier: 2,
-					message: "Moderate",
+					message: "Expensive",
 					currency: "€"
 				},
 				rating: 9.5,
@@ -794,7 +788,7 @@ export default {
 				photos: { count: 1, groups: [] },
 				price: {
 					tier: 2,
-					message: "Moderate",
+					message: "Cheap",
 					currency: "€"
 				},
 				rating: 9.5,
