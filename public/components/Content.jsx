@@ -4,6 +4,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import Card from "./_Card";
 
+const user = "Rok Z";
+
 
 export default class Content extends React.PureComponent {
 	constructor(props) {
@@ -15,6 +17,7 @@ export default class Content extends React.PureComponent {
 		this.handleEnterPress = this.handleEnterPress.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleInput = this.handleInput.bind(this);
+		this.handleGoing = this.handleGoing.bind(this);
 	}
 
 	componentDidMount() {
@@ -34,6 +37,25 @@ export default class Content extends React.PureComponent {
 	handleInput(e) {
 		e.preventDefault();
 		this.input = e.target.value;
+	}
+	handleGoing(e) {
+		const attr = e.target.getAttribute("data");
+		if (e.keyCode) {
+			if (e.keyCode === 13) {
+				if (e.target.id.indexOf("no_go") > -1) {
+					this.props.notGoing(attr, user);
+				} else {
+					this.props.going(attr, user);
+				}
+			} else {
+				return;
+			}
+		}
+		if (e.target.id.indexOf("no_go") > -1) {
+			this.props.notGoing(attr, user);
+		} else {
+			this.props.going(attr, user);
+		}
 	}
 
 	render() {
@@ -65,7 +87,7 @@ export default class Content extends React.PureComponent {
 					{(this.props.error || this.props.bar.errorFetching) ?
 						(<h2 className="content__cards__error">{this.props.bar.errorMsg || "Something went wrong, please try again later!"}</h2>) :
 
-						(this.props.bar.businesses.map(business => <Card business={business} />))
+						(this.props.bar.businesses.map(business => <Card key={business.venue.id} business={business} handleGoing={this.handleGoing} going={this.props.go} />))
 					}
 				</article>
 			</section>
@@ -74,9 +96,13 @@ export default class Content extends React.PureComponent {
 }
 
 Content.propTypes = {
-
+	// STATES
 	search: PropTypes.func.isRequired,
 	bar: PropTypes.instanceOf(Object).isRequired,
-	error: PropTypes.bool.isRequired
+	go: PropTypes.instanceOf(Object).isRequired,
+	error: PropTypes.bool.isRequired,
+	// ACTIONS
+	going: PropTypes.func.isRequired,
+	notGoing: PropTypes.func.isRequired
 };
 
