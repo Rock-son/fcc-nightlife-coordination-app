@@ -16,6 +16,8 @@ export default {
 			validateStatus: status => status < 500 // Reject if the status is > 500
 		}),
 	INITIAL_AUTH_REDUCER: { authenticated: false },
+	// TODO: BE FETCHED FROM MONGODB
+	INITIAL_GOING_REDUCER: {},
 	INITIALIZE_BAR_REDUCER: {
 		isFetching: false,
 		errorFetching: false,
@@ -633,7 +635,7 @@ export default {
 					isOpen: true,
 					isLocalHoliday: false
 				},
-				id: "6",
+				id: "4b68a117f964a520c8832be6",
 				location: {
 					address: "6 rue Charles-François Dupuis",
 					cc: "FR",

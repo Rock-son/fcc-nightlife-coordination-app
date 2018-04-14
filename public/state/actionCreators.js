@@ -1,6 +1,6 @@
 "use strict";
 
-import { LOGIN, LOGOUT, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED } from "Actions";
+import { LOGIN, LOGOUT, GOING, NOT_GOING, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED } from "Actions";
 import { getBarsOnLocation } from "InitialState";
 
 
@@ -14,6 +14,21 @@ export function DISPATCH_LOGIN(user) {
 export function DISPATCH_LOGOUT(user) {
 	return {
 		type: LOGOUT,
+		user
+	};
+}
+
+export function DISPATCH_GOING(id, user) {
+	return {
+		type: GOING,
+		id,
+		user
+	};
+}
+export function DISPATCH_NOT_GOING(id, user) {
+	return {
+		type: NOT_GOING,
+		id,
 		user
 	};
 }
@@ -48,14 +63,15 @@ function shouldReturnResults(state, location) {
 }
 
 
-// Thunk middleware
+// REDUX THUNK MIDDLEWARE
 export function FETCH_BUSINESSES(location) {
 	return (dispatch, getState) => {
 		if (!shouldReturnResults(getState, location)) {
 			return Promise.resolve;
 		}
+		// SYNC FUNC - can be dispatched immediately
 		dispatch(fetchStart());
-
+		// ASYNC FUNC - return a Promise
 		return getBarsOnLocation(location)
 			.then((json) => {
 				if (json.status !== 200) {
