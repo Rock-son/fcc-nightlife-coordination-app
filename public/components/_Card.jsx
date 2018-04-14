@@ -2,7 +2,7 @@
 
 import React from "react";
 
-
+const defaultArray = {};
 const defaultMenuObj = { url: "" };
 const defaultHoursObj = { isOpen: undefined, status: "" };
 const defaultPriceObj = { message: "Moderate", currency: "/" };
@@ -31,9 +31,13 @@ export default function (props) {
 		const { url: website, name: venueName, location: { address, city, country } } = props.business.venue;
 
 		const formattedAddress = `${address} ${city} ${country}`;
-		const going = "none";
-		const active = "active";
-		const notActive = "";
+		// handling going logic
+		const isGoing = !!(props.going[props.business.venue.id] || defaultArray).length;
+		const classGoing = isGoing ? "some" : "none";
+		const usersGoingTitle = isGoing ? props.going[props.business.venue.id].join("\n") : "0 going";
+		const nrGoing = isGoing ? (props.going[props.business.venue.id].length.toString().concat(" going")) : "0 going";
+		const isActive = isGoing ? "active" : "";
+
 		const formattedIsOpen = (() => {
 			if (isOpen) {
 				return "open";
@@ -44,7 +48,7 @@ export default function (props) {
 		})();
 
 		container = (
-			<div key={props.business.venue.id} className="content__cards__card" >
+			<div className="content__cards__card" >
 				<div className="content__cards__card__header" >
 					<div className="content__cards__card__header__container">
 						<a className="content__cards__card__header__container__name" href={website} target="_blank" rel="noreferrer noopener" >{venueName}</a>
@@ -56,7 +60,7 @@ export default function (props) {
 					<div style={{ display: "block", paddingBottom: "1px" }}>
 						<div className="content__cards__card__body__category">{category}</div>
 						<div className={`content__cards__card__body__hours ${formattedIsOpen}`} title={status || "No data"} >{`${formattedIsOpen.replace("-", " ")}`}</div>
-						<div className={`content__cards__card__body__going ${going}`} title="0 GOING" >0 going</div>
+						<div className={`content__cards__card__body__going ${classGoing}`} title={usersGoingTitle} >{nrGoing}</div>
 					</div>
 					<a href={fsqUrl} target="_blank" rel="noreferrer noopener" >
 						<img src={imagePath} className="content__cards__card__body__image" alt={venueName} title="CONTINUE TO FOURSQUARE" />
@@ -84,11 +88,11 @@ export default function (props) {
 						<div className="content__cards__card__footer__user__txt"> {")"}</div>
 					</div>
 				</div>
-				<div className={`content__cards__card__footer__checkBox ${notActive}`} >
-					<div className={`content__cards__card__footer__checkBox__btn go ${notActive}`} />
-					<div className={`content__cards__card__footer__checkBox__label go ${notActive}`} >Going</div>
-					<div className={`content__cards__card__footer__checkBox__btn nogo ${active}`} />
-					<div className={`content__cards__card__footer__checkBox__label nogo ${active}`} >Not Going</div>
+				<div className={`content__cards__card__footer__checkBox ${isActive}`} >
+					<div id="go" data={props.business.venue.id} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__btn go ${isActive}`} onClick={props.handleGoing} onKeyUp={props.handleGoing} />
+					<div id="go1" data={props.business.venue.id} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__label go ${isActive}`} onClick={props.handleGoing} onKeyUp={props.handleGoing} >Going</div>
+					<div id="no_go" data={props.business.venue.id} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__btn nogo ${isActive}`} onClick={props.handleGoing} onKeyUp={props.handleGoing} />
+					<div id="no_go1" data={props.business.venue.id} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__label nogo ${isActive}`} onClick={props.handleGoing} onKeyUp={props.handleGoing} >Not Going</div>
 				</div>
 			</div>
 		);
