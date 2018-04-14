@@ -28,7 +28,7 @@ class Home extends React.Component {
 		return (
 			<div>
 				<Navbar auth={this.props.auth} login={this.props.login} logout={this.props.logout} />
-				<Content bar={this.props.bar} search={this.props.search} error={this.state.hasError} />
+				<Content bar={this.props.bar} search={this.props.search} go={this.props.go} going={this.props.going} notGoing={this.props.notGoing} error={this.state.hasError} />
 				<Footer />
 			</div>
 		);
@@ -39,15 +39,20 @@ Home.propTypes = {
 	// REDUCERS
 	auth: PropTypes.instanceOf(Object).isRequired,
 	bar: PropTypes.instanceOf(Object).isRequired,
+	go: PropTypes.instanceOf(Object).isRequired,
 	// DISPATCHED FUNCTIONS
 	login: PropTypes.func,
 	logout: PropTypes.func,
+	going: PropTypes.func,
+	notGoing: PropTypes.func,
 	search: PropTypes.func
 };
 
 Home.defaultProps = {
 	login: () => true,
 	logout: () => true,
+	going: () => ({ id: "", user: "" }),
+	notGoing: () => ({ id: "", user: "" }),
 	search: () => {}
 };
 

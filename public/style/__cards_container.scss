@@ -279,8 +279,9 @@ $cardMarginLeft: 3%;
 						float: right;
 						cursor: pointer;
 						border: .5px solid #aeb1ae;
+						background-color: #f36975;
 						&.active {
-							background-color: #f36975;
+							background-color: #fff;
 						}
 					}
 				}
@@ -289,6 +290,7 @@ $cardMarginLeft: 3%;
 					&.go {
 						float: left;
 						color: #999;
+						cursor: pointer;
 						margin-left: 2%;
 						padding-right: 4%;
 						border-right: 1px solid #ccc;
@@ -299,10 +301,11 @@ $cardMarginLeft: 3%;
 					}
 					&.nogo {
 						float:right;
-						color: #999;
+						color: #f36975;
+						cursor: pointer;
 						margin-right: 2%;
 						&.active {
-							color: #f36975;
+							color: #999;
 						}
 					}
 				}

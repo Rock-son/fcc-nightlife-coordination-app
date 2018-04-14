@@ -1834,6 +1834,8 @@ var _default = {
 		});
 	},
 	INITIAL_AUTH_REDUCER: { authenticated: false },
+	// TODO: BE FETCHED FROM MONGODB
+	INITIAL_GOING_REDUCER: { user: "Rok Z", venueID: "" },
 	INITIALIZE_BAR_REDUCER: {
 		isFetching: false,
 		errorFetching: false,
@@ -2426,7 +2428,7 @@ var _default = {
 					isOpen: true,
 					isLocalHoliday: false
 				},
-				id: "6",
+				id: "4b68a117f964a520c8832be6",
 				location: {
 					address: "6 rue Charles-François Dupuis",
 					cc: "FR",
@@ -19918,4 +19920,4 @@ function FETCH_BUSINESSES(location) {
 
 /***/ })
 ],[55]);
-//# sourceMappingURL=bundle.1251f3d2adeae204636d.js.map
+//# sourceMappingURL=bundle.a6b36c5068b1f2fb54ab.js.map
