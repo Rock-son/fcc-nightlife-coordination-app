@@ -107,7 +107,7 @@ app.post("/api/searchBars", (req, res) => {
 			if (error.request) {
 				// The request was made but no response was received
 				// `error.request` is an instance of http.ClientRequest in node.js
-				res.status(error.response.status).send(error.request);
+				res.status(400).send(error.request);
 			}
 			res.status(400).send(error.message);
 		});
