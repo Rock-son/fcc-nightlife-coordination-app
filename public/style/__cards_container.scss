@@ -41,7 +41,6 @@ $cardMarginLeft: 3%;
 					}
 				}
 				&__rating {
-					border: 1px inline green;
 					cursor: help;
 					color: #e6e6e6;
 					font-size: 1.3rem;
@@ -50,7 +49,7 @@ $cardMarginLeft: 3%;
 					float: right;
 					margin-right: 3%;
 					margin-top: 2%;
-					min-width: 2rem;
+					min-width: 3.5rem;
 					text-align: center;
 					text-shadow: -0.5px 0.5px 1px #333;
 					&:after {
@@ -227,7 +226,7 @@ $cardMarginLeft: 3%;
 			font-style: oblique;
 			&__tip {
 				text-align: left;
-				margin: 7.5% 10% 1% 0;
+				margin: 7.5% 10% 0 0;
 				padding-left: 3%;
 				color: #bbb;
 				border-left: 3px solid $edgeColor;
@@ -235,12 +234,11 @@ $cardMarginLeft: 3%;
 			&__user {
 				display: block;
 				text-align: right;
-				width: 85%;
-				padding: 0 10% 1% 2%;
+				width: 90%;
+				padding: 0 2% 1% 2%;
 				margin-top: -1%;
 				padding-top: 2%;
 				color: #777;
-				border-left: 3px solid $edgeColor;
 				&__txt {
 					display: inline-block;
 				}
@@ -251,9 +249,9 @@ $cardMarginLeft: 3%;
 			&__checkBox {
 				font-variant: small-caps;
 				font-size: .8rem;
-				width: 32%;
+				width: 35%;
 				margin-left: 3%;
-				height: 1.1rem;
+				height: 1.35rem;
 				padding: 2px 5px;
 				display: block;
 				border: 1px outset #fcb5b5;
@@ -266,6 +264,7 @@ $cardMarginLeft: 3%;
 					border-radius: 50%;
 					width: 1rem;
 					height: 1rem;
+					user-select: none;
 					&.go {
 						float: left;
 						cursor: pointer;
@@ -286,7 +285,11 @@ $cardMarginLeft: 3%;
 					}
 				}
 				&__label {
+					user-select: none;
 					display: inline-block;
+					&:focus {
+						outline: none;
+					}
 					&.go {
 						float: left;
 						color: #999;
