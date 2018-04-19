@@ -17,10 +17,12 @@ const helmet = require("./security/helmet");
 const csrf = require("csurf");
 const cookieParser = require("cookie-parser");
 const cookieEncrypter = require("cookie-encrypter");
+const mongoSanitize = require("mongo-sanitize");
 // LOGGING:  morgan = require("morgan"),  Log = require("./logs/services/morganLog"), accessLogStream = fs.createWriteStream(path.join(__dirname, "logs", "access.log"), {flags: "a"}), // writable stream - for MORGAN logging
 // DB
 const mongoose = require("mongoose");
 const dbUrl = process.env.DBLINK;
+const db = require("./db/controllers/controller");
 // PORT & ROUTER
 let port = process.env.PORT || 8080;
 const app = express();
@@ -67,49 +69,77 @@ app.use(limiter);
 
 // DB
 mongoose.Promise = global.Promise;
-mongoose.connect(dbUrl);
+mongoose.connect(dbUrl, { useMongoClient: true, autoIndex: false });
 
 // LOG (Helmet-csp) CSP blocked requests
 // app.post("/report-violation", Log.logged);
 
 
 // CUSTOM ROUTES
-app.post("/api/searchBars", (req, res) => {
 
-	if (req.body.location.trim() === "") {
-		return setTimeout(() => res.status(400).send("You need to input location!"), 300);
-	}
-	// in case of Async function, use try - catch block!!! and no need for then -> catch block
-	axios({
+// TODO: add authenticate validation for add going!!
+app.post("/api/addGoing", (req, res, next) => {
+	if (req.body.location.trim() === "") return setTimeout(() => res.status(400).send("You need to input location!"), 300);
+
+	const data = {
+		city: mongoSanitize(req.body.location.trim()) || "no data",
+		id: mongoSanitize(req.body.id.trim()) || "",
+		user: mongoSanitize(req.body.user) || ""
+	};
+	db.addGoingUsers(req, res, next, data);
+});
+
+
+// TODO: add authenticate validation for remove going!!
+app.post("/api/removeGoing", (req, res, next) => {
+	if (req.body.location.trim() === "") return setTimeout(() => res.status(400).send("You need to input location!"), 300);
+
+	const data = {
+		city: mongoSanitize(req.body.location.trim()) || "no data",
+		id: mongoSanitize(req.body.id.trim()) || "",
+		user: mongoSanitize(req.body.user) || ""
+	};
+	db.removeGoingUsers(req, res, next, data)
+});
+
+
+// in case of Async function, use try - catch block!!! and no need for then -> catch block
+app.post("/api/searchBars", (req, res, next) => {
+	if (req.body.location.trim() === "") return setTimeout(() => res.status(400).send("You need to input location!"), 300);
+
+	const city = mongoSanitize(req.body.location.trim());
+	const cityPromise = db.getCityBarUsers(city);
+	const foursquarePromise = axios({
 		method: "get",
 		url: "https://api.foursquare.com/v2/venues/explore",
 		timeout: 2000,
 		params: {
 			client_id: process.env.FSQ_CLIENT_ID,
 			client_secret: process.env.FSQ_SECRET,
-			near: req.body.location,
+			near: city,
 			section: "drinks",
 			venuePhotos: 1,
 			v: fsq_version,
 			limit: 50
 		},
 		validateStatus: status => status < 500 // Reject if the status code < 500
-		})
-		.then(response => {
-			res.send(response.data.response.groups[0].items);
+		});
+
+	Promise.all([cityPromise, foursquarePromise]).then(response => {
+		return res.status(200).send({bars: response[0] || [], businesses: response[1].data.response.groups[0].items});
 		})
 		.catch(error => {
 			if (error.response) {
 				// The request was made and the server responded with a status code
 				// that falls out of the range of 2xx
-				res.status(error.response.status).send(error.response.data, error.response.header);
+				return res.status(error.response.status).send(error.response.data, error.response.header);
 			}
 			if (error.request) {
 				// The request was made but no response was received
 				// `error.request` is an instance of http.ClientRequest in node.js
-				res.status(400).send(error.request);
+				return res.status(400).send(error.request);
 			}
-			res.status(400).send(error.message);
+			return res.status(400).send(error.message);
 		});
 	}
 );
