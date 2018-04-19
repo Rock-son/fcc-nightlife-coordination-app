@@ -31,9 +31,9 @@ export default class Navbar extends React.PureComponent {
 					<i className="fa fa-home" title="Home" />
 				</div>
 				<div className="navbar__right">
-					<button id="login" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.auth.authenticated ? "none" : "inline-block" }} className="navbar__right__login">Sign In</button>
-					<button id="logout" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.auth.authenticated ? "inline-block" : "none" }} className="navbar__right__login">Logout</button>
-					<a id="user" href="https://twitter.com/settings/applications" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.auth.authenticated ? "inline-block" : "none" }} className="navbar__right__login">Welcome, Rok</a>
+					<button id="login" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "none" : "inline-block" }} className="navbar__right__login">Sign In</button>
+					<button id="logout" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">Logout</button>
+					<a id="user" href="https://twitter.com/settings/applications" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">Welcome, Rok</a>
 				</div>
 			</div>
 		);
@@ -41,16 +41,15 @@ export default class Navbar extends React.PureComponent {
 }
 
 Navbar.propTypes = {
+	// STATE
+	authState: PropTypes.instanceOf(Object).isRequired,
+	// FUNCTIONS
 	login: PropTypes.func,
-	logout: PropTypes.func,
-	auth: PropTypes.instanceOf(Object),
-	authenticated: PropTypes.bool
+	logout: PropTypes.func
 };
 
 Navbar.defaultProps = {
 
 	login: () => true,
-	logout: () => true,
-	auth: { authenticated: false },
-	authenticated: false
+	logout: () => true
 };
