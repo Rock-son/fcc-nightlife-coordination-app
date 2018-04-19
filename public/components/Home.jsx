@@ -27,8 +27,8 @@ class Home extends React.Component {
 	render() {
 		return (
 			<div>
-				<Navbar auth={this.props.auth} login={this.props.login} logout={this.props.logout} />
-				<Content bar={this.props.bar} search={this.props.search} go={this.props.go} going={this.props.going} notGoing={this.props.notGoing} error={this.state.hasError} />
+				<Navbar authState={this.props.auth} login={this.props.login} logout={this.props.logout} />
+				<Content barState={this.props.bar} goState={this.props.go} search={this.props.search} going={this.props.going} notGoing={this.props.notGoing} error={this.state.hasError} />
 				<Footer />
 			</div>
 		);
@@ -51,8 +51,8 @@ Home.propTypes = {
 Home.defaultProps = {
 	login: () => true,
 	logout: () => true,
-	going: () => ({ id: "", user: "" }),
-	notGoing: () => ({ id: "", user: "" }),
+	going: () => ({ city: "", id: "", user: "" }),
+	notGoing: () => ({ city: "", id: "", user: "" }),
 	search: () => {}
 };
 

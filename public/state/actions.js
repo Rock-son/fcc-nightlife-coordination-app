@@ -6,10 +6,12 @@ export default {
 	LOGOUT: "logout",
 	/** ******************************************************************************** */
 	// NOTE GOING
-	GOING: "going",
-	NOT_GOING: "not_going",
+	GOING_START: "going_start",
+	GOING_FAIL: "going_fail",
+	GOING_RECEIVED: "going_received",
+	INITIALIZE_GOING: "initialize_going",
 	// FETCHING DATA
 	FETCHING_START: "fetching_start",
-	FETCHING_FAILURE: "fetching_failure",
+	FETCHING_FAIL: "fetching_failure",
 	FETCHING_RECEIVED: "fetching_received"
 };

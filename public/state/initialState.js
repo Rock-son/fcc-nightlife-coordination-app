@@ -15,11 +15,43 @@ export default {
 			},
 			validateStatus: status => status < 500 // Reject if the status is > 500
 		}),
+	addGoingUsers: (location, id, user) =>
+		axios({
+			method: "post",
+			url: "api/addGoing",
+			data: {
+				location,
+				id,
+				user
+			},
+			headers: {
+				"Content-Type": "application/json"
+			},
+			validateStatus: status => status < 500 // Reject if the status is > 500
+		}),
+	removeGoingUsers: (location, id, user) =>
+		axios({
+			method: "post",
+			url: "api/removeGoing",
+			data: {
+				location,
+				id,
+				user
+			},
+			headers: {
+				"Content-Type": "application/json"
+			},
+			validateStatus: status => status < 500 // Reject if the status is > 500
+		}),
 	INITIAL_AUTH_REDUCER: { authenticated: false },
 	// TODO: BE FETCHED FROM MONGODB
-	INITIAL_GOING_REDUCER: {},
+	INITIAL_GOING_REDUCER: {
+		errorGoing: false,
+		errorMsg: "",
+		bars: []
+	},
 	INITIALIZE_BAR_REDUCER: {
-		isFetching: false,
+		isFetchingBusinesses: false,
 		errorFetching: false,
 		errorMsg: "",
 		lastSrcLocation: "",

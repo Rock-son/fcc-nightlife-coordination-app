@@ -1133,9 +1133,14 @@ var _default = {
 	LOGIN: "login",
 	LOGOUT: "logout",
 	/** ******************************************************************************** */
+	// NOTE GOING
+	GOING_FAIL: "going_fail",
+	GOING_RECEIVED: "going_received",
+	GOING_REMOVED: "going_removed",
+	INITIALIZE_GOING: "initialize_going",
 	// FETCHING DATA
 	FETCHING_START: "fetching_start",
-	FETCHING_FAILURE: "fetching_failure",
+	FETCHING_FAIL: "fetching_failure",
 	FETCHING_RECEIVED: "fetching_received"
 };
 exports.default = _default;
@@ -1833,11 +1838,49 @@ var _default = {
 			} // Reject if the status is > 500
 		});
 	},
+	addGoingUsers: function addGoingUsers(location, id, user) {
+		return (0, _axios2.default)({
+			method: "post",
+			url: "api/addGoing",
+			data: {
+				location: location,
+				id: id,
+				user: user
+			},
+			headers: {
+				"Content-Type": "application/json"
+			},
+			validateStatus: function validateStatus(status) {
+				return status < 500;
+			} // Reject if the status is > 500
+		});
+	},
+	removeGoingUsers: function removeGoingUsers(location, id, user) {
+		return (0, _axios2.default)({
+			method: "post",
+			url: "api/removeGoing",
+			data: {
+				location: location,
+				id: id,
+				user: user
+			},
+			headers: {
+				"Content-Type": "application/json"
+			},
+			validateStatus: function validateStatus(status) {
+				return status < 500;
+			} // Reject if the status is > 500
+		});
+	},
 	INITIAL_AUTH_REDUCER: { authenticated: false },
 	// TODO: BE FETCHED FROM MONGODB
-	INITIAL_GOING_REDUCER: { user: "Rok Z", venueID: "" },
+	INITIAL_GOING_REDUCER: {
+		errorGoing: false,
+		errorMsg: "",
+		bars: []
+	},
 	INITIALIZE_BAR_REDUCER: {
-		isFetching: false,
+		isFetchingBusinesses: false,
 		errorFetching: false,
 		errorMsg: "",
 		lastSrcLocation: "",
@@ -6131,6 +6174,7 @@ var _InitialState = __webpack_require__(48);
 	enterModule && enterModule(module);
 })();
 
+// TODO: REPLACE with function that will return true after successful login and logout!
 var authReducer = function authReducer() {
 	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _InitialState.INITIAL_AUTH_REDUCER;
 	var action = arguments[1];
@@ -6138,17 +6182,64 @@ var authReducer = function authReducer() {
 	switch (action.type) {
 		case _Actions.LOGIN:
 			return _extends({}, state, {
+				user: action.user,
 				authenticated: true
 			});
 		case _Actions.LOGOUT:
 			return _extends({}, state, {
+				user: action.user,
 				authenticated: false
 			});
 		default:
 			return state;
 	}
 };
+// GOING REDUCER
+var goingReducer = function goingReducer() {
+	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _InitialState.INITIAL_GOING_REDUCER;
+	var action = arguments[1];
 
+	var idx = null;
+	var bar = null;
+	var bars = null;
+	switch (action.type) {
+		case _Actions.INITIALIZE_GOING:
+			return _extends({}, state, {
+				bars: action.bars
+			});
+		case _Actions.GOING_FAIL:
+			return _extends({}, state, {
+				isFetchingGoingUsers: false,
+				errorGoing: true,
+				errorMsg: action.error
+			});
+		case _Actions.GOING_RECEIVED:
+			// IF BAR EXISTS - change value, else concatenate it to state.bars
+			idx = state.bars.map(function (e) {
+				return e.bar.id;
+			}).indexOf(action.id);
+			bar = { bar: { id: action.id, users: action.users } };
+			bars = idx > -1 ? state.bars.slice(0, idx).concat(bar).concat(state.bars.slice(idx + 1)) : state.bars.concat(bar);
+			return _extends({}, state, {
+				isFetchingGoingUsers: false,
+				bars: bars
+			});
+		case _Actions.GOING_REMOVED:
+			// IF BAR EXIST - remove user (if exists), else do nothing
+			idx = state.bars.map(function (e) {
+				return e.bar.id;
+			}).indexOf(action.id);
+			bar = { bar: { id: action.id, users: action.users } };
+			bars = idx > -1 ? state.bars.slice(0, idx).concat(bar).concat(state.bars.slice(idx + 1)) : state.bars.concat(bar);
+			return _extends({}, state, {
+				isFetchingGoingUsers: false,
+				bars: bars
+			});
+		default:
+			return state;
+	}
+};
+// TODO: ADD TO DB
 var searchReducer = function searchReducer() {
 	var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _InitialState.INITIALIZE_BAR_REDUCER;
 	var action = arguments[1];
@@ -6156,21 +6247,21 @@ var searchReducer = function searchReducer() {
 	switch (action.type) {
 		case _Actions.FETCHING_START:
 			return _extends({}, state, {
-				isFetching: true,
+				isFetchingBusinesses: true,
 				errorFetching: false,
 				errorMsg: "",
 				lastSrcLocation: action.location
 			});
 		case _Actions.FETCHING_FAILURE:
 			return _extends({}, state, {
-				isFetching: false,
+				isFetchingBusinesses: false,
 				errorFetching: true,
-				errorMsg: action.error
+				errorMsg: action.error.response.statusText
 
 			});
 		case _Actions.FETCHING_RECEIVED:
 			return _extends({}, state, {
-				isFetching: false,
+				isFetchingBusinesses: false,
 				businesses: action.businesses
 			});
 		default:
@@ -6180,7 +6271,8 @@ var searchReducer = function searchReducer() {
 
 var _default = (0, _redux.combineReducers)({
 	auth: authReducer,
-	bar: searchReducer
+	bar: searchReducer,
+	go: goingReducer
 });
 
 exports.default = _default;
@@ -6197,6 +6289,7 @@ module.exports = exports["default"];
 	}
 
 	reactHotLoader.register(authReducer, "authReducer", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/reducers.js");
+	reactHotLoader.register(goingReducer, "goingReducer", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/reducers.js");
 	reactHotLoader.register(searchReducer, "searchReducer", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/reducers.js");
 	reactHotLoader.register(_default, "default", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/reducers.js");
 	leaveModule(module);
@@ -7327,11 +7420,17 @@ var mapStateToProps = function a(state) {
 
 var mapDispatchToProps = function b(dispatch) {
 	return {
-		login: function login() {
-			return dispatch((0, _ActionCreators.DISPATCH_LOGIN)());
+		login: function login(user) {
+			return dispatch((0, _ActionCreators.DISPATCH_LOGIN)(user));
 		},
 		logout: function logout(user) {
 			return dispatch((0, _ActionCreators.DISPATCH_LOGOUT)(user));
+		},
+		going: function going(city, id, user) {
+			return dispatch((0, _ActionCreators.DISPATCH_GOING)(city, id, user));
+		},
+		notGoing: function notGoing(city, id, user) {
+			return dispatch((0, _ActionCreators.DISPATCH_NOT_GOING)(city, id, user));
 		},
 		search: function search(location) {
 			return dispatch((0, _ActionCreators.FETCH_BUSINESSES)(location));
@@ -7442,8 +7541,8 @@ var Home = function (_React$Component) {
 			return _react2.default.createElement(
 				"div",
 				null,
-				_react2.default.createElement(_Navbar2.default, { auth: this.props.auth, login: this.props.login, logout: this.props.logout }),
-				_react2.default.createElement(_Content2.default, { bar: this.props.bar, search: this.props.search, error: this.state.hasError }),
+				_react2.default.createElement(_Navbar2.default, { authState: this.props.auth, login: this.props.login, logout: this.props.logout }),
+				_react2.default.createElement(_Content2.default, { barState: this.props.bar, goState: this.props.go, search: this.props.search, going: this.props.going, notGoing: this.props.notGoing, error: this.state.hasError }),
 				_react2.default.createElement(_Footer2.default, null)
 			);
 		}
@@ -7461,9 +7560,12 @@ Home.propTypes = {
 	// REDUCERS
 	auth: _propTypes2.default.instanceOf(Object).isRequired,
 	bar: _propTypes2.default.instanceOf(Object).isRequired,
+	go: _propTypes2.default.instanceOf(Object).isRequired,
 	// DISPATCHED FUNCTIONS
 	login: _propTypes2.default.func,
 	logout: _propTypes2.default.func,
+	going: _propTypes2.default.func,
+	notGoing: _propTypes2.default.func,
 	search: _propTypes2.default.func
 };
 
@@ -7473,6 +7575,12 @@ Home.defaultProps = {
 	},
 	logout: function logout() {
 		return true;
+	},
+	going: function going() {
+		return { city: "", id: "", user: "" };
+	},
+	notGoing: function notGoing() {
+		return { city: "", id: "", user: "" };
 	},
 	search: function search() {}
 };
@@ -19203,17 +19311,17 @@ var Navbar = function (_React$PureComponent) {
 					{ className: "navbar__right" },
 					_react2.default.createElement(
 						"button",
-						{ id: "login", tabIndex: "0", onClick: this.handleClick, style: { display: this.props.auth.authenticated ? "none" : "inline-block" }, className: "navbar__right__login" },
+						{ id: "login", tabIndex: "0", onClick: this.handleClick, style: { display: this.props.authState.authenticated ? "none" : "inline-block" }, className: "navbar__right__login" },
 						"Sign In"
 					),
 					_react2.default.createElement(
 						"button",
-						{ id: "logout", tabIndex: "0", onClick: this.handleClick, style: { display: this.props.auth.authenticated ? "inline-block" : "none" }, className: "navbar__right__login" },
+						{ id: "logout", tabIndex: "0", onClick: this.handleClick, style: { display: this.props.authState.authenticated ? "inline-block" : "none" }, className: "navbar__right__login" },
 						"Logout"
 					),
 					_react2.default.createElement(
 						"a",
-						{ id: "user", href: "https://twitter.com/settings/applications", tabIndex: "0", onClick: this.handleClick, style: { display: this.props.auth.authenticated ? "inline-block" : "none" }, className: "navbar__right__login" },
+						{ id: "user", href: "https://twitter.com/settings/applications", tabIndex: "0", onClick: this.handleClick, style: { display: this.props.authState.authenticated ? "inline-block" : "none" }, className: "navbar__right__login" },
 						"Welcome, Rok"
 					)
 				)
@@ -19234,10 +19342,11 @@ exports.default = _default;
 
 
 Navbar.propTypes = {
+	// STATE
+	authState: _propTypes2.default.instanceOf(Object).isRequired,
+	// FUNCTIONS
 	login: _propTypes2.default.func,
-	logout: _propTypes2.default.func,
-	auth: _propTypes2.default.instanceOf(Object),
-	authenticated: _propTypes2.default.bool
+	logout: _propTypes2.default.func
 };
 
 Navbar.defaultProps = {
@@ -19247,9 +19356,7 @@ Navbar.defaultProps = {
 	},
 	logout: function logout() {
 		return true;
-	},
-	auth: { authenticated: false },
-	authenticated: false
+	}
 };
 module.exports = exports["default"];
 ;
@@ -19387,8 +19494,11 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Content = function (_React$PureComponent) {
-	_inherits(Content, _React$PureComponent);
+var defaultObj = {};
+var defaultArray = [];
+
+var Content = function (_React$Component) {
+	_inherits(Content, _React$Component);
 
 	function Content(props) {
 		_classCallCheck(this, Content);
@@ -19432,6 +19542,8 @@ var Content = function (_React$PureComponent) {
 	}, {
 		key: "render",
 		value: function render() {
+			var _this2 = this;
+
 			var responseImg = "./assets/images/pexels-photo-260920.jpeg 640w, ./assets/images/pexels-photo-260921.jpeg 1280w, ./assets/images/pexels-photo-260922.jpeg 1920w";
 
 			return _react2.default.createElement(
@@ -19461,7 +19573,7 @@ var Content = function (_React$PureComponent) {
 						_react2.default.createElement(
 							"button",
 							{ type: "button", ref: this.searchBtn, className: "content__search__input-container__button", onClick: this.handleSearch },
-							this.props.bar.isFetching ? _react2.default.createElement("i", { className: "fa fa-spinner fa-spin content__search__input-container__spinner" }) : "Search"
+							this.props.barState.isFetchingBusinesses ? _react2.default.createElement("i", { className: "fa fa-spinner fa-spin content__search__input-container__spinner" }) : "Search"
 						)
 					),
 					_react2.default.createElement(
@@ -19479,12 +19591,22 @@ var Content = function (_React$PureComponent) {
 				_react2.default.createElement(
 					"article",
 					{ className: "content__cards" },
-					this.props.error || this.props.bar.errorFetching ? _react2.default.createElement(
+					this.props.error || this.props.barState.errorFetching ? _react2.default.createElement(
 						"h2",
 						{ className: "content__cards__error" },
-						this.props.bar.errorMsg || "Something went wrong, please try again later!"
-					) : this.props.bar.businesses.map(function (business) {
-						return _react2.default.createElement(_Card2.default, { business: business });
+						"There was an error (" + this.props.barState.errorMsg + "), please try again later!"
+					) : this.props.barState.businesses.map(function (business) {
+						return _react2.default.createElement(_Card2.default, {
+							key: business.venue.id,
+							business: business,
+							handleGoing: _this2.handleGoing,
+							barObj: _this2.props.goState.bars ? _this2.props.goState.bars[(_this2.props.goState.bars || defaultArray).map(function (e) {
+								return e ? ((e || defaultObj).bar || defaultObj).id : "";
+							}).indexOf(business.venue.id)] : defaultObj,
+							goState: _this2.props.goState,
+							going: _this2.props.going,
+							notGoing: _this2.props.notGoing
+						});
 					})
 				)
 			);
@@ -19497,16 +19619,21 @@ var Content = function (_React$PureComponent) {
 	}]);
 
 	return Content;
-}(_react2.default.PureComponent);
+}(_react2.default.Component);
 
 var _default = Content;
 exports.default = _default;
 
 
 Content.propTypes = {
-
+	// STATES
+	barState: _propTypes2.default.instanceOf(Object).isRequired,
+	goState: _propTypes2.default.instanceOf(Object).isRequired,
+	// ACTIONS
 	search: _propTypes2.default.func.isRequired,
-	bar: _propTypes2.default.instanceOf(Object).isRequired,
+	going: _propTypes2.default.func.isRequired,
+	notGoing: _propTypes2.default.func.isRequired,
+	// ERRORS
 	error: _propTypes2.default.bool.isRequired
 };
 module.exports = exports["default"];
@@ -19521,6 +19648,8 @@ module.exports = exports["default"];
 		return;
 	}
 
+	reactHotLoader.register(defaultObj, "defaultObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
+	reactHotLoader.register(defaultArray, "defaultArray", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
 	reactHotLoader.register(Content, "Content", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
 	reactHotLoader.register(_default, "default", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/Content.jsx");
 	leaveModule(module);
@@ -19540,9 +19669,15 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(2);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19552,6 +19687,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 	enterModule && enterModule(module);
 })();
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var defaultObj = {};
+var defaultArray = [];
 var defaultMenuObj = { url: "" };
 var defaultHoursObj = { isOpen: undefined, status: "" };
 var defaultPriceObj = { message: "Moderate", currency: "/" };
@@ -19561,220 +19704,283 @@ var defaultCategoryArray = [{ name: "No category" }];
 var defaultContactObj = { phone: "", facebook: "" };
 var defaultStatsObj = { tipCount: 0, usersCount: 0, checkinsCount: 0 };
 
-var _default = function _default(props) {
-	var container = null;
+var userMe = "Rok Z";
 
-	try {
-		var imagePath = props.business.venue.featuredPhotos.items[0].prefix + "350x200" + props.business.venue.featuredPhotos.items[0].suffix;
-		var ratingColorStyle = { backgroundColor: "#" + props.business.venue.ratingColor };
-		var ratingCount = props.business.venue.ratingSignals;
+var Card = function (_React$Component) {
+	_inherits(Card, _React$Component);
 
-		var _ = (props.business.tips || defaultTipsArray)[0],
-		    tip = _.text,
-		    user = _.user.firstName,
-		    fsqUrl = _.canonicalUrl;
+	function Card(props) {
+		_classCallCheck(this, Card);
 
-		var _ref = (props.business.tips || defaultTipsArray)[0].likes || defaultCountObj,
-		    count = _ref.count;
+		var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
 
-		var category = (props.business.venue.categories || defaultCategoryArray)[0].name;
-
-		var _ref2 = props.business.venue.contact || defaultContactObj,
-		    phone = _ref2.phone,
-		    fbNr = _ref2.facebook;
-
-		var _ref3 = props.business.venue.menu || defaultMenuObj,
-		    menuUrl = _ref3.url;
-
-		var _ref4 = props.business.venue.hours || defaultHoursObj,
-		    isOpen = _ref4.isOpen,
-		    status = _ref4.status;
-
-		var _ref5 = props.business.venue.price || defaultPriceObj,
-		    currency = _ref5.currency,
-		    message = _ref5.message;
-
-		var _ref6 = props.business.venue.stats || defaultStatsObj,
-		    tips = _ref6.tipCount,
-		    users = _ref6.usersCount,
-		    checkins = _ref6.checkinsCount;
-
-		var _props$business$venue = props.business.venue,
-		    website = _props$business$venue.url,
-		    venueName = _props$business$venue.name,
-		    _props$business$venue2 = _props$business$venue.location,
-		    address = _props$business$venue2.address,
-		    city = _props$business$venue2.city,
-		    country = _props$business$venue2.country;
-
-
-		var formattedAddress = address + " " + city + " " + country;
-		var going = "none";
-		var active = "active";
-		var notActive = "";
-		var formattedIsOpen = function () {
-			if (isOpen) {
-				return "open";
-			} else if (isOpen == null) {
-				return "no-data";
-			}
-			return "closed";
-		}();
-
-		container = _react2.default.createElement(
-			"div",
-			{ key: props.business.venue.id, className: "content__cards__card" },
-			_react2.default.createElement(
-				"div",
-				{ className: "content__cards__card__header" },
-				_react2.default.createElement(
-					"div",
-					{ className: "content__cards__card__header__container" },
-					_react2.default.createElement(
-						"a",
-						{ className: "content__cards__card__header__container__name", href: website, target: "_blank", rel: "noreferrer noopener" },
-						venueName
-					),
-					_react2.default.createElement(
-						"div",
-						{ className: "content__cards__card__header__container__rating", data: message + " - " + currency, title: ratingCount + " votes", style: ratingColorStyle },
-						props.business.venue.rating
-					)
-				),
-				_react2.default.createElement(
-					"a",
-					{ className: "content__cards__card__header__address", href: "https://www.google.com/maps/place/" + formattedAddress, target: "_blank", rel: "noreferrer noopener" },
-					address
-				)
-			),
-			_react2.default.createElement(
-				"div",
-				{ className: "content__cards__card__body" },
-				_react2.default.createElement(
-					"div",
-					{ style: { display: "block", paddingBottom: "1px" } },
-					_react2.default.createElement(
-						"div",
-						{ className: "content__cards__card__body__category" },
-						category
-					),
-					_react2.default.createElement(
-						"div",
-						{ className: "content__cards__card__body__hours " + formattedIsOpen, title: status || "No data" },
-						"" + formattedIsOpen.replace("-", " ")
-					),
-					_react2.default.createElement(
-						"div",
-						{ className: "content__cards__card__body__going " + going, title: "0 GOING" },
-						"0 going"
-					)
-				),
-				_react2.default.createElement(
-					"a",
-					{ href: fsqUrl, target: "_blank", rel: "noreferrer noopener" },
-					_react2.default.createElement("img", { src: imagePath, className: "content__cards__card__body__image", alt: venueName, title: "CONTINUE TO FOURSQUARE" })
-				),
-				_react2.default.createElement(
-					"div",
-					{ className: "content__cards__card__body__special" },
-					_react2.default.createElement(
-						"a",
-						{ className: "content__cards__card__body__special__menu" + (menuUrl ? "" : "-no-show"), href: menuUrl, target: "_blank", rel: "noreferrer noopener" },
-						"Menu"
-					),
-					_react2.default.createElement(
-						"a",
-						{ className: "content__cards__card__body__special__fb" + (fbNr ? "" : "-no-show"), href: "https://facebook.com/" + fbNr, target: "_blank", rel: "noreferrer noopener" },
-						_react2.default.createElement("i", { className: "fa fa-facebook-square fa-2x" })
-					),
-					_react2.default.createElement(
-						"div",
-						{ className: "content__cards__card__body__special__phone1", style: phone ? { display: 'block' } : { display: 'none' } },
-						"Phone:"
-					),
-					_react2.default.createElement(
-						"a",
-						{ className: "content__cards__card__body__special__phone2", href: "callto://" + phone, target: "_blank", rel: "noreferrer noopener" },
-						phone
-					)
-				),
-				_react2.default.createElement(
-					"div",
-					{ className: "content__cards__card__body__underImage" },
-					"Tips: ",
-					_react2.default.createElement(
-						"span",
-						{ className: "content__cards__card__body__underImage__item", style: { backgroundColor: "#2d5be3" } },
-						tips
-					),
-					", Users: ",
-					_react2.default.createElement(
-						"span",
-						{ className: "content__cards__card__body__underImage__item", style: { backgroundColor: "#0732a2" } },
-						users
-					),
-					", Checkins: ",
-					_react2.default.createElement(
-						"span",
-						{ className: "content__cards__card__body__underImage__item", style: { backgroundColor: "#f94877" } },
-						checkins
-					)
-				),
-				_react2.default.createElement("hr", { className: "content__cards__card__body__line" })
-			),
-			_react2.default.createElement(
-				"div",
-				{ className: "content__cards__card__footer" },
-				_react2.default.createElement(
-					"div",
-					{ className: "content__cards__card__footer__tip" },
-					tip || venueName + " has no user tips yet."
-				),
-				_react2.default.createElement(
-					"div",
-					{ className: "content__cards__card__footer__user" },
-					_react2.default.createElement(
-						"div",
-						{ className: "content__cards__card__footer__user__txt" },
-						"- " + (user || "") + " (" + count + " "
-					),
-					_react2.default.createElement("i", { className: "fa fa-thumbs-up content__cards__card__footer__user__txt" }),
-					_react2.default.createElement(
-						"div",
-						{ className: "content__cards__card__footer__user__txt" },
-						" ",
-						")"
-					)
-				)
-			),
-			_react2.default.createElement(
-				"div",
-				{ className: "content__cards__card__footer__checkBox " + notActive },
-				_react2.default.createElement("div", { className: "content__cards__card__footer__checkBox__btn go " + notActive }),
-				_react2.default.createElement(
-					"div",
-					{ className: "content__cards__card__footer__checkBox__label go " + notActive },
-					"Going"
-				),
-				_react2.default.createElement("div", { className: "content__cards__card__footer__checkBox__btn nogo " + active }),
-				_react2.default.createElement(
-					"div",
-					{ className: "content__cards__card__footer__checkBox__label nogo " + active },
-					"Not Going"
-				)
-			)
-		);
-	} catch (error) {
-		container = _react2.default.createElement(
-			"div",
-			{ key: error, className: "content__cards__card" },
-			"No data available! " + error
-		);
+		_this.container = null;
+		_this.handleGoing = _this.handleGoing.bind(_this);
+		return _this;
 	}
-	return container;
+
+	_createClass(Card, [{
+		key: "handleGoing",
+		value: function handleGoing(e) {
+			var city = e.currentTarget.getAttribute("data-city");
+			var id = e.currentTarget.getAttribute("data-id");
+
+			if (e.keyCode || e.type === "click") {
+				if (e.keyCode === 13 || e.type === "click") {
+					if (e.target.id.indexOf("no_go") > -1) {
+						this.props.notGoing(city, id, userMe);
+					} else {
+						this.props.going(city, id, userMe);
+					}
+				}
+			}
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			try {
+				var imagePath = this.props.business.venue.featuredPhotos.items[0].prefix + "350x200" + this.props.business.venue.featuredPhotos.items[0].suffix;
+				var ratingColorStyle = { backgroundColor: "#" + this.props.business.venue.ratingColor };
+				var ratingCount = this.props.business.venue.ratingSignals;
+
+				var _ = (this.props.business.tips || defaultTipsArray)[0],
+				    tip = _.text,
+				    user = _.user.firstName,
+				    fsqUrl = _.canonicalUrl;
+
+				var _ref = (this.props.business.tips || defaultTipsArray)[0].likes || defaultCountObj,
+				    count = _ref.count;
+
+				var category = (this.props.business.venue.categories || defaultCategoryArray)[0].name;
+
+				var _ref2 = this.props.business.venue.contact || defaultContactObj,
+				    phone = _ref2.phone,
+				    fbNr = _ref2.facebook;
+
+				var _ref3 = this.props.business.venue.menu || defaultMenuObj,
+				    menuUrl = _ref3.url;
+
+				var _ref4 = this.props.business.venue.hours || defaultHoursObj,
+				    isOpen = _ref4.isOpen,
+				    status = _ref4.status;
+
+				var _ref5 = this.props.business.venue.price || defaultPriceObj,
+				    currency = _ref5.currency,
+				    message = _ref5.message;
+
+				var _ref6 = this.props.business.venue.stats || defaultStatsObj,
+				    tips = _ref6.tipCount,
+				    users = _ref6.usersCount,
+				    checkins = _ref6.checkinsCount;
+
+				var _props$business$venue = this.props.business.venue,
+				    businessID = _props$business$venue.id,
+				    website = _props$business$venue.url,
+				    venueName = _props$business$venue.name;
+				var _props$business$venue2 = this.props.business.venue.location,
+				    address = _props$business$venue2.address,
+				    city = _props$business$venue2.city,
+				    country = _props$business$venue2.country;
+
+
+				var formattedAddress = address + " " + city + " " + country;
+				// handling going logic
+				var barUsers = ((this.props.barObj || defaultObj).bar || defaultObj).users || defaultArray;
+				var nrUsers = barUsers.length;
+				var isGoing = !!nrUsers;
+				var classGoing = isGoing ? "some" : "none";
+				var usersGoingTitle = isGoing ? barUsers.join("\n") : "0 going";
+				var nrGoing = nrUsers.toString().concat(" going");
+				var isActive = isGoing ? "active" : "";
+
+				var formattedIsOpen = function () {
+					if (isOpen) {
+						return "open";
+					} else if (isOpen == null) {
+						return "no-data";
+					}
+					return "closed";
+				}();
+
+				this.container = _react2.default.createElement(
+					"div",
+					{ className: "content__cards__card" },
+					_react2.default.createElement(
+						"div",
+						{ className: "content__cards__card__header" },
+						_react2.default.createElement(
+							"div",
+							{ className: "content__cards__card__header__container" },
+							_react2.default.createElement(
+								"a",
+								{ className: "content__cards__card__header__container__name", href: website, target: "_blank", rel: "noreferrer noopener" },
+								venueName
+							),
+							_react2.default.createElement(
+								"div",
+								{ className: "content__cards__card__header__container__rating", data: message + " - " + currency, title: ratingCount + " votes", style: ratingColorStyle },
+								this.props.business.venue.rating
+							)
+						),
+						_react2.default.createElement(
+							"a",
+							{ className: "content__cards__card__header__address", href: "https://www.google.com/maps/place/" + formattedAddress, target: "_blank", rel: "noreferrer noopener" },
+							address
+						)
+					),
+					_react2.default.createElement(
+						"div",
+						{ className: "content__cards__card__body" },
+						_react2.default.createElement(
+							"div",
+							{ style: { display: "block", paddingBottom: "1px" } },
+							_react2.default.createElement(
+								"div",
+								{ className: "content__cards__card__body__category" },
+								category
+							),
+							_react2.default.createElement(
+								"div",
+								{ className: "content__cards__card__body__hours " + formattedIsOpen, title: status || "No data" },
+								"" + formattedIsOpen.replace("-", " ")
+							),
+							_react2.default.createElement(
+								"div",
+								{ className: "content__cards__card__body__going " + classGoing, title: usersGoingTitle },
+								nrGoing
+							)
+						),
+						_react2.default.createElement(
+							"a",
+							{ href: fsqUrl, target: "_blank", rel: "noreferrer noopener" },
+							_react2.default.createElement("img", { src: imagePath, className: "content__cards__card__body__image", alt: venueName, title: "CONTINUE TO FOURSQUARE" })
+						),
+						_react2.default.createElement(
+							"div",
+							{ className: "content__cards__card__body__special" },
+							_react2.default.createElement(
+								"a",
+								{ className: "content__cards__card__body__special__menu" + (menuUrl ? "" : "-no-show"), href: menuUrl, target: "_blank", rel: "noreferrer noopener" },
+								"Menu"
+							),
+							_react2.default.createElement(
+								"a",
+								{ className: "content__cards__card__body__special__fb" + (fbNr ? "" : "-no-show"), href: "https://facebook.com/" + fbNr, target: "_blank", rel: "noreferrer noopener" },
+								_react2.default.createElement("i", { className: "fa fa-facebook-square fa-2x" })
+							),
+							_react2.default.createElement(
+								"div",
+								{ className: "content__cards__card__body__special__phone1", style: phone ? { display: 'block' } : { display: 'none' } },
+								"Phone:"
+							),
+							_react2.default.createElement(
+								"a",
+								{ className: "content__cards__card__body__special__phone2", href: "callto://" + phone, target: "_blank", rel: "noreferrer noopener" },
+								phone
+							)
+						),
+						_react2.default.createElement(
+							"div",
+							{ className: "content__cards__card__body__underImage" },
+							"Tips: ",
+							_react2.default.createElement(
+								"span",
+								{ className: "content__cards__card__body__underImage__item", style: { backgroundColor: "#2d5be3" } },
+								tips
+							),
+							", Users: ",
+							_react2.default.createElement(
+								"span",
+								{ className: "content__cards__card__body__underImage__item", style: { backgroundColor: "#0732a2" } },
+								users
+							),
+							", Checkins: ",
+							_react2.default.createElement(
+								"span",
+								{ className: "content__cards__card__body__underImage__item", style: { backgroundColor: "#f94877" } },
+								checkins
+							)
+						),
+						_react2.default.createElement("hr", { className: "content__cards__card__body__line" })
+					),
+					_react2.default.createElement(
+						"div",
+						{ className: "content__cards__card__footer" },
+						_react2.default.createElement(
+							"div",
+							{ className: "content__cards__card__footer__tip" },
+							tip || venueName + " has no user tips yet."
+						),
+						_react2.default.createElement(
+							"div",
+							{ className: "content__cards__card__footer__user" },
+							_react2.default.createElement(
+								"div",
+								{ className: "content__cards__card__footer__user__txt" },
+								"- " + (user || "") + " (" + count + " "
+							),
+							_react2.default.createElement("i", { className: "fa fa-thumbs-up content__cards__card__footer__user__txt" }),
+							_react2.default.createElement(
+								"div",
+								{ className: "content__cards__card__footer__user__txt" },
+								" ",
+								")"
+							)
+						)
+					),
+					_react2.default.createElement(
+						"div",
+						{ className: "content__cards__card__footer__checkBox " + isActive },
+						_react2.default.createElement("div", { id: "go", "data-city": city, "data-id": businessID, role: "button", tabIndex: 0, className: "content__cards__card__footer__checkBox__btn go " + isActive, onClick: this.handleGoing, onKeyUp: this.handleGoing }),
+						_react2.default.createElement(
+							"div",
+							{ id: "go1", "data-city": city, "data-id": businessID, role: "button", tabIndex: 0, className: "content__cards__card__footer__checkBox__label go " + isActive, onClick: this.handleGoing, onKeyUp: this.handleGoing },
+							"Going"
+						),
+						_react2.default.createElement("div", { id: "no_go", "data-city": city, "data-id": businessID, role: "button", tabIndex: 0, className: "content__cards__card__footer__checkBox__btn nogo " + isActive, onClick: this.handleGoing, onKeyUp: this.handleGoing }),
+						_react2.default.createElement(
+							"div",
+							{ id: "no_go1", "data-city": city, "data-id": businessID, role: "button", tabIndex: 0, className: "content__cards__card__footer__checkBox__label nogo " + isActive, onClick: this.handleGoing, onKeyUp: this.handleGoing },
+							"Not Going"
+						)
+					)
+				);
+			} catch (error) {
+				this.container = _react2.default.createElement(
+					"div",
+					{ key: error, className: "content__cards__card" },
+					"No data available! " + error
+				);
+			}
+			return this.container;
+		}
+	}, {
+		key: "__reactstandin__regenerateByEval",
+		value: function __reactstandin__regenerateByEval(key, code) {
+			this[key] = eval(code);
+		}
+	}]);
+
+	return Card;
+}(_react2.default.Component);
+
+var _default = Card;
+exports.default = _default;
+
+
+Card.propTypes = {
+	// STATES
+	goState: _propTypes2.default.instanceOf(Object).isRequired,
+	business: _propTypes2.default.instanceOf(Object).isRequired,
+	// DISPATCHED FUNCTIONS
+	going: _propTypes2.default.func.isRequired,
+	notGoing: _propTypes2.default.func.isRequired,
+	barObj: _propTypes2.default.instanceOf(Object)
 };
 
-exports.default = _default;
+Card.defaultProps = {
+	barObj: {}
+};
 module.exports = exports["default"];
 ;
 
@@ -19787,6 +19993,8 @@ module.exports = exports["default"];
 		return;
 	}
 
+	reactHotLoader.register(defaultObj, "defaultObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
+	reactHotLoader.register(defaultArray, "defaultArray", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
 	reactHotLoader.register(defaultMenuObj, "defaultMenuObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
 	reactHotLoader.register(defaultHoursObj, "defaultHoursObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
 	reactHotLoader.register(defaultPriceObj, "defaultPriceObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
@@ -19795,6 +20003,8 @@ module.exports = exports["default"];
 	reactHotLoader.register(defaultCategoryArray, "defaultCategoryArray", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
 	reactHotLoader.register(defaultContactObj, "defaultContactObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
 	reactHotLoader.register(defaultStatsObj, "defaultStatsObj", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
+	reactHotLoader.register(userMe, "userMe", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
+	reactHotLoader.register(Card, "Card", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
 	reactHotLoader.register(_default, "default", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/components/_Card.jsx");
 	leaveModule(module);
 })();
@@ -19814,6 +20024,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DISPATCH_LOGIN = DISPATCH_LOGIN;
 exports.DISPATCH_LOGOUT = DISPATCH_LOGOUT;
+exports.DISPATCH_GOING = DISPATCH_GOING;
+exports.DISPATCH_NOT_GOING = DISPATCH_NOT_GOING;
 exports.FETCH_BUSINESSES = FETCH_BUSINESSES;
 
 var _Actions = __webpack_require__(26);
@@ -19840,7 +20052,65 @@ function DISPATCH_LOGOUT(user) {
 	};
 }
 
-// ASYNC FETCH AC for Yelp API
+// ASYNC GOING
+function initializeGoing(json) {
+	return {
+		type: _Actions.INITIALIZE_GOING,
+		bars: json || []
+	};
+}
+function goingFail(error) {
+	return {
+		type: _Actions.GOING_FAIL,
+		error: error
+	};
+}
+function goingReceived(json) {
+	return {
+		type: _Actions.GOING_RECEIVED,
+		users: json.users || [],
+		id: json.id || ""
+	};
+}
+function goingRemoved(json) {
+	return {
+		type: _Actions.GOING_REMOVED,
+		users: json.users || [],
+		id: json.id || ""
+	};
+}
+
+// Redux Thunk
+function DISPATCH_GOING(city, id, user) {
+	return function (dispatch) {
+
+		return (0, _InitialState.addGoingUsers)(city, id, user).then(function (json) {
+			if (json.status !== 200) {
+				dispatch(goingFail(json.data));
+			} else {
+				dispatch(goingReceived(json.data));
+			}
+		}).catch(function (error) {
+			return dispatch(goingFail(error));
+		});
+	};
+}
+function DISPATCH_NOT_GOING(city, id, user) {
+	return function (dispatch) {
+
+		return (0, _InitialState.removeGoingUsers)(city, id, user).then(function (json) {
+			if (json.status !== 200) {
+				dispatch(goingFail(json.data));
+			} else {
+				dispatch(goingReceived(json.data));
+			}
+		}).catch(function (error) {
+			return dispatch(goingFail(error));
+		});
+	};
+}
+
+// ASYNC SEARCH
 function fetchStart() {
 	return {
 		type: _Actions.FETCHING_START
@@ -19849,7 +20119,7 @@ function fetchStart() {
 
 function fetchFail(error) {
 	return {
-		type: _Actions.FETCHING_FAILURE,
+		type: _Actions.FETCHING_FAIL,
 		error: error
 	};
 }
@@ -19857,7 +20127,7 @@ function fetchFail(error) {
 function fetchReceived(json) {
 	return {
 		type: _Actions.FETCHING_RECEIVED,
-		businesses: json || {},
+		businesses: json || [],
 		receivedAt: Date.now()
 	};
 }
@@ -19869,19 +20139,21 @@ function shouldReturnResults(state, location) {
 	return true;
 }
 
-// Thunk middleware
+// REDUX THUNK
 function FETCH_BUSINESSES(location) {
 	return function (dispatch, getState) {
 		if (!shouldReturnResults(getState, location)) {
 			return Promise.resolve;
 		}
+		// SYNC FUNC - can be dispatched immediately
 		dispatch(fetchStart());
-
+		// ASYNC FUNC - return a Promise
 		return (0, _InitialState.getBarsOnLocation)(location).then(function (json) {
 			if (json.status !== 200) {
 				dispatch(fetchFail(json.data));
 			} else {
-				dispatch(fetchReceived(json.data));
+				dispatch(initializeGoing(json.data.bars));
+				dispatch(fetchReceived(json.data.businesses));
 			}
 		}).catch(function (error) {
 			return dispatch(fetchFail(error));
@@ -19901,6 +20173,12 @@ function FETCH_BUSINESSES(location) {
 
 	reactHotLoader.register(DISPATCH_LOGIN, "DISPATCH_LOGIN", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(DISPATCH_LOGOUT, "DISPATCH_LOGOUT", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
+	reactHotLoader.register(initializeGoing, "initializeGoing", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
+	reactHotLoader.register(goingFail, "goingFail", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
+	reactHotLoader.register(goingReceived, "goingReceived", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
+	reactHotLoader.register(goingRemoved, "goingRemoved", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
+	reactHotLoader.register(DISPATCH_GOING, "DISPATCH_GOING", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
+	reactHotLoader.register(DISPATCH_NOT_GOING, "DISPATCH_NOT_GOING", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(fetchStart, "fetchStart", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(fetchFail, "fetchFail", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(fetchReceived, "fetchReceived", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
@@ -19920,4 +20198,4 @@ function FETCH_BUSINESSES(location) {
 
 /***/ })
 ],[55]);
-//# sourceMappingURL=bundle.a6b36c5068b1f2fb54ab.js.map
+//# sourceMappingURL=bundle.86c6ced14cc38a51f980.js.map

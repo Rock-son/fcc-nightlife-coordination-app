@@ -1,7 +1,7 @@
 "use strict";
 
-import { LOGIN, LOGOUT, GOING, NOT_GOING, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED } from "Actions";
-import { getBarsOnLocation } from "InitialState";
+import { LOGIN, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, FETCHING_START, FETCHING_FAIL, FETCHING_RECEIVED } from "Actions";
+import { getBarsOnLocation, addGoingUsers, removeGoingUsers } from "InitialState";
 
 
 // AUTHENTICATION action creater
@@ -18,22 +18,68 @@ export function DISPATCH_LOGOUT(user) {
 	};
 }
 
-export function DISPATCH_GOING(id, user) {
+
+// ASYNC GOING
+function initializeGoing(json) {
 	return {
-		type: GOING,
-		id,
-		user
+		type: INITIALIZE_GOING,
+		bars: json || []
 	};
 }
-export function DISPATCH_NOT_GOING(id, user) {
+function goingStart() {
 	return {
-		type: NOT_GOING,
-		id,
-		user
+		type: GOING_START
+	};
+}
+function goingFail(error) {
+	return {
+		type: GOING_FAIL,
+		error
+	};
+}
+function goingReceived(json) {
+	return {
+		type: GOING_RECEIVED,
+		users: json.users || [],
+		id: json.id || ""
 	};
 }
 
-// ASYNC FETCH AC for Yelp API
+
+// Redux Thunk
+export function DISPATCH_GOING(city, id, user) {
+	return (dispatch) => {
+		dispatch(goingStart());
+
+		return addGoingUsers(city, id, user)
+			.then((json) => {
+				if (json.status !== 200) {
+					dispatch(goingFail(json.data));
+				} else {
+					dispatch(goingReceived(json.data));
+				}
+			})
+			.catch(error => dispatch(goingFail(error)));
+	};
+}
+export function DISPATCH_NOT_GOING(city, id, user) {
+	return (dispatch) => {
+		dispatch(goingStart());
+
+		return removeGoingUsers(city, id, user)
+			.then((json) => {
+				if (json.status !== 200) {
+					dispatch(goingFail(json.data));
+				} else {
+					dispatch(goingReceived(json.data));
+				}
+			})
+			.catch(error => dispatch(goingFail(error)));
+	};
+}
+
+
+// ASYNC SEARCH
 function fetchStart() {
 	return {
 		type: FETCHING_START
@@ -42,7 +88,7 @@ function fetchStart() {
 
 function fetchFail(error) {
 	return {
-		type: FETCHING_FAILURE,
+		type: FETCHING_FAIL,
 		error
 	};
 }
@@ -50,7 +96,7 @@ function fetchFail(error) {
 function fetchReceived(json) {
 	return {
 		type: FETCHING_RECEIVED,
-		businesses: json || {},
+		businesses: json || [],
 		receivedAt: Date.now()
 	};
 }
@@ -63,7 +109,7 @@ function shouldReturnResults(state, location) {
 }
 
 
-// REDUX THUNK MIDDLEWARE
+// REDUX THUNK
 export function FETCH_BUSINESSES(location) {
 	return (dispatch, getState) => {
 		if (!shouldReturnResults(getState, location)) {
@@ -77,7 +123,8 @@ export function FETCH_BUSINESSES(location) {
 				if (json.status !== 200) {
 					dispatch(fetchFail(json.data));
 				} else {
-					dispatch(fetchReceived(json.data));
+					dispatch(initializeGoing(json.data.bars));
+					dispatch(fetchReceived(json.data.businesses));
 				}
 			})
 			.catch(error => dispatch(fetchFail(error)));

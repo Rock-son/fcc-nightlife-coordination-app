@@ -4,10 +4,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import Card from "./_Card";
 
-const user = "Rok Z";
+const defaultObj = {};
+const defaultArray = [];
 
-
-export default class Content extends React.PureComponent {
+export default class Content extends React.Component {
 	constructor(props) {
 		super(props);
 		this.input = "";
@@ -17,7 +17,6 @@ export default class Content extends React.PureComponent {
 		this.handleEnterPress = this.handleEnterPress.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleInput = this.handleInput.bind(this);
-		this.handleGoing = this.handleGoing.bind(this);
 	}
 
 	componentDidMount() {
@@ -38,25 +37,6 @@ export default class Content extends React.PureComponent {
 		e.preventDefault();
 		this.input = e.target.value;
 	}
-	handleGoing(e) {
-		const attr = e.target.getAttribute("data");
-		if (e.keyCode) {
-			if (e.keyCode === 13) {
-				if (e.target.id.indexOf("no_go") > -1) {
-					this.props.notGoing(attr, user);
-				} else {
-					this.props.going(attr, user);
-				}
-			} else {
-				return;
-			}
-		}
-		if (e.target.id.indexOf("no_go") > -1) {
-			this.props.notGoing(attr, user);
-		} else {
-			this.props.going(attr, user);
-		}
-	}
 
 	render() {
 		const responseImg = "./assets/images/pexels-photo-260920.jpeg 640w, ./assets/images/pexels-photo-260921.jpeg 1280w, ./assets/images/pexels-photo-260922.jpeg 1920w";
@@ -75,7 +55,7 @@ export default class Content extends React.PureComponent {
 					<div className="content__search__input-container">
 						<input type="text" ref={this.textInput} className="content__search__input-container__input" name="location" size="50" onChange={this.handleInput} onKeyUp={this.handleEnterPress} placeholder="Where are you at?" />
 						<button type="button" ref={this.searchBtn} className="content__search__input-container__button" onClick={this.handleSearch} >
-							{this.props.bar.isFetching ? (<i className="fa fa-spinner fa-spin content__search__input-container__spinner" />) : "Search"}
+							{this.props.barState.isFetchingBusinesses ? (<i className="fa fa-spinner fa-spin content__search__input-container__spinner" />) : "Search"}
 						</button>
 					</div>
 					<a className="content__search__foursquare" href="https://foursquare.com/" target="_blank" rel="noreferrer noopener" >Powered by{" "}
@@ -84,10 +64,19 @@ export default class Content extends React.PureComponent {
 				</article>
 				<article className="content__cards">
 					{/* ******************************************************* SEARCH RESULTS ********************************************************* */}
-					{(this.props.error || this.props.bar.errorFetching) ?
-						(<h2 className="content__cards__error">{this.props.bar.errorMsg || "Something went wrong, please try again later!"}</h2>) :
+					{(this.props.error || this.props.barState.errorFetching) ?
+						(<h2 className="content__cards__error">{`There was an error (${this.props.barState.errorMsg}), please try again later!`}</h2>) :
 
-						(this.props.bar.businesses.map(business => <Card key={business.venue.id} business={business} handleGoing={this.handleGoing} going={this.props.go} />))
+						(this.props.barState.businesses.map(business =>
+							(<Card
+								key={business.venue.id}
+								business={business}
+								handleGoing={this.handleGoing}
+								barObj={this.props.goState.bars ? this.props.goState.bars[(this.props.goState.bars || defaultArray).map(e => (e ? ((e || defaultObj).bar || defaultObj).id : "")).indexOf(business.venue.id)] : defaultObj}
+								goState={this.props.goState}
+								going={this.props.going}
+								notGoing={this.props.notGoing}
+							/>)))
 					}
 				</article>
 			</section>
@@ -97,12 +86,13 @@ export default class Content extends React.PureComponent {
 
 Content.propTypes = {
 	// STATES
-	search: PropTypes.func.isRequired,
-	bar: PropTypes.instanceOf(Object).isRequired,
-	go: PropTypes.instanceOf(Object).isRequired,
-	error: PropTypes.bool.isRequired,
+	barState: PropTypes.instanceOf(Object).isRequired,
+	goState: PropTypes.instanceOf(Object).isRequired,
 	// ACTIONS
+	search: PropTypes.func.isRequired,
 	going: PropTypes.func.isRequired,
-	notGoing: PropTypes.func.isRequired
+	notGoing: PropTypes.func.isRequired,
+	// ERRORS
+	error: PropTypes.bool.isRequired
 };
 

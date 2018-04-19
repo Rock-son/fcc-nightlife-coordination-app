@@ -15,8 +15,8 @@ const mapDispatchToProps = function b(dispatch) {
 	return {
 		login: user => dispatch(DISPATCH_LOGIN(user)),
 		logout: user => dispatch(DISPATCH_LOGOUT(user)),
-		going: (id, user) => dispatch(DISPATCH_GOING(id, user)),
-		notGoing: (id, user) => dispatch(DISPATCH_NOT_GOING(id, user)),
+		going: (city, id, user) => dispatch(DISPATCH_GOING(city, id, user)),
+		notGoing: (city, id, user) => dispatch(DISPATCH_NOT_GOING(city, id, user)),
 		search: location => dispatch(FETCH_BUSINESSES(location))
 	};
 };
