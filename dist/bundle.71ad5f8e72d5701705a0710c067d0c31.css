@@ -1,3 +1,10 @@
+*,
+*::after,
+*::before {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
 body {
   font-family: "Helvetica Neue", Calibri, sans-serif;
 }
@@ -653,7 +660,6 @@ template {
 }
 
 .content__cards__card__header__container__rating {
-  border: 1px inline green;
   cursor: help;
   color: #e6e6e6;
   font-size: 1.3rem;
@@ -662,7 +668,7 @@ template {
   float: right;
   margin-right: 3%;
   margin-top: 2%;
-  min-width: 2rem;
+  min-width: 3.5rem;
   text-align: center;
   text-shadow: -0.5px 0.5px 1px #333;
 }
@@ -886,7 +892,7 @@ template {
 
 .content__cards__card__footer__tip {
   text-align: left;
-  margin: 7.5% 10% 1% 0;
+  margin: 7.5% 10% 0 0;
   padding-left: 3%;
   color: #bbb;
   border-left: 3px solid #f1e1d6;
@@ -895,12 +901,11 @@ template {
 .content__cards__card__footer__user {
   display: block;
   text-align: right;
-  width: 85%;
-  padding: 0 10% 1% 2%;
+  width: 90%;
+  padding: 0 2% 1% 2%;
   margin-top: -1%;
   padding-top: 2%;
   color: #777;
-  border-left: 3px solid #f1e1d6;
 }
 
 .content__cards__card__footer__user__txt {
@@ -914,9 +919,9 @@ template {
 .content__cards__card__footer__checkBox {
   font-variant: small-caps;
   font-size: .8rem;
-  width: 32%;
+  width: 35%;
   margin-left: 3%;
-  height: 1.1rem;
+  height: 1.35rem;
   padding: 2px 5px;
   display: block;
   border: 1px outset #fcb5b5;
@@ -933,6 +938,10 @@ template {
   border-radius: 50%;
   width: 1rem;
   height: 1rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .content__cards__card__footer__checkBox__btn.go {
@@ -951,19 +960,29 @@ template {
   float: right;
   cursor: pointer;
   border: .5px solid #aeb1ae;
-}
-
-.content__cards__card__footer__checkBox__btn.nogo.active {
   background-color: #f36975;
 }
 
+.content__cards__card__footer__checkBox__btn.nogo.active {
+  background-color: #fff;
+}
+
 .content__cards__card__footer__checkBox__label {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   display: inline-block;
+}
+
+.content__cards__card__footer__checkBox__label:focus {
+  outline: none;
 }
 
 .content__cards__card__footer__checkBox__label.go {
   float: left;
   color: #999;
+  cursor: pointer;
   margin-left: 2%;
   padding-right: 4%;
   border-right: 1px solid #ccc;
@@ -976,12 +995,13 @@ template {
 
 .content__cards__card__footer__checkBox__label.nogo {
   float: right;
-  color: #999;
+  color: #f36975;
+  cursor: pointer;
   margin-right: 2%;
 }
 
 .content__cards__card__footer__checkBox__label.nogo.active {
-  color: #f36975;
+  color: #999;
 }
 
 .footer {
@@ -1015,4 +1035,4 @@ template {
 .footer__codedby__link:visited {
   color: #333;
 }
-/*# sourceMappingURL=bundle.c2ed645415cf456ddc6e60a87d8fdded.css.map*/
+/*# sourceMappingURL=bundle.71ad5f8e72d5701705a0710c067d0c31.css.map*/
