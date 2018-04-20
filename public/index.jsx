@@ -14,9 +14,9 @@ import rootReducer from "RootReducer";
 import Home from "App";
 import css from "./style/index";
 
-
+/* eslint-disable no-underscore-dangle */
 ReactDOM.render(
-	<Provider store={createStore(rootReducer, applyMiddleware(thunkMiddleware, loggerMiddleware))}>
+	<Provider store={createStore(rootReducer, applyMiddleware(thunkMiddleware, loggerMiddleware), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())}>
 		<Router>
 			<Switch>
 				<Route exact path="/" component={Home} />
@@ -25,4 +25,4 @@ ReactDOM.render(
 		</Router>
 	</Provider>,
 	document.getElementById("root")
-);
+);/* eslint-enable */
