@@ -625,8 +625,8 @@ template {
   height: 50vh;
   border: 1px solid #f1e1d6;
   border-radius: 5px;
-  -webkit-box-shadow: -1px 1px 25px #bbb;
-  box-shadow: -1px 1px 25px #bbb;
+  -webkit-box-shadow: -1px 1px 25px #555;
+  box-shadow: -1px 1px 25px #555;
 }
 
 .content__cards__card__header {
@@ -1035,4 +1035,4 @@ template {
 .footer__codedby__link:visited {
   color: #333;
 }
-/*# sourceMappingURL=bundle.71ad5f8e72d5701705a0710c067d0c31.css.map*/
+/*# sourceMappingURL=bundle.17da94eae7176689faadff99017a830b.css.map*/

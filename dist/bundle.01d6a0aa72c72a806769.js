@@ -1134,9 +1134,9 @@ var _default = {
 	LOGOUT: "logout",
 	/** ******************************************************************************** */
 	// NOTE GOING
+	GOING_START: "going_start",
 	GOING_FAIL: "going_fail",
 	GOING_RECEIVED: "going_received",
-	GOING_REMOVED: "going_removed",
 	INITIALIZE_GOING: "initialize_going",
 	// FETCHING DATA
 	FETCHING_START: "fetching_start",
@@ -6207,9 +6207,13 @@ var goingReducer = function goingReducer() {
 			return _extends({}, state, {
 				bars: action.bars
 			});
+		case _Actions.GOING_START:
+			return _extends({}, state, {
+				errorGoing: false,
+				errorMsg: ""
+			});
 		case _Actions.GOING_FAIL:
 			return _extends({}, state, {
-				isFetchingGoingUsers: false,
 				errorGoing: true,
 				errorMsg: action.error
 			});
@@ -6221,18 +6225,6 @@ var goingReducer = function goingReducer() {
 			bar = { bar: { id: action.id, users: action.users } };
 			bars = idx > -1 ? state.bars.slice(0, idx).concat(bar).concat(state.bars.slice(idx + 1)) : state.bars.concat(bar);
 			return _extends({}, state, {
-				isFetchingGoingUsers: false,
-				bars: bars
-			});
-		case _Actions.GOING_REMOVED:
-			// IF BAR EXIST - remove user (if exists), else do nothing
-			idx = state.bars.map(function (e) {
-				return e.bar.id;
-			}).indexOf(action.id);
-			bar = { bar: { id: action.id, users: action.users } };
-			bars = idx > -1 ? state.bars.slice(0, idx).concat(bar).concat(state.bars.slice(idx + 1)) : state.bars.concat(bar);
-			return _extends({}, state, {
-				isFetchingGoingUsers: false,
 				bars: bars
 			});
 		default:
@@ -19497,8 +19489,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var defaultObj = {};
 var defaultArray = [];
 
-var Content = function (_React$Component) {
-	_inherits(Content, _React$Component);
+var Content = function (_React$PureComponent) {
+	_inherits(Content, _React$PureComponent);
 
 	function Content(props) {
 		_classCallCheck(this, Content);
@@ -19507,7 +19499,6 @@ var Content = function (_React$Component) {
 
 		_this.input = "";
 		_this.searchBtn = _react2.default.createRef();
-		_this.textInput = _react2.default.createRef();
 
 		_this.handleEnterPress = _this.handleEnterPress.bind(_this);
 		_this.handleSearch = _this.handleSearch.bind(_this);
@@ -19516,11 +19507,6 @@ var Content = function (_React$Component) {
 	}
 
 	_createClass(Content, [{
-		key: "componentDidMount",
-		value: function componentDidMount() {
-			this.textInput.current.focus();
-		}
-	}, {
 		key: "handleEnterPress",
 		value: function handleEnterPress(e) {
 			if (e.keyCode === 13) {
@@ -19569,7 +19555,7 @@ var Content = function (_React$Component) {
 					_react2.default.createElement(
 						"div",
 						{ className: "content__search__input-container" },
-						_react2.default.createElement("input", { type: "text", ref: this.textInput, className: "content__search__input-container__input", name: "location", size: "50", onChange: this.handleInput, onKeyUp: this.handleEnterPress, placeholder: "Where are you at?" }),
+						_react2.default.createElement("input", { type: "text", className: "content__search__input-container__input", name: "location", size: "50", onChange: this.handleInput, onKeyUp: this.handleEnterPress, placeholder: "Where are you at?", autoFocus: true }),
 						_react2.default.createElement(
 							"button",
 							{ type: "button", ref: this.searchBtn, className: "content__search__input-container__button", onClick: this.handleSearch },
@@ -19619,7 +19605,7 @@ var Content = function (_React$Component) {
 	}]);
 
 	return Content;
-}(_react2.default.Component);
+}(_react2.default.PureComponent);
 
 var _default = Content;
 exports.default = _default;
@@ -19720,6 +19706,11 @@ var Card = function (_React$Component) {
 	}
 
 	_createClass(Card, [{
+		key: "shouldComponentUpdate",
+		value: function shouldComponentUpdate(nextProps, nextState) {
+			return !!this.props.barObj.bar ? this.props.barObj.bar.users.length !== nextProps.barObj.bar.users.length : false;
+		}
+	}, {
 		key: "handleGoing",
 		value: function handleGoing(e) {
 			var city = e.currentTarget.getAttribute("data-city");
@@ -19970,7 +19961,6 @@ exports.default = _default;
 
 Card.propTypes = {
 	// STATES
-	goState: _propTypes2.default.instanceOf(Object).isRequired,
 	business: _propTypes2.default.instanceOf(Object).isRequired,
 	// DISPATCHED FUNCTIONS
 	going: _propTypes2.default.func.isRequired,
@@ -20059,6 +20049,11 @@ function initializeGoing(json) {
 		bars: json || []
 	};
 }
+function goingStart() {
+	return {
+		type: _Actions.GOING_START
+	};
+}
 function goingFail(error) {
 	return {
 		type: _Actions.GOING_FAIL,
@@ -20072,17 +20067,11 @@ function goingReceived(json) {
 		id: json.id || ""
 	};
 }
-function goingRemoved(json) {
-	return {
-		type: _Actions.GOING_REMOVED,
-		users: json.users || [],
-		id: json.id || ""
-	};
-}
 
 // Redux Thunk
 function DISPATCH_GOING(city, id, user) {
 	return function (dispatch) {
+		dispatch(goingStart());
 
 		return (0, _InitialState.addGoingUsers)(city, id, user).then(function (json) {
 			if (json.status !== 200) {
@@ -20097,6 +20086,7 @@ function DISPATCH_GOING(city, id, user) {
 }
 function DISPATCH_NOT_GOING(city, id, user) {
 	return function (dispatch) {
+		dispatch(goingStart());
 
 		return (0, _InitialState.removeGoingUsers)(city, id, user).then(function (json) {
 			if (json.status !== 200) {
@@ -20174,9 +20164,9 @@ function FETCH_BUSINESSES(location) {
 	reactHotLoader.register(DISPATCH_LOGIN, "DISPATCH_LOGIN", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(DISPATCH_LOGOUT, "DISPATCH_LOGOUT", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(initializeGoing, "initializeGoing", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
+	reactHotLoader.register(goingStart, "goingStart", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(goingFail, "goingFail", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(goingReceived, "goingReceived", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
-	reactHotLoader.register(goingRemoved, "goingRemoved", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(DISPATCH_GOING, "DISPATCH_GOING", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(DISPATCH_NOT_GOING, "DISPATCH_NOT_GOING", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
 	reactHotLoader.register(fetchStart, "fetchStart", "J:/__NODE/backend_projects/Full Stack Projects/fcc-nightlife-coordination-app/public/state/actionCreators.js");
@@ -20198,4 +20188,4 @@ function FETCH_BUSINESSES(location) {
 
 /***/ })
 ],[55]);
-//# sourceMappingURL=bundle.86c6ced14cc38a51f980.js.map
+//# sourceMappingURL=bundle.01d6a0aa72c72a806769.js.map
