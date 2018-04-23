@@ -24,6 +24,11 @@ export default class Card extends React.Component {
 		this.handleGoing = this.handleGoing.bind(this);
 	}
 
+	shouldComponentUpdate(nextProps) {
+		// check if the users' array stays the same or not
+		return this.props.barObj.bar ? (this.props.barObj.bar.users.length !== nextProps.barObj.bar.users.length) : false;
+	}
+
 	handleGoing(e) {
 		const city = e.currentTarget.getAttribute("data-city");
 		const id = e.currentTarget.getAttribute("data-id");

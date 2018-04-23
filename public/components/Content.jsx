@@ -7,20 +7,15 @@ import Card from "./_Card";
 const defaultObj = {};
 const defaultArray = [];
 
-export default class Content extends React.Component {
+export default class Content extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.input = "";
 		this.searchBtn = React.createRef();
-		this.textInput = React.createRef();
 
 		this.handleEnterPress = this.handleEnterPress.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleInput = this.handleInput.bind(this);
-	}
-
-	componentDidMount() {
-		this.textInput.current.focus();
 	}
 
 	handleEnterPress(e) {
@@ -53,7 +48,7 @@ export default class Content extends React.Component {
 						<i className="fa fa-beer content__search__img-container__img" />
 					</div>
 					<div className="content__search__input-container">
-						<input type="text" ref={this.textInput} className="content__search__input-container__input" name="location" size="50" onChange={this.handleInput} onKeyUp={this.handleEnterPress} placeholder="Where are you at?" />
+						<input type="text" className="content__search__input-container__input" name="location" size="50" onChange={this.handleInput} onKeyUp={this.handleEnterPress} placeholder="Where are you at?" autoFocus />
 						<button type="button" ref={this.searchBtn} className="content__search__input-container__button" onClick={this.handleSearch} >
 							{this.props.barState.isFetchingBusinesses ? (<i className="fa fa-spinner fa-spin content__search__input-container__spinner" />) : "Search"}
 						</button>

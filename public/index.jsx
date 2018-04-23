@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import thunkMiddleware from 'redux-thunk';
 import loggerMiddleware from 'redux-logger';
 
@@ -14,9 +14,13 @@ import rootReducer from "RootReducer";
 import Home from "App";
 import css from "./style/index";
 
+// TODO: CHECK IF PRODUCTION!!
+
+/* eslint-disable no-underscore-dangle */
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 ReactDOM.render(
-	<Provider store={createStore(rootReducer, applyMiddleware(thunkMiddleware, loggerMiddleware))}>
+	<Provider store={createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware, loggerMiddleware)))}>
 		<Router>
 			<Switch>
 				<Route exact path="/" component={Home} />
@@ -25,4 +29,4 @@ ReactDOM.render(
 		</Router>
 	</Provider>,
 	document.getElementById("root")
-);
+);/* eslint-enable */
