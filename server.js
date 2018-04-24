@@ -11,6 +11,7 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 // ROUTES
 const axios = require("axios");
+const getClientIp = require("./db/controllers/modules/getIp").default;
 const fsq_version = "1428278400";
 // SECURITY
 const helmet = require("./security/helmet");
@@ -24,7 +25,7 @@ const mongoose = require("mongoose");
 const dbUrl = process.env.DBLINK;
 const db = require("./db/controllers/controller");
 // PORT & ROUTER
-let port = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
 const app = express();
 // LIMITER
 const RateLimiter = require("express-rate-limit");
@@ -102,6 +103,32 @@ app.post("/api/removeGoing", (req, res, next) => {
 	db.removeGoingUsers(req, res, next, data)
 });
 
+// TODO: CHECK LAST SEARCHED LOCATION FROM AUTH-ED USER, ELSE FROM IP (db.getAuthedUser = > db.getLastLocation() ELSE IP)
+app.post("/api/initializeLocation", async (req, res, next) => {
+	
+	let ip = await getClientIp(req);
+	ip = ip === "::1" ? "": ip;
+
+	axios({
+		method: "get",
+		url: `http://ip-api.com/json${ip}`,
+		timeout: 2000,
+		validateStatus: status => status < 500 // Reject if the status code < 500
+		})
+		.then(response => res.status(200).send(response.data))
+		.catch(error => {
+			if (error.response) {
+				// The request was made and the server responded with a status code that falls out of the range of 2xx
+				return res.status(error.response.status).send(error.response.data, error.response.header);
+			}
+			if (error.request) {
+				// The request was made but no response was received `error.request` is an instance of http.ClientRequest in node.js
+				return res.status(400).send(error.request);
+			}
+			return res.status(400).send(error.message);
+		});
+});
+
 
 // in case of Async function, use try - catch block!!! and no need for then -> catch block
 app.post("/api/searchBars", (req, res, next) => {
@@ -130,13 +157,11 @@ app.post("/api/searchBars", (req, res, next) => {
 		})
 		.catch(error => {
 			if (error.response) {
-				// The request was made and the server responded with a status code
-				// that falls out of the range of 2xx
-				return res.status(error.response.status).send(error.response.data, error.response.header);
+				// The request was made and the server responded with a status code that falls out of the range of 2xx
+				return res.status(error.response.status).send(error.response.data);
 			}
 			if (error.request) {
-				// The request was made but no response was received
-				// `error.request` is an instance of http.ClientRequest in node.js
+				// The request was made but no response was received `error.request` is an instance of http.ClientRequest in node.js
 				return res.status(400).send(error.request);
 			}
 			return res.status(400).send(error.message);
@@ -147,7 +172,6 @@ app.post("/api/searchBars", (req, res, next) => {
 // PUT ALL ROUTES ABOVE THIS LINE OF CODE! - NOT IN USE
 if (process.env.NODE_ENV !== "production") {
 
-	port = 8080;
 	const webpackDevMiddleware = require("webpack-dev-middleware");
 	const webpackHotMiddleware = require('webpack-hot-middleware');
 	const webpack = require("webpack");

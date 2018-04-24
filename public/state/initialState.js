@@ -43,8 +43,16 @@ export default {
 			},
 			validateStatus: status => status < 500 // Reject if the status is > 500
 		}),
+	initializeLocation: () =>
+		axios({
+			method: "post",
+			url: "api/initializeLocation",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			validateStatus: status => status < 500 // Reject if the status is > 500
+		}),
 	INITIAL_AUTH_REDUCER: { authenticated: false },
-	// TODO: BE FETCHED FROM MONGODB
 	INITIAL_GOING_REDUCER: {
 		errorGoing: false,
 		errorMsg: "",
@@ -55,6 +63,7 @@ export default {
 		errorFetching: false,
 		errorMsg: "",
 		lastSrcLocation: "",
+		inputSrc: "",
 		businesses: [{
 			reasons: {},
 			referralId: "e-4-4b68a117f964a520c8832be3-0",

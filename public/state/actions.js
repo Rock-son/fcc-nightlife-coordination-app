@@ -11,6 +11,7 @@ export default {
 	GOING_RECEIVED: "going_received",
 	INITIALIZE_GOING: "initialize_going",
 	// FETCHING DATA
+	LOCATION_INPUT: "location_input",
 	FETCHING_START: "fetching_start",
 	FETCHING_FAIL: "fetching_failure",
 	FETCHING_RECEIVED: "fetching_received"

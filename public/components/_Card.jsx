@@ -25,8 +25,13 @@ export default class Card extends React.Component {
 	}
 
 	shouldComponentUpdate(nextProps) {
-		// check if the users' array stays the same or not
-		return this.props.barObj.bar ? (this.props.barObj.bar.users.length !== nextProps.barObj.bar.users.length) : false;
+		// check if the bar's users stay the same or not
+		if (nextProps.barObj.bar && !this.props.barObj.bar) {
+			return true;
+		} else if (nextProps.barObj.bar && this.props.barObj.bar) {
+			return this.props.barObj.bar.users.length !== nextProps.barObj.bar.users.length;
+		}
+		return false;
 	}
 
 	handleGoing(e) {
