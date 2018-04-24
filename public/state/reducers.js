@@ -1,7 +1,7 @@
 "use strict";
 
 import { combineReducers } from "redux";
-import { LOGIN, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED } from "Actions";
+import { LOGIN, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED, LOCATION_INPUT } from "Actions";
 import { INITIAL_AUTH_REDUCER, INITIAL_GOING_REDUCER, INITIALIZE_BAR_REDUCER } from "InitialState";
 
 
@@ -84,6 +84,12 @@ const searchReducer = (state = INITIALIZE_BAR_REDUCER, action) => {
 			...state,
 			isFetchingBusinesses: false,
 			businesses: action.businesses
+		};
+	case LOCATION_INPUT:
+		return {
+			...state,
+			isFetchingBusinesses: false,
+			inputSrc: action.input
 		};
 	default:
 		return state;

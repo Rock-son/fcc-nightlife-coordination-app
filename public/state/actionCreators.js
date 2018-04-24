@@ -1,7 +1,7 @@
 "use strict";
 
-import { LOGIN, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, FETCHING_START, FETCHING_FAIL, FETCHING_RECEIVED } from "Actions";
-import { getBarsOnLocation, addGoingUsers, removeGoingUsers } from "InitialState";
+import { LOGIN, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, LOCATION_INPUT, FETCHING_START, FETCHING_FAIL, FETCHING_RECEIVED } from "Actions";
+import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation } from "InitialState";
 
 
 // AUTHENTICATION action creater
@@ -93,6 +93,13 @@ function fetchFail(error) {
 	};
 }
 
+export function LOCATION_INPUT_SRC(input) {
+	return {
+		type: LOCATION_INPUT,
+		input
+	};
+}
+
 function fetchReceived(json) {
 	return {
 		type: FETCHING_RECEIVED,
@@ -110,6 +117,24 @@ function shouldReturnResults(state, location) {
 
 
 // REDUX THUNK
+export function INITIALIZE_LOCATION() {
+	return (dispatch) => {
+		// SYNC FUNC - can be dispatched immediately
+		dispatch(fetchStart());
+		// ASYNC FUNC - return a Promise
+		return initializeLocation()
+			.then((json) => {
+				if (json.status !== 200) {
+					dispatch(fetchFail(json.data));
+				} else {
+					dispatch(LOCATION_INPUT_SRC(json.data.city));
+				}
+			})
+			.catch(error => dispatch(fetchFail(error)));
+	};
+}
+
+
 export function FETCH_BUSINESSES(location) {
 	return (dispatch, getState) => {
 		if (!shouldReturnResults(getState, location)) {
