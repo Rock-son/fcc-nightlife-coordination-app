@@ -7,15 +7,25 @@ import Card from "./_Card";
 const defaultObj = {};
 const defaultArray = [];
 
-export default class Content extends React.PureComponent {
+export default class Content extends React.Component {
+	static handleClick(e) {
+		e.target.select();
+	}
+
 	constructor(props) {
 		super(props);
-		this.input = "";
+		this.inputField = React.createRef();
 		this.searchBtn = React.createRef();
 
 		this.handleEnterPress = this.handleEnterPress.bind(this);
 		this.handleSearch = this.handleSearch.bind(this);
 		this.handleInput = this.handleInput.bind(this);
+		this.handleClick = this.handleClick.bind(this);
+	}
+
+	componentDidMount() {
+		this.props.renderLocation();
+		setTimeout(() => this.inputField.current.click(), 500);
 	}
 
 	handleEnterPress(e) {
@@ -23,14 +33,20 @@ export default class Content extends React.PureComponent {
 			this.searchBtn.current.click();
 		}
 	}
+
 	handleSearch(e) {
 		e.preventDefault();
-		this.props.search(this.input);
+		this.props.search(this.props.barState.inputSrc);
+	}
+
+	handleClick(e) {
+		e.preventDefault();
+		this.constructor.handleClick(e);
 	}
 
 	handleInput(e) {
 		e.preventDefault();
-		this.input = e.target.value;
+		this.props.locationInput(e.target.value);
 	}
 
 	render() {
@@ -48,7 +64,7 @@ export default class Content extends React.PureComponent {
 						<i className="fa fa-beer content__search__img-container__img" />
 					</div>
 					<div className="content__search__input-container">
-						<input type="text" className="content__search__input-container__input" name="location" size="50" onChange={this.handleInput} onKeyUp={this.handleEnterPress} placeholder="Where are you at?" autoFocus />
+						<input type="text" ref={this.inputField} className="content__search__input-container__input" name="location" size="50" value={this.props.barState.inputSrc} onClick={this.handleClick} onChange={this.handleInput} onKeyUp={this.handleEnterPress} placeholder="Where are you at?" />
 						<button type="button" ref={this.searchBtn} className="content__search__input-container__button" onClick={this.handleSearch} >
 							{this.props.barState.isFetchingBusinesses ? (<i className="fa fa-spinner fa-spin content__search__input-container__spinner" />) : "Search"}
 						</button>
@@ -85,6 +101,8 @@ Content.propTypes = {
 	goState: PropTypes.instanceOf(Object).isRequired,
 	// ACTIONS
 	search: PropTypes.func.isRequired,
+	renderLocation: PropTypes.func.isRequired,
+	locationInput: PropTypes.func.isRequired,
 	going: PropTypes.func.isRequired,
 	notGoing: PropTypes.func.isRequired,
 	// ERRORS
