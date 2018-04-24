@@ -28,7 +28,7 @@ class Home extends React.Component {
 		return (
 			<div>
 				<Navbar authState={this.props.auth} login={this.props.login} logout={this.props.logout} />
-				<Content barState={this.props.bar} goState={this.props.go} search={this.props.search} going={this.props.going} notGoing={this.props.notGoing} error={this.state.hasError} />
+				<Content barState={this.props.bar} goState={this.props.go} search={this.props.search} going={this.props.going} notGoing={this.props.notGoing} renderLocation={this.props.renderLocation} locationInput={this.props.locationInput} error={this.state.hasError} />
 				<Footer />
 			</div>
 		);
@@ -40,11 +40,17 @@ Home.propTypes = {
 	auth: PropTypes.instanceOf(Object).isRequired,
 	bar: PropTypes.instanceOf(Object).isRequired,
 	go: PropTypes.instanceOf(Object).isRequired,
-	// DISPATCHED FUNCTIONS
+	// DISPATCH FUNCTIONS
+	// LOGIN
 	login: PropTypes.func,
 	logout: PropTypes.func,
+	// GOING
 	going: PropTypes.func,
 	notGoing: PropTypes.func,
+	// LOCATION
+	locationInput: PropTypes.func,
+	renderLocation: PropTypes.func,
+	// SEARCH
 	search: PropTypes.func
 };
 
@@ -53,6 +59,8 @@ Home.defaultProps = {
 	logout: () => true,
 	going: () => ({ city: "", id: "", user: "" }),
 	notGoing: () => ({ city: "", id: "", user: "" }),
+	locationInput: () => "",
+	renderLocation: () => "",
 	search: () => {}
 };
 
