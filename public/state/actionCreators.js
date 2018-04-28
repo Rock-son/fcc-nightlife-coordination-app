@@ -1,23 +1,50 @@
 "use strict";
 
-import { LOGIN, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, LOCATION_INPUT, FETCHING_START, FETCHING_FAIL, FETCHING_RECEIVED } from "Actions";
-import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation } from "InitialState";
+import { LOGIN_DIALOG, LOGIN, LOGIN_FAIL, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, LOCATION_INPUT, FETCHING_START, FETCHING_FAIL, FETCHING_RECEIVED } from "Actions";
+import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation, login } from "Api";
 
 
 // AUTHENTICATION action creater
-export function DISPATCH_LOGIN(user) {
+export function OPEN_LOGIN_DIALOG() {
+	return {
+		type: LOGIN_DIALOG
+	};
+}
+function loginUser(data) {
 	return {
 		type: LOGIN,
-		user
+		data
 	};
 }
-export function DISPATCH_LOGOUT(user) {
+function loginFail(error) {
 	return {
-		type: LOGOUT,
-		user
+		type: LOGIN_FAIL,
+		error
 	};
 }
+// TODO: LOGOUT by deleteing the authentication cookie
+export function DISPATCH_LOGOUT() {
+	return {
+		type: LOGOUT
+	};
+}
+// Redux Thunk
+export function DISPATCH_LOGIN_TYPE(type) {
+	return (dispatch, getState) => {
+		if (getState.authenticated) {
+			return Promise.resolve;
+		}
 
+		return login(type)
+			.then((json) => {
+				if (json.status !== 200) {
+					dispatch(loginFail(json.data));
+				}
+				dispatch(loginUser(json.data));
+			})
+			.catch(error => dispatch(loginFail(error)));
+	};
+}
 
 // ASYNC GOING
 function initializeGoing(json) {
