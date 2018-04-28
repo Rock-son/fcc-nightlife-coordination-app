@@ -3,6 +3,8 @@
 export default {
 	// AUTHENTICATION
 	LOGIN: "login",
+	LOGIN_DIALOG: "login_dialog",
+	LOGIN_FAIL: "login_fail",
 	LOGOUT: "logout",
 	/** ******************************************************************************** */
 	// NOTE GOING

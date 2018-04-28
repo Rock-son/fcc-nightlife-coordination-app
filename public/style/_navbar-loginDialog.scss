@@ -1,0 +1,70 @@
+&__login-dialog {
+	position: absolute;
+	background-color: #eee;
+	width: 20vw;
+	margin-top: -1%;
+    right: 0;
+	&__header {
+		margin: 6% auto;
+		text-align: center;
+		color: #999;
+	}
+	&__btn {
+		display: block;
+		padding: 2% 5%;
+		width: 80%;
+		font-size: 1.1rem;
+		margin: 1% auto;
+		cursor: pointer;
+		transition: transform .1s;
+		&:hover {
+			transform: scale(1.01);
+		}
+		&__container {
+			display: inline-block;
+			text-align: left;
+			width: 5.5rem;
+			& .fa-facebook-square {
+				color: #3b5998;
+			}
+			& .fa-google-plus-square {
+				color: #dd4b39;
+			}
+			& .fa-github-square {
+				color: #333;
+			}
+			& .fa-twitter-square {
+				color: #1da1f2;
+
+			}
+		}
+	}
+	&__line {
+		width: 80%;
+		margin-top: 7%;
+		border: .5px solid #ccc;
+	}
+	&__footer {
+		margin: 3% auto 5% auto;
+		width: 100%;
+		text-align: center;
+		font-size: 1.1rem;
+		& span {
+			font-size: 1.1rem;
+			color: #555;
+			font-weight: 100;
+		}
+		&__link {
+			margin: 1% auto;
+			color: #bbb;
+			text-decoration: none;
+			&:active, &:visited {
+				color: #bbb;
+				text-decoration: none;
+			}
+			&:hover {
+				color: #333;
+			}
+		}
+	}
+}

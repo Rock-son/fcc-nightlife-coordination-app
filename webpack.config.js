@@ -4,6 +4,9 @@ const webpack = require("webpack");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;/* webpack --json > stats.json */
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 const isDevEnv = process.env.NODE_ENV === "development" || false;
 
@@ -15,7 +18,7 @@ const TEMPLATE_OUT = "./index.html";
 const BUNDLE = path.join(__dirname, "public", "index.jsx");
 const OUTPUT = path.join(__dirname, "dist");
 // LIBS (files that don't change much)
-const VENDOR_LIBS = ["react", "react-dom", "redux", "react-redux", "redux-thunk"];
+const VENDOR_LIBS = ["react", "react-dom", "redux", "react-redux", "react-router", "react-router-dom", "redux-thunk"];
 
 
 
@@ -39,6 +42,7 @@ const config = {
 			Content: path.join(__dirname, "public/components/Content.jsx"),
 			Footer: path.join(__dirname, "public/components/Footer.jsx"),
 			InitialState: path.join(__dirname, "public/state/initialState.js"),
+			Api: path.join(__dirname, "public/state/api.js"),
 			Actions: path.join(__dirname, "public/state/actions.js"),
 			ActionCreators: path.join(__dirname, "public/state/actionCreators.js"),
 			RootReducer: path.join(__dirname, "public/state/reducers.js")
@@ -48,7 +52,8 @@ const config = {
 	devtool: "#source-map",
 	devServer: {
 		contentBase: [path.join(__dirname, "dist"), path.join(__dirname, "public")],
-		hot: true
+		hot: true,
+		quiet: true
 	},
 	module: {
 		rules: [
@@ -87,7 +92,7 @@ const config = {
 			filename: "[name].[contenthash].css"
 			//disable: isDevEnv
 		}),
-
+		new FriendlyErrorsWebpackPlugin(),
 		new webpack.optimize.CommonsChunkPlugin({
 			names: ["vendor", "manifest"]
 		}),
@@ -95,11 +100,21 @@ const config = {
 			template: TEMPLATE_IN,
 			filename: TEMPLATE_OUT// target path
 		}),
-		/*new webpack.optimize.UglifyJsPlugin({
-			compress:{
-				warnings: true
+		() => {
+			if(isDevEnv) {
+				return new BundleAnalyzerPlugin()
 			}
-		}),*/
+			return new UglifyJsPlugin({
+				cache: true,
+				sourceMap: true,
+				parallel: true,
+				uglifyOptions : {
+					ecma: 6,
+					warnings: false,
+					mangle: true
+				}
+			});
+		},
 		new webpack.DefinePlugin({
 			"process.env": {
 				"NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")

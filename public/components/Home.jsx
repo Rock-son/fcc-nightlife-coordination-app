@@ -20,14 +20,14 @@ class Home extends React.Component {
 		this.state = { hasError: false };
 	}
 
-	componentDidCatch(error, info) {
+	componentDidCatch(/* error, info */) {
 		// Display fallback UI
 		this.setState({ hasError: true });
 	}
 	render() {
 		return (
 			<div>
-				<Navbar authState={this.props.auth} login={this.props.login} logout={this.props.logout} />
+				<Navbar authState={this.props.auth} openLoginDialog={this.props.openLoginDialog} login={this.props.login} logout={this.props.logout} />
 				<Content barState={this.props.bar} goState={this.props.go} search={this.props.search} going={this.props.going} notGoing={this.props.notGoing} renderLocation={this.props.renderLocation} locationInput={this.props.locationInput} error={this.state.hasError} />
 				<Footer />
 			</div>
@@ -42,6 +42,7 @@ Home.propTypes = {
 	go: PropTypes.instanceOf(Object).isRequired,
 	// DISPATCH FUNCTIONS
 	// LOGIN
+	openLoginDialog: PropTypes.func.isRequired,
 	login: PropTypes.func,
 	logout: PropTypes.func,
 	// GOING

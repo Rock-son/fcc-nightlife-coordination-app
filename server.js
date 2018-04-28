@@ -77,6 +77,16 @@ mongoose.connect(dbUrl, { useMongoClient: true, autoIndex: false });
 
 
 // CUSTOM ROUTES
+// AUTHENTICATION
+app.post("api/authenticate", (req, res) => {
+	if (req.body.location.trim() === "") return setTimeout(() => res.status(400).send("Error authenticating, please try again."), 300);
+
+
+
+
+
+});
+
 
 // TODO: add authenticate validation for add going!!
 app.post("/api/addGoing", (req, res, next) => {
@@ -105,7 +115,7 @@ app.post("/api/removeGoing", (req, res, next) => {
 
 // TODO: CHECK LAST SEARCHED LOCATION FROM AUTH-ED USER, ELSE FROM IP (db.getAuthedUser = > db.getLastLocation() ELSE IP)
 app.post("/api/initializeLocation", async (req, res, next) => {
-	
+
 	let ip = await getClientIp(req);
 	ip = ip === "::1" ? "": ip;
 

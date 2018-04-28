@@ -8,6 +8,9 @@ yarn-error.log*
 #dist files
 dist
 
+#stats file
+stats.json
+
 # Runtime data
 pids
 *.pid

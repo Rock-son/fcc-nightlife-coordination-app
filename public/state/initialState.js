@@ -1,64 +1,16 @@
 "use strict";
 
-import axios from "axios";
-
 export default {
-	getBarsOnLocation: location =>
-		axios({
-			method: "post",
-			url: "api/searchBars",
-			data: {
-				location
-			},
-			headers: {
-				"Content-Type": "application/json"
-			},
-			validateStatus: status => status < 500 // Reject if the status is > 500
-		}),
-	addGoingUsers: (location, id, user) =>
-		axios({
-			method: "post",
-			url: "api/addGoing",
-			data: {
-				location,
-				id,
-				user
-			},
-			headers: {
-				"Content-Type": "application/json"
-			},
-			validateStatus: status => status < 500 // Reject if the status is > 500
-		}),
-	removeGoingUsers: (location, id, user) =>
-		axios({
-			method: "post",
-			url: "api/removeGoing",
-			data: {
-				location,
-				id,
-				user
-			},
-			headers: {
-				"Content-Type": "application/json"
-			},
-			validateStatus: status => status < 500 // Reject if the status is > 500
-		}),
-	initializeLocation: () =>
-		axios({
-			method: "post",
-			url: "api/initializeLocation",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			validateStatus: status => status < 500 // Reject if the status is > 500
-		}),
-	INITIAL_AUTH_REDUCER: { authenticated: false },
-	INITIAL_GOING_REDUCER: {
+	INITIAL_AUTH_STATE: {
+		authenticated: false,
+		openDialog: false
+	},
+	INITIAL_GOING_STATE: {
 		errorGoing: false,
 		errorMsg: "",
 		bars: []
 	},
-	INITIALIZE_BAR_REDUCER: {
+	INITIALIZE_BAR_STATE: {
 		isFetchingBusinesses: false,
 		errorFetching: false,
 		errorMsg: "",

@@ -1,22 +1,29 @@
 "use strict";
 
 import { combineReducers } from "redux";
-import { LOGIN, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED, LOCATION_INPUT } from "Actions";
-import { INITIAL_AUTH_REDUCER, INITIAL_GOING_REDUCER, INITIALIZE_BAR_REDUCER } from "InitialState";
+import { LOGIN_DIALOG, LOGIN, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED, LOCATION_INPUT } from "Actions";
+import { INITIAL_AUTH_STATE, INITIAL_GOING_STATE, INITIALIZE_BAR_STATE } from "InitialState";
 
 
 // TODO: REPLACE with function that will return true after successful login and logout!
-const authReducer = (state = INITIAL_AUTH_REDUCER, action) => {
+const authReducer = (state = INITIAL_AUTH_STATE, action) => {
 	switch (action.type) {
+	case LOGIN_DIALOG:
+		return {
+			...state,
+			openDialog: true
+		};
 	case LOGIN:
 		return {
 			...state,
+			openDialog: false,
 			user: action.user,
 			authenticated: true
 		};
 	case LOGOUT:
 		return {
 			...state,
+			openDialog: false,
 			user: action.user,
 			authenticated: false
 		};
@@ -25,7 +32,7 @@ const authReducer = (state = INITIAL_AUTH_REDUCER, action) => {
 	}
 };
 // GOING REDUCER
-const goingReducer = (state = INITIAL_GOING_REDUCER, action) => {
+const goingReducer = (state = INITIAL_GOING_STATE, action) => {
 	let idx = null;
 	let bar = null;
 	let bars = null;
@@ -61,7 +68,7 @@ const goingReducer = (state = INITIAL_GOING_REDUCER, action) => {
 	}
 };
 // TODO: ADD TO DB
-const searchReducer = (state = INITIALIZE_BAR_REDUCER, action) => {
+const searchReducer = (state = INITIALIZE_BAR_STATE, action) => {
 	switch (action.type) {
 	case FETCHING_START:
 		return {
