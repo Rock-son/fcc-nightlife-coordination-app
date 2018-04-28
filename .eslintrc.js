@@ -40,6 +40,13 @@ module.exports = {
 			"error",
 			"never"
 		],
+		"jsx-a11y/anchor-is-valid": [
+			"error",
+			{
+				"components": [ "Link" ],
+				"specialLink": [ "to" ]
+			}
+		],
 		"react/jsx-no-bind": [2, {
 			"ignoreRefs": false,
 			"allowArrowFunctions": false,
