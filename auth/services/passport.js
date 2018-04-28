@@ -1,6 +1,5 @@
 "use strict";
 
-
 const passport = require("passport");
 const {
 	LocalUser, GitHubUser, FacebookUser, GoogleUser
