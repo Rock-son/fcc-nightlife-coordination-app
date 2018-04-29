@@ -3,7 +3,10 @@
 export default {
 	INITIAL_AUTH_STATE: {
 		authenticated: false,
-		openDialog: false
+		openDialog: false,
+		register: false,
+		hasError: false,
+		error: ""
 	},
 	INITIAL_GOING_STATE: {
 		errorGoing: false,
