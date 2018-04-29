@@ -11,7 +11,7 @@ const authReducer = (state = INITIAL_AUTH_STATE, action) => {
 	case LOGIN_DIALOG:
 		return {
 			...state,
-			openDialog: true
+			openDialog: action.state
 		};
 	case LOGIN:
 		return {
