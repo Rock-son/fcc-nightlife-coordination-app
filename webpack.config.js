@@ -34,13 +34,19 @@ const config = {
 		filename: "[name].[hash].js"
 	},
 	resolve: {
-		// using aliases makes components reusable! - with no relative paths, i.e. just "require("App")"
+		// using aliases makes components reusable! - with no relative paths, i.e. just "require("Home")"
 		alias: {
-			App: path.join(__dirname, "public/components/App.jsx"),
-			Home: path.join(__dirname, "public/components/Home.jsx"),
-			Navbar: path.join(__dirname, "public/components/Navbar.jsx"),
-			Content: path.join(__dirname, "public/components/Content.jsx"),
-			Footer: path.join(__dirname, "public/components/Footer.jsx"),
+			// HOME
+			Home_MapState: path.join(__dirname, "public/components/home/Home_MapState.jsx"),
+			Home_HOC: path.join(__dirname, "public/components/home/Home_HOC.jsx"),
+			Navbar: path.join(__dirname, "public/components/home/Navbar.jsx"),
+			Content: path.join(__dirname, "public/components/home/Content.jsx"),
+			Footer: path.join(__dirname, "public/components/home/Footer.jsx"),
+			// LOGIN
+			Login_MapState: path.join(__dirname, "public/components/login/Login_MapState.jsx"),
+			Login_HOC: path.join(__dirname, "public/components/login/Login_HOC.jsx"),
+			Login: path.join(__dirname, "public/components/login/Login.jsx"),
+			// MISCELLANEOUS - state (actions, action creators, reducers, apis)
 			InitialState: path.join(__dirname, "public/state/initialState.js"),
 			Api: path.join(__dirname, "public/state/api.js"),
 			Actions: path.join(__dirname, "public/state/actions.js"),
