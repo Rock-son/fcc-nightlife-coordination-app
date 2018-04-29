@@ -1,7 +1,10 @@
 "use strict";
 
-import { LOGIN_DIALOG, LOGIN, LOGIN_FAIL, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, LOCATION_INPUT, FETCHING_START, FETCHING_FAIL, FETCHING_RECEIVED } from "Actions";
-import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation, login } from "Api";
+import {
+	REGISTER, IS_REGISTERING, REGISTER_FAIL, LOGIN_DIALOG, LOGIN, LOGIN_FAIL, LOGOUT, INITIALIZE_GOING, GOING_START,
+	GOING_FAIL, GOING_RECEIVED,	LOCATION_INPUT, FETCHING_START, FETCHING_FAIL, FETCHING_RECEIVED
+} from "Actions";
+import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation, login, register } from "Api";
 
 
 // AUTHENTICATION action creater
@@ -11,10 +14,28 @@ export function OPEN_LOGIN_DIALOG(state) {
 		state
 	};
 }
+export function DISPATCH_IS_REGISTERING(state) {
+	return {
+		type: IS_REGISTERING,
+		state
+	};
+}
+function registerUser(data) {
+	return {
+		type: REGISTER,
+		data
+	};
+}
 function loginUser(data) {
 	return {
 		type: LOGIN,
 		data
+	};
+}
+function registerFail(error) {
+	return {
+		type: REGISTER_FAIL,
+		error
 	};
 }
 function loginFail(error) {
@@ -30,13 +51,30 @@ export function DISPATCH_LOGOUT() {
 	};
 }
 // Redux Thunk
-export function DISPATCH_LOGIN_TYPE(type) {
+export function DISPATCH_REGISTRATION(user, p1, p2) {
 	return (dispatch, getState) => {
 		if (getState.authenticated) {
 			return Promise.resolve;
 		}
 
-		return login(type)
+		return register(user, p1, p2)
+			.then((json) => {
+				if (json.status !== 200) {
+					dispatch(registerFail(json.data));
+				}
+				dispatch(registerUser(json.data));
+			})
+			.catch(error => dispatch(registerFail(error)));
+	};
+}
+
+export function DISPATCH_LOGIN(data) {
+	return (dispatch, getState) => {
+		if (getState.authenticated) {
+			return Promise.resolve;
+		}
+
+		return login(data)
 			.then((json) => {
 				if (json.status !== 200) {
 					dispatch(loginFail(json.data));

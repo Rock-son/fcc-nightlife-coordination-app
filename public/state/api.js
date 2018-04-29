@@ -54,7 +54,7 @@ export default {
 			},
 			validateStatus
 		}),
-	login: type =>
+	login: data =>
 		axios({
 			method: "post",
 			url: "api/authenticate",
@@ -62,7 +62,23 @@ export default {
 				"Content-Type": "application/json"
 			},
 			data: {
-				type
+				type: data.type || null,
+				user: data.user || null,
+				pass: data.pass || null
+			},
+			validateStatus
+		}),
+	register: data =>
+		axios({
+			method: "post",
+			url: "api/register",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			data: {
+				user: data.user || null,
+				pass1: data.pass1 || null,
+				pass2: data.pass2 || null
 			},
 			validateStatus
 		})

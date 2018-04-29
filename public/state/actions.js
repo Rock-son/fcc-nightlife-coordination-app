@@ -2,6 +2,9 @@
 
 export default {
 	// AUTHENTICATION
+	REGISTER: "register",
+	IS_REGISTERING: "is_registering",
+	REGISTER_FAIL: "register_fail",
 	LOGIN: "login",
 	LOGIN_DIALOG: "login_dialog",
 	LOGIN_FAIL: "login_fail",

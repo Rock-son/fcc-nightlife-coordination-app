@@ -8,6 +8,7 @@ import { whyDidYouUpdate } from "why-did-you-update";
 import Navbar from "Navbar";
 import Footer from "Footer";
 import Content from "Content";
+import css from "../../style/Home/index";
 
 if (process.env.NODE_ENV !== 'production') {
 	whyDidYouUpdate(React);
@@ -27,7 +28,7 @@ class Home extends React.Component {
 	render() {
 		return (
 			<div>
-				<Navbar authState={this.props.auth} openLoginDialog={this.props.openLoginDialog} login={this.props.login} logout={this.props.logout} />
+				<Navbar authState={this.props.auth} openLoginDialog={this.props.openLoginDialog} isRegistering={this.props.isRegistering} login={this.props.login} logout={this.props.logout} />
 				<Content barState={this.props.bar} goState={this.props.go} search={this.props.search} going={this.props.going} notGoing={this.props.notGoing} renderLocation={this.props.renderLocation} locationInput={this.props.locationInput} error={this.state.hasError} />
 				<Footer />
 			</div>
@@ -42,7 +43,8 @@ Home.propTypes = {
 	go: PropTypes.instanceOf(Object).isRequired,
 	// DISPATCH FUNCTIONS
 	// LOGIN
-	openLoginDialog: PropTypes.func.isRequired,
+	openLoginDialog: PropTypes.func,
+	isRegistering: PropTypes.func,
 	login: PropTypes.func,
 	logout: PropTypes.func,
 	// GOING
@@ -56,7 +58,9 @@ Home.propTypes = {
 };
 
 Home.defaultProps = {
-	login: () => true,
+	openLoginDialog: () => false,
+	isRegistering: () => false,
+	login: () => {},
 	logout: () => true,
 	going: () => ({ city: "", id: "", user: "" }),
 	notGoing: () => ({ city: "", id: "", user: "" }),

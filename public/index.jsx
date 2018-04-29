@@ -11,8 +11,8 @@ import loggerMiddleware from 'redux-logger';
 import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 
 import rootReducer from "RootReducer";
-import Home from "App";
-import css from "./style/index";
+import Home from "Home_MapState";
+import Login from "Login_MapState";
 
 // TODO: CHECK IF PRODUCTION!!
 
@@ -24,8 +24,8 @@ ReactDOM.render(
 		<Router>
 			<Switch>
 				<Route exact path="/" component={Home} />
-				<Route exact path="/signin" component={Home} />
-				<Route exact path="/signup" component={Home} />
+				<Route exact path="/signin" component={Login} />
+				<Route exact path="/signup" component={Login} />
 				<Redirect path="*" to="/" />
 			</Switch>
 		</Router>

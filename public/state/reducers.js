@@ -1,7 +1,10 @@
 "use strict";
 
 import { combineReducers } from "redux";
-import { LOGIN_DIALOG, LOGIN, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL, GOING_RECEIVED, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED, LOCATION_INPUT } from "Actions";
+import {
+	REGISTER, IS_REGISTERING, REGISTER_FAIL, LOGIN_DIALOG, LOGIN, LOGIN_FAIL, LOGOUT, INITIALIZE_GOING, GOING_START, GOING_FAIL,
+	GOING_RECEIVED, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED, LOCATION_INPUT
+} from "Actions";
 import { INITIAL_AUTH_STATE, INITIAL_GOING_STATE, INITIALIZE_BAR_STATE } from "InitialState";
 
 
@@ -13,18 +16,35 @@ const authReducer = (state = INITIAL_AUTH_STATE, action) => {
 			...state,
 			openDialog: action.state
 		};
-	case LOGIN:
+	case IS_REGISTERING:
 		return {
 			...state,
+			openDialog: false,
+			register: action.state
+		};
+	case LOGIN:
+	case REGISTER:
+		return {
+			...state,
+			hasError: false,
+			error: "",
 			openDialog: false,
 			user: action.user,
 			authenticated: true
 		};
-	case LOGOUT:
+	case REGISTER_FAIL:
+	case LOGIN_FAIL:
 		return {
 			...state,
 			openDialog: false,
-			user: action.user,
+			hasError: true,
+			error: action.error,
+			authenticated: false
+		};
+	case LOGOUT:
+		return {
+			...state,
+			user: "",
 			authenticated: false
 		};
 	default:
