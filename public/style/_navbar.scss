@@ -43,10 +43,10 @@
             font-size: 1.1rem;
             transform: translateY(50%);
             text-decoration: none;
-            color: #000;
+            color: #555;
             &:hover {
                 cursor: pointer;
-                color: #eee;
+                color: #333;
             }
         }
         &__logout {

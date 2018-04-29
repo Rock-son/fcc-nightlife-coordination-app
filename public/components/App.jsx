@@ -13,7 +13,7 @@ const mapStateToProps = function a(state) {
 
 const mapDispatchToProps = function b(dispatch) {
 	return {
-		openLoginDialog: () => dispatch(OPEN_LOGIN_DIALOG()),
+		openLoginDialog: openState => dispatch(OPEN_LOGIN_DIALOG(openState)),
 		login: type => dispatch(DISPATCH_LOGIN_TYPE(type)),
 		logout: () => dispatch(DISPATCH_LOGOUT()),
 

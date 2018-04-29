@@ -5,9 +5,10 @@ import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation,
 
 
 // AUTHENTICATION action creater
-export function OPEN_LOGIN_DIALOG() {
+export function OPEN_LOGIN_DIALOG(state) {
 	return {
-		type: LOGIN_DIALOG
+		type: LOGIN_DIALOG,
+		state
 	};
 }
 function loginUser(data) {
