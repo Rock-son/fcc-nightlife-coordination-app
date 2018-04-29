@@ -21,7 +21,7 @@ export default class Navbar extends React.PureComponent {
 	handleClick(e) {
 		switch (e.target.id) {
 		case LOGIN:
-			this.props.openLoginDialog();
+			this.props.openLoginDialog(!this.props.authState.openDialog);
 			break;
 		case GOOGLE:
 			this.props.login(GOOGLE);
@@ -58,7 +58,7 @@ export default class Navbar extends React.PureComponent {
 					<i className="fa fa-home" title="Home" />
 				</div>
 				<div className="navbar__right">
-					<button id="login" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "none" : "inline-block" }} className="navbar__right__login">Sign In</button>
+					<button id="login" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "none" : "inline-block" }} className="navbar__right__login">{this.props.authState.openDialog ? "Close" : "Sign In" }</button>
 					<button id="logout" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">Logout</button>
 					<a id="user" href="https://twitter.com/settings/applications" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">Welcome, Rok</a>
 				</div>
@@ -69,7 +69,7 @@ export default class Navbar extends React.PureComponent {
 							<i className="fa fa-facebook-square" />  Facebook
 						</div>
 					</button>
-					<button id="google" className="navbar__login-dialog__btn google btn" onClick={this.handleClick} >
+					<button id="google" className="navbar__login-dialog__btn google" onClick={this.handleClick} >
 						<div className="navbar__login-dialog__btn__container">
 							<i className="fa fa-google-plus-square" /> Google
 						</div>
