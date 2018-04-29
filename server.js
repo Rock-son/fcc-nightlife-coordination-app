@@ -78,12 +78,9 @@ mongoose.connect(dbUrl, { useMongoClient: true, autoIndex: false });
 
 // CUSTOM ROUTES
 // AUTHENTICATION
-app.post("api/authenticate", (req, res) => {
-	if (req.body.location.trim() === "") return setTimeout(() => res.status(400).send("Error authenticating, please try again."), 300);
+app.post("/api/authenticate", (req, res) => {
 
-
-
-
+	//return res.status(200).send({"This is your data": req.body})
 
 });
 
