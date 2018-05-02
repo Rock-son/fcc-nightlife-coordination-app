@@ -3,15 +3,15 @@
 const { LocalUser } = require("../models/users");
 const jwt = require("jsonwebtoken");
 const mongoSanitize = require("mongo-sanitize");
-
+// TODO: change httpOnly & secure: true
 const cookieOptions = {
-	httpOnly: true,
-	secure: true,
+	httpOnly: false,
+	secure: false,
 	sameSite: false,
 	maxAge: 60 * 60 * 24000// 24 hours
 };
 
-
+/* eslint-disable no-underscore-dangle */
 /**
  *
  * @param {Object} user object with user data
@@ -30,6 +30,7 @@ function tokenForUser(user, type) {
 		process.env.JWT_SECRET
 	);
 }
+/* eslint-enable */
 
 /**
  *
@@ -41,7 +42,12 @@ exports.login = function a(req, res) {
 	const token = (function b(reqT, tokenForUserT) { return tokenForUserT(reqT.user, "local"); }(req, tokenForUser));
 	// User has already auth'd their email and password with verifyLogin - local strategy
 	res.cookie("t1", token, cookieOptions);
-	return res.redirect("/voting-app");
+	/*
+	req.session.valid = true;
+	res.redirect('/');
+	var passedVariable = req.session.valid;
+	  */
+	return res.send({ user: req.user.username });
 };
 
 /**
@@ -55,7 +61,7 @@ exports.schemaLogin = function a(req, res, user, type) {
 	const token = (function b(userT, typeT, tokenForUserT) { return tokenForUserT(userT, typeT); }(user, type, tokenForUser));
 	// User has already auth'd their email and password with verifyLogin - local strategy
 	res.cookie("t1", token, cookieOptions);
-	return res.redirect("/voting-app");
+	return res.send({ user: req.user.username });
 };
 /**
  * Logs out user, deleting his cookie
@@ -63,18 +69,9 @@ exports.schemaLogin = function a(req, res, user, type) {
  * @param {Object} res
  */
 exports.logout = function a(req, res) {
-	res.cookie("t1", "", {
-		httpOnly: true,
-		secure: false,
-		sameSite: true,
-		maxAge: -1,
-		exp: new Date(1).getTime()
-	});
-	res.statusCode = 302;
-	res.set({ 'Location': req.headers.referer || req.headers.origin || "/voting-app" });
-	res.end();
+	res.cookie("t1", "", { ...cookieOptions, maxAge: -1 }); // delete a cookie with 'max-age'= -{any digit}!!!
+	return res.send();
 };
-
 
 // LOCAL
 /**
@@ -94,7 +91,7 @@ exports.register = function a(req, res, next) {
 		return res.status(422).send({ error: "Your passwords don't match!" });
 	}
 
-	LocalUser.findOne({ username }, (err, existingUser) => {
+	return LocalUser.findOne({ username }, (err, existingUser) => {
 		if (err) { return next(err); }
 
 		if (existingUser) {
@@ -105,14 +102,12 @@ exports.register = function a(req, res, next) {
 			username,
 			password
 		});
-		user.save((errU) => {
+		return user.save((errU) => {
 			if (errU) { return next(errU); }
 
 			// send back a cookie with authentication token
 			res.cookie('t1', tokenForUser(user, "local"), cookieOptions);
-			res.statusCode = 302;
-			res.setHeader('Location', '/voting-app');
-			res.end();
+			return res.send({ user: username });
 		});
 	});
 };

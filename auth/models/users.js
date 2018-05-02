@@ -23,11 +23,11 @@ localSchema.pre("save", function a(next) {
 	bcrypt.genSalt(10, (err, salt) => {
 		if (err) { return next(err); }
 
-		bcrypt.hash(user.password, salt, null, (errB, hash) => {
+		return bcrypt.hash(user.password, salt, null, (errB, hash) => {
 			if (errB) { return next(errB); }
 
 			user.password = hash;
-			next(); // e.g. saves the model
+			return next(); // e.g. saves the model
 		});
 	});
 });
@@ -37,7 +37,7 @@ localSchema.methods.comparePassword = function b(candidatePassword, callback) {
 	bcrypt.compare(candidatePassword, user.password, (err, isMatch) => {
 		if (err) { return callback(err); }
 
-		callback(null, isMatch);
+		return callback(null, isMatch);
 	});
 };
 
