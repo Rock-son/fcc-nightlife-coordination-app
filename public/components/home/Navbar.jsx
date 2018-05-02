@@ -69,7 +69,7 @@ export default class Navbar extends React.PureComponent {
 				<div className="navbar__right">
 					<button id={LOGIN} tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "none" : "inline-block" }} className="navbar__right__login">{this.props.authState.openDialog ? "Close" : "Sign In" }</button>
 					<button id={LOGOUT} tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">Logout</button>
-					<a id="user" href="https://twitter.com/settings/applications" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">Welcome, Rok</a>
+					<a id="user" href="https://twitter.com/settings/applications" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">{`Welcome, ${this.props.authState.user}`}</a>
 				</div>
 				<div className="navbar__login-dialog" style={{ display: this.props.authState.openDialog ? "block" : "none" }} >
 					<h2 className="navbar__login-dialog__header">Sign In</h2>
