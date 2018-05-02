@@ -36,6 +36,12 @@ const limiter = new RateLimiter({
 	}
 );
 
+// AUTHENTICATION
+const passport = require("passport");
+const passportService = require("./auth/services/passport");
+const Authentication = require("./auth/controllers/authentication");
+const ensureAuthenticated = passport.authenticate("jwt", { session: false, failureRedirect: "/signin"});
+const verifyLoginData = passport.authenticate("local", { session: false });
 // APP
 app.set("views", path.join(__dirname, "dist"));
 app.set("view engine", "pug");
@@ -76,13 +82,23 @@ mongoose.connect(dbUrl, { useMongoClient: true, autoIndex: false });
 // app.post("/report-violation", Log.logged);
 
 
-// CUSTOM ROUTES
 // AUTHENTICATION
-app.post("/api/authenticate", (req, res) => {
+app.get("/auth/authenticate", (req, res) => {
+	const authType = req.body.type.trim();
+	if (authType === "") return setTimeout(() => res.status(400).send("A problem occured."), 300);
 
-	//return res.status(200).send({"This is your data": req.body})
+	passport.authenticate(authType, { session: false });
+});
+app.get("api/github", (req, res) => {
 
 });
+
+// LOCAL AUTH - login & register
+app.post("/auth/localAuth", verifyLoginData, Authentication.login);
+
+app.post("/auth/register", Authentication.register);
+
+app.post("/auth/logout", Authentication.logout);
 
 
 // TODO: add authenticate validation for add going!!
