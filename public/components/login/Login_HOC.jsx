@@ -21,6 +21,11 @@ class Login_HOC extends React.Component {
 		this.state = { hasError: false };
 	}
 
+	componentDidMount() {
+		if (this.props.location.pathname === "/signup") {
+			this.props.isRegistering(true);
+		}
+	}
 	componentDidCatch(/* error, info */) {
 		// Display fallback UI
 		this.setState({ hasError: true });
@@ -29,7 +34,7 @@ class Login_HOC extends React.Component {
 		return (
 			<div>
 				<Navbar authState={this.props.auth} openLoginDialog={this.props.openLoginDialog} isRegistering={this.props.isRegistering} login={this.props.login} logout={this.props.logout} />
-				<Login authState={this.props.auth} login={this.props.login} register={this.props.register} isRegistering={this.props.isRegistering} error={this.state.hasError} />
+				<Login authState={this.props.auth} login={this.props.login} localLogin={this.props.localLogin} register={this.props.register} isRegistering={this.props.isRegistering} error={this.state.hasError} />
 				<Footer />
 			</div>
 		);
@@ -43,16 +48,21 @@ Login_HOC.propTypes = {
 	openLoginDialog: PropTypes.func,
 	isRegistering: PropTypes.func,
 	login: PropTypes.func,
+	localLogin: PropTypes.func,
 	register: PropTypes.func,
-	logout: PropTypes.func
+	logout: PropTypes.func,
+	// REACT ROUTER PROPS
+	location: PropTypes.instanceOf(Object),
 };
 
 Login_HOC.defaultProps = {
 	openLoginDialog: () => false,
 	isRegistering: () => false,
 	login: () => {},
+	localLogin: () => {},
 	register: () => true,
-	logout: () => true
+	logout: () => true,
+	location: { pathname: "/signin" }
 };
 
 export default hot(module)(Login_HOC);
