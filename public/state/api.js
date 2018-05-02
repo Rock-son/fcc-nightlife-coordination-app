@@ -57,29 +57,51 @@ export default {
 	login: data =>
 		axios({
 			method: "post",
-			url: "api/authenticate",
+			url: "auth/authenticate",
 			headers: {
 				"Content-Type": "application/json"
 			},
 			data: {
 				type: data.type || null,
-				user: data.user || null,
-				pass: data.pass || null
+				username: data.user || null,
+				password: data.pass || null
+			},
+			validateStatus
+		}),
+	localLogin: data =>
+		axios({
+			method: "post",
+			url: "auth/localAuth",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			data: {
+				username: data.user || null,
+				password: data.pass || null
 			},
 			validateStatus
 		}),
 	register: data =>
 		axios({
 			method: "post",
-			url: "api/register",
+			url: "auth/register",
 			headers: {
 				"Content-Type": "application/json"
 			},
 			data: {
-				user: data.user || null,
-				pass1: data.pass1 || null,
-				pass2: data.pass2 || null
+				username: data.user || null,
+				password: data.pass1 || null,
+				confirmPassword: data.pass2 || null
 			},
 			validateStatus
-		})
+		}),
+	logout: () =>
+		axios({
+			method: "post",
+			url: "auth/logout",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			validateStatus
+		}),
 };

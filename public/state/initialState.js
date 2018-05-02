@@ -6,7 +6,9 @@ export default {
 		openDialog: false,
 		register: false,
 		hasError: false,
-		error: ""
+		error: "",
+		user: "",
+		redirect: false
 	},
 	INITIAL_GOING_STATE: {
 		errorGoing: false,

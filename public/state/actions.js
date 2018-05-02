@@ -9,8 +9,9 @@ export default {
 	LOGIN_DIALOG: "login_dialog",
 	LOGIN_FAIL: "login_fail",
 	LOGOUT: "logout",
+	LOGOUT_FAIL: "LOGOUT_FAIL",
 	/** ******************************************************************************** */
-	// NOTE GOING
+	// GOING USERS
 	GOING_START: "going_start",
 	GOING_FAIL: "going_fail",
 	GOING_RECEIVED: "going_received",
