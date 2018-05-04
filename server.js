@@ -37,9 +37,9 @@ const limiter = new RateLimiter({
 );
 
 // AUTHENTICATION
-const passport = require("passport");
-const passportService = require("./auth/services/passport");
 const Authentication = require("./auth/controllers/authentication");
+const passportService = require("./auth/services/passport");
+const passport = require("passport");
 const ensureAuthenticated = passport.authenticate("jwt", { session: false, failureRedirect: "/signin"});
 const verifyLoginData = passport.authenticate("local", { session: false });
 // APP
@@ -82,17 +82,30 @@ mongoose.connect(dbUrl, { useMongoClient: true, autoIndex: false });
 // app.post("/report-violation", Log.logged);
 
 
-// AUTHENTICATION
-app.get("/auth/authenticate", (req, res) => {
-	const authType = req.body.type.trim();
-	if (authType === "") return setTimeout(() => res.status(400).send("A problem occured."), 300);
+// AUTHENTICATION - Facebook, Google, Github, Twitter
+app.get("/auth/github", passport.authenticate("github", { session: false }));
+app.get("/auth/github/return", (req, res) => {
+		passport.authenticate("github", { session: false, failureRedirect: "/" }, function(err, user, info, status) {
+			Authentication.schemaLogin(req, res, user, "github");
+		})(req, res);
+	}
+);
 
-	passport.authenticate(authType, { session: false });
-});
-app.get("api/github", (req, res) => {
+app.get("/auth/google", passport.authenticate("google", { session: false }));
+app.get("/auth/google/return", (req, res) => {
+		passport.authenticate("google", { session: false, failureRedirect: "/" }, function(err, user, info, status) {
+			Authentication.schemaLogin(req, res, user, "google");
+		})(req, res);
+	}
+);
 
-});
-
+app.get("/auth/facebook", passport.authenticate("facebook", { session: false }));
+app.get("/auth/facebook/return", (req, res) => {
+		passport.authenticate("facebook", { session: false, failureRedirect: "/" }, function(err, user, info, status) {
+			Authentication.schemaLogin(req, res, user, "facebook");
+		})(req, res);
+	}
+);
 // LOCAL AUTH - login & register
 app.post("/auth/localAuth", verifyLoginData, Authentication.login);
 
