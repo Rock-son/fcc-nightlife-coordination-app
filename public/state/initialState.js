@@ -4,7 +4,6 @@ export default {
 	INITIAL_AUTH_STATE: {
 		authenticated: false,
 		openDialog: false,
-		register: false,
 		hasError: false,
 		error: "",
 		user: "",

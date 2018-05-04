@@ -13,6 +13,7 @@ import { HashRouter as Router, Route, Switch, Redirect } from "react-router-dom"
 import rootReducer from "RootReducer";
 import Home from "Home_MapState";
 import Login from "Login_MapState";
+import Register from "Register_MapState";
 
 // TODO: CHECK IF PRODUCTION!!
 
@@ -25,7 +26,7 @@ ReactDOM.render(
 			<Switch>
 				<Route exact path="/" component={Home} />
 				<Route exact path="/signin" component={Login} />
-				<Route exact path="/signup" component={Login} />
+				<Route exact path="/signup" component={Register} />
 				<Redirect path="*" to="/" />
 			</Switch>
 		</Router>

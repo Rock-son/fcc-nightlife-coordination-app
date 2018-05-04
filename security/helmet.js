@@ -30,7 +30,7 @@ module.exports = function a(app) {
 
 	app.use((req, res, next) => {
 		res.set({
-			"Access-Control-Allow-Origin": "https://api.foursquare.com/",
+			"Access-Control-Allow-Origin": "*",
 			"Access-Control-Allow-Headers": "Origin, X-Requested-With, content-type, Accept, Authorization",
 			"Vary": "Origin"
 		});

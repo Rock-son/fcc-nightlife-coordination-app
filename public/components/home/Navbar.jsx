@@ -17,25 +17,13 @@ export default class Navbar extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.handleClick = this.handleClick.bind(this);
-		this.handleLinks = this.handleLinks.bind(this);
-	}
-
-	handleLinks(e) {
-		switch (e.target.id) {
-		case SIGNIN:
-			this.props.isRegistering(false);
-			break;
-		case SIGNUP:
-			this.props.isRegistering(true);
-			break;
-		default:
-			break;
-		}
 	}
 
 	handleClick(e) {
-		switch (e.target.id) {
+		switch (e.target.id || e.target.parentNode.id || e.target.parentNode.parentNode.id) {
 		case LOGIN:
+		case SIGNIN:
+		case SIGNUP:
 			this.props.openLoginDialog(!this.props.authState.openDialog);
 			break;
 		case LOGOUT:
@@ -95,9 +83,9 @@ export default class Navbar extends React.PureComponent {
 					</button>
 					<hr className="navbar__login-dialog__line" />
 					<div className="navbar__login-dialog__footer">
-						<Link id={SIGNIN} to={`/${SIGNIN}`} onClick={this.handleLinks} className="navbar__login-dialog__footer__link" >Sign In</Link>
+						<Link id={SIGNIN} to={`/${SIGNIN}`} onClick={this.handleClick} className="navbar__login-dialog__footer__link" >Sign In</Link>
 						<span> | </span>
-						<Link id={SIGNUP} to={`/${SIGNUP}`} onClick={this.handleLinks} className="navbar__login-dialog__footer__link" >Sign Up</Link>
+						<Link id={SIGNUP} to={`/${SIGNUP}`} onClick={this.handleClick} className="navbar__login-dialog__footer__link" >Sign Up</Link>
 					</div>
 				</div>
 			</div>
@@ -110,7 +98,6 @@ Navbar.propTypes = {
 	authState: PropTypes.instanceOf(Object).isRequired,
 	// FUNCTIONS
 	openLoginDialog: PropTypes.func.isRequired,
-	isRegistering: PropTypes.func.isRequired,
 	login: PropTypes.func,
 	logout: PropTypes.func
 };

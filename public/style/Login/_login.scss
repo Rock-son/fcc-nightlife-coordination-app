@@ -32,21 +32,32 @@
         width: 96%;
     }
     &__footnote {
-        margin: 0% auto 5% auto;
-        position: relative;
-        display: table;
-        text-decoration: none;
-        color: #3ea1c9;
-        &:hover {
-            text-decoration: underline;
-        }
-        &:active{
-            color: blue;;
-        }
-        &:visited {
-            color: #3ea1c9;
-        }
-    }
+		margin-bottom: 4%;
+        text-align: center;
+        color: #999;
+		&__txt {
+			display: inline-block;
+		}
+		&__link {
+			margin-left: 1%;
+        	text-decoration: none;
+			color: #3ea1c9;
+			&:hover {
+				text-decoration: underline;
+			}
+			&:active{
+				color: blue;;
+			}
+			&:visited {
+				color: #3ea1c9;
+			}
+		}
+		&__error {
+			color:#ff6d6d;
+			text-align: center;
+			margin-bottom: 2%;
+		}
+	}
     @include atSmall {
         & {
             width: 70%;
@@ -70,7 +81,7 @@
 }
 
 .form {
-    margin: 5% auto 5% auto;
+    margin: 5% auto 3% auto;
     padding: 1%;
     &__control {
         display: block;
@@ -107,4 +118,3 @@
         }
     }
 }
-

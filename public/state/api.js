@@ -57,14 +57,12 @@ export default {
 	login: data =>
 		axios({
 			method: "post",
-			url: "auth/authenticate",
+			url: `auth/${data.type}`,
 			headers: {
-				"Content-Type": "application/json"
-			},
-			data: {
-				type: data.type || null,
-				username: data.user || null,
-				password: data.pass || null
+				"Content-Type": "application/json",
+				"Access-Control-Allow-Origin": "*",
+				"Access-Control-Allow-Headers": "Origin, X-Requested-With, content-type, Accept, Authorization",
+				"Vary": "Origin"
 			},
 			validateStatus
 		}),

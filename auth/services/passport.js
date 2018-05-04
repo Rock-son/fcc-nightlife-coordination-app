@@ -9,6 +9,7 @@ const GOOGLE = "google";
 const FACEBOOK = "facebook";
 const GITHUB = "github";
 const LOCAL = "local";
+const CALLBACK = "http://localhost:8080/auth";
 const JwtStrategy = require("passport-jwt").Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
@@ -32,10 +33,10 @@ const localLogin = new LocalStrategy(localOptions, ((username, password, done) =
 		if (!user || user == null) {
 			return done(null, false);
 		}
-		user.comparePassword(pass, (errC, isMatch) => {
+		return user.comparePassword(pass, (errC, isMatch) => {
 			if (errC) { return done(errC); }
 			if (!isMatch) { return done(null, false); }
-			if (isMatch) { return done(null, user); }
+			return done(null, user);
 		});
 	});
 }));
@@ -62,33 +63,29 @@ const jwtOptions = {
 const jwtLogin = new JwtStrategy(jwtOptions, ((payload, done) => {
 	switch (payload.type || "") {
 	case LOCAL:
-		LocalUser.findById(payload.sub, (err, user) => {
+		return LocalUser.findById(payload.sub, (err, user) => {
 			if (err) { return done(err, false); }
 			if (user) { return done(null, user, "local"); }
 			return done(null, false);
 		});
-		break;
 	case FACEBOOK:
-		FacebookUser.findById(payload.sub, (err, user) => {
+		return FacebookUser.findById(payload.sub, (err, user) => {
 			if (err) { return done(err, false); }
 			if (user) { return done(null, user, "facebook"); }
 			return done(null, false);
 		});
-		break;
 	case GITHUB:
-		GitHubUser.findById(payload.sub, (err, user) => {
+		return GitHubUser.findById(payload.sub, (err, user) => {
 			if (err) { return done(err, false); }
 			if (user) { return done(null, user, "github"); }
 			return done(null, false);
 		});
-		break;
 	case GOOGLE:
-		GoogleUser.findById(payload.sub, (err, user) => {
+		return GoogleUser.findById(payload.sub, (err, user) => {
 			if (err) { return done(err, false); }
 			if (user) { return done(null, user, "google"); }
 			return done(null, false);
 		});
-		break;
 	default:
 		return done(null, false);
 	}
@@ -100,15 +97,15 @@ const gitHubStrategy = new GitHubStrategy(
 		scope: "user:email",
 		clientID: process.env.GITHUB_ID,
 		clientSecret: process.env.GITHUB_SECRET,
-		callbackURL: "https://fcc-dynamic-webapps-roky.herokuapp.com/auth/github/callback"
+		callbackURL: `${CALLBACK}/github/return`
 	},
 	((accessToken, refreshToken, profile, done) => {
 		GitHubUser.findOne({ userID: profile.id }, (err, user) => {
-			if (err) return done(err, false);
+			if (err) { return done(err, false); }
 			if (user) { return done(null, user); }
 
 
-			GitHubUser.create({ userID: profile.id, displayName: profile.displayName }, (errU, userU) => {
+			return GitHubUser.create({ userID: profile.id, displayName: profile.displayName }, (errU, userU) => {
 				if (errU) return done(errU, false);
 				return done(null, userU);
 			});
@@ -121,15 +118,15 @@ const googleStrategy = new GoogleStrategy(
 		scope: "profile",
 		clientID: process.env.GOOGLE_ID,
 		clientSecret: process.env.GOOGLE_SECRET,
-		callbackURL: "https://fcc-dynamic-webapps-roky.herokuapp.com/auth/google/callback"
+		callbackURL: `${CALLBACK}/google/return`
 	},
 	((accessToken, refreshToken, profile, done) => {
 		GoogleUser.findOne({ userID: profile.id }, (err, user) => {
-			if (err) return done(err, false);
+			if (err) { return done(err, false); }
 			if (user) { return done(null, user); }
 
 
-			GoogleUser.create({ userID: profile.id, displayName: profile.displayName }, (errG, userG) => {
+			return GoogleUser.create({ userID: profile.id, displayName: profile.displayName }, (errG, userG) => {
 				if (errG) return done(errG, false);
 				return done(null, userG);
 			});
@@ -143,17 +140,17 @@ const facebookStrategy = new FacebookStrategy(
 		scope: "public_profile",
 		clientID: process.env.FACEBOOK_ID,
 		clientSecret: process.env.FACEBOOK_SECRET,
-		callbackURL: "https://fcc-dynamic-webapps-roky.herokuapp.com/auth/facebook/callback",
+		callbackURL: `${CALLBACK}/facebook/return`,
 		profileFields: ['id', 'displayName'],
 		enableProof: true
 	},
 	((accessToken, refreshToken, profile, done) => {
 		FacebookUser.findOne({ userID: profile.id }, (err, user) => {
-			if (err) return done(err, false);
+			if (err) { return done(err, false); }
 			if (user) { return done(null, user); }
 
 
-			FacebookUser.create({ userID: profile.id, displayName: profile.displayName }, (errF, userF) => {
+			return FacebookUser.create({ userID: profile.id, displayName: profile.displayName }, (errF, userF) => {
 				if (errF) return done(errF, false);
 				return done(null, userF);
 			});

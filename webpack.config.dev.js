@@ -4,6 +4,8 @@ const webpack = require("webpack");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");/* webpack --json > stats.json */
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 const isDevEnv = process.env.NODE_ENV === "development" || false;
 
@@ -15,12 +17,12 @@ const TEMPLATE_OUT = "./index.html";
 const BUNDLE = path.join(__dirname, "public", "index.jsx");
 const OUTPUT = path.join(__dirname, "dist");
 // LIBS (files that don't change much)
-const VENDOR_LIBS = ["react", "react-dom", "redux", "react-redux", "redux-thunk"];
+const VENDOR_LIBS = ["react", "react-dom", "redux", "react-redux", "react-router", "react-router-dom", "redux-thunk"];
 
 
 const config = {
 	entry: {
-		bundle: [BUNDLE, "webpack-hot-middleware/client"],
+		bundle: BUNDLE,
 		vendor: VENDOR_LIBS
 	},
 	output: {
@@ -28,14 +30,25 @@ const config = {
 		filename: "[name].[hash].js"
 	},
 	resolve: {
-		// using aliases makes components reusable! - with no relative paths, i.e. just "require("App")"
+		// using aliases makes components reusable! - with no relative paths, i.e. just "require("Home")"
 		alias: {
-			App: path.join(__dirname, "public/components/App.jsx"),
-			Home: path.join(__dirname, "public/components/Home.jsx"),
-			Navbar: path.join(__dirname, "public/components/Navbar.jsx"),
-			Content: path.join(__dirname, "public/components/Content.jsx"),
-			Footer: path.join(__dirname, "public/components/Footer.jsx"),
+			// HOME
+			Home_MapState: path.join(__dirname, "public/components/home/Home_MapState.jsx"),
+			Home_HOC: path.join(__dirname, "public/components/home/Home_HOC.jsx"),
+			Navbar: path.join(__dirname, "public/components/home/Navbar.jsx"),
+			Content: path.join(__dirname, "public/components/home/Content.jsx"),
+			Footer: path.join(__dirname, "public/components/home/Footer.jsx"),
+			// LOGIN
+			Login_MapState: path.join(__dirname, "public/components/login/Login_MapState.jsx"),
+			Login_HOC: path.join(__dirname, "public/components/login/Login_HOC.jsx"),
+			Login: path.join(__dirname, "public/components/login/Login.jsx"),
+			// REGISTER
+			Register_MapState: path.join(__dirname, "public/components/register/Register_MapState.jsx"),
+			Register_HOC: path.join(__dirname, "public/components/register/Register_HOC.jsx"),
+			Register: path.join(__dirname, "public/components/register/Register.jsx"),
+			// MISCELLANEOUS - state (actions, action creators, reducers, apis)
 			InitialState: path.join(__dirname, "public/state/initialState.js"),
+			Api: path.join(__dirname, "public/state/api.js"),
 			Actions: path.join(__dirname, "public/state/actions.js"),
 			ActionCreators: path.join(__dirname, "public/state/actionCreators.js"),
 			RootReducer: path.join(__dirname, "public/state/reducers.js")
@@ -45,7 +58,8 @@ const config = {
 	devtool: "#source-map",
 	devServer: {
 		contentBase: [path.join(__dirname, "dist"), path.join(__dirname, "public")],
-		hot: true
+		hot: true,
+		quiet: true
 	},
 	module: {
 		rules: [
@@ -57,6 +71,7 @@ const config = {
 			{
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract({
+
 					fallback: "style-loader",
 					use: [{
 						loader: "css-loader",
@@ -79,12 +94,11 @@ const config = {
 		]
 	},
 	plugins: [
-		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NoEmitOnErrorsPlugin(),
 		new ExtractTextPlugin({
 			filename: "[name].[contenthash].css"
 			// disable: isDevEnv
 		}),
+		new FriendlyErrorsWebpackPlugin(),
 		new webpack.optimize.CommonsChunkPlugin({
 			names: ["vendor", "manifest"]
 		}),
@@ -92,9 +106,10 @@ const config = {
 			template: TEMPLATE_IN,
 			filename: TEMPLATE_OUT// target path
 		}),
+		/* new BundleAnalyzerPlugin(), - deflag for onetime statistic purposes */
 		new webpack.DefinePlugin({
 			"process.env": {
-				NODE_ENV: JSON.stringify(process.env.NODE_ENV || "development")
+				"NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
 			}
 		})
 	]

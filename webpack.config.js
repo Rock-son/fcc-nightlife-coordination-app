@@ -4,7 +4,6 @@ const webpack = require("webpack");
 const path = require("path");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;/* webpack --json > stats.json */
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
@@ -46,6 +45,10 @@ const config = {
 			Login_MapState: path.join(__dirname, "public/components/login/Login_MapState.jsx"),
 			Login_HOC: path.join(__dirname, "public/components/login/Login_HOC.jsx"),
 			Login: path.join(__dirname, "public/components/login/Login.jsx"),
+			// REGISTER
+			Register_MapState: path.join(__dirname, "public/components/register/Register_MapState.jsx"),
+			Register_HOC: path.join(__dirname, "public/components/register/Register_HOC.jsx"),
+			Register: path.join(__dirname, "public/components/register/Register.jsx"),
 			// MISCELLANEOUS - state (actions, action creators, reducers, apis)
 			InitialState: path.join(__dirname, "public/state/initialState.js"),
 			Api: path.join(__dirname, "public/state/api.js"),
@@ -56,11 +59,6 @@ const config = {
 		extensions: [".js", ".jsx", ".scss"]
 	},
 	devtool: "#source-map",
-	devServer: {
-		contentBase: [path.join(__dirname, "dist"), path.join(__dirname, "public")],
-		hot: true,
-		quiet: true
-	},
 	module: {
 		rules: [
 			{
@@ -98,7 +96,6 @@ const config = {
 			filename: "[name].[contenthash].css"
 			//disable: isDevEnv
 		}),
-		new FriendlyErrorsWebpackPlugin(),
 		new webpack.optimize.CommonsChunkPlugin({
 			names: ["vendor", "manifest"]
 		}),
@@ -106,24 +103,19 @@ const config = {
 			template: TEMPLATE_IN,
 			filename: TEMPLATE_OUT// target path
 		}),
-		() => {
-			if(isDevEnv) {
-				return new BundleAnalyzerPlugin()
+		new UglifyJsPlugin({
+			cache: true,
+			sourceMap: true,
+			parallel: true,
+			uglifyOptions : {
+				ecma: 6,
+				warnings: false,
+				mangle: true
 			}
-			return new UglifyJsPlugin({
-				cache: true,
-				sourceMap: true,
-				parallel: true,
-				uglifyOptions : {
-					ecma: 6,
-					warnings: false,
-					mangle: true
-				}
-			});
-		},
+		}),
 		new webpack.DefinePlugin({
 			"process.env": {
-				"NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
+				"NODE_ENV": JSON.stringify(process.env.NODE_ENV || "production")
 			}
 		})
 	]
