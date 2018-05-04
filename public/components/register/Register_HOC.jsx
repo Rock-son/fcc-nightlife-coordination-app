@@ -6,7 +6,7 @@ import { hot } from "react-hot-loader";
 import { whyDidYouUpdate } from "why-did-you-update";
 
 import Navbar from "Navbar";
-import Login from "Login";
+import Register from "Register";
 import Footer from "Footer";
 import css from "../../style/Login/index";
 
@@ -15,18 +15,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 
-class Login_HOC extends React.Component {
+class Register_HOC extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { hasError: false };
 	}
-	/* GET URL
-	componentDidMount() {
-		if (this.props.location.pathname === "/signup") {
-			this.props.isRegistering(true);
-		}
-	}
-	*/
+
 	componentDidCatch(/* error, info */) {
 		// Display fallback UI
 		this.setState({ hasError: true });
@@ -35,28 +29,28 @@ class Login_HOC extends React.Component {
 		return (
 			<div>
 				<Navbar authState={this.props.auth} openLoginDialog={this.props.openLoginDialog} login={this.props.login} logout={this.props.logout} />
-				<Login authState={this.props.auth} login={this.props.login} localLogin={this.props.localLogin} error={this.state.hasError} />
+				<Register authState={this.props.auth} login={this.props.login} register={this.props.register} error={this.state.hasError} />
 				<Footer />
 			</div>
 		);
 	}
 }
 
-Login_HOC.propTypes = {
+Register_HOC.propTypes = {
 	// REDUCERS
 	auth: PropTypes.instanceOf(Object).isRequired,
 	// DISPATCH FUNCTIONS - LOGIN
 	openLoginDialog: PropTypes.func,
 	login: PropTypes.func,
-	localLogin: PropTypes.func,
+	register: PropTypes.func,
 	logout: PropTypes.func
 };
 
-Login_HOC.defaultProps = {
+Register_HOC.defaultProps = {
 	openLoginDialog: () => false,
 	login: () => {},
-	localLogin: () => {},
+	register: () => true,
 	logout: () => true
 };
 
-export default hot(module)(Login_HOC);
+export default hot(module)(Register_HOC);

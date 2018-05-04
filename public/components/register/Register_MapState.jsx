@@ -1,8 +1,8 @@
 "use strict";
 
-import Login from "Login_HOC";
+import Register from "Register_HOC";
 import { connect } from "react-redux";
-import { DISPATCH_LOGIN, DISPATCH_LOCAL_LOGIN, DISPATCH_REGISTRATION, DISPATCH_IS_REGISTERING, OPEN_LOGIN_DIALOG, DISPATCH_LOGOUT } from "ActionCreators";
+import { DISPATCH_LOGIN, DISPATCH_REGISTRATION, OPEN_LOGIN_DIALOG, DISPATCH_LOGOUT } from "ActionCreators";
 
 
 // Redux connect to props and dispatch actions
@@ -15,7 +15,7 @@ const mapDispatchToProps = function b(dispatch) {
 	return {
 		openLoginDialog: openState => dispatch(OPEN_LOGIN_DIALOG(openState)),
 		login: data => dispatch(DISPATCH_LOGIN(data)),
-		localLogin: data => dispatch(DISPATCH_LOCAL_LOGIN(data)),
+		register: data => dispatch(DISPATCH_REGISTRATION(data)),
 		logout: () => dispatch(DISPATCH_LOGOUT()),
 	};
 };
@@ -23,4 +23,4 @@ const mapDispatchToProps = function b(dispatch) {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Login);
+)(Register);

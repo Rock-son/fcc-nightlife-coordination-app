@@ -1,7 +1,7 @@
 "use strict";
 
 import {
-	REGISTER, IS_REGISTERING, REGISTER_FAIL, LOGIN_DIALOG, LOGIN, LOGIN_FAIL, LOGOUT, LOGOUT_FAIL, INITIALIZE_GOING, GOING_START,
+	REGISTER, REGISTER_FAIL, LOGIN_DIALOG, LOGIN, LOGIN_FAIL, LOGOUT, LOGOUT_FAIL, INITIALIZE_GOING, GOING_START,
 	GOING_FAIL, GOING_RECEIVED,	LOCATION_INPUT, FETCHING_START, FETCHING_FAIL, FETCHING_RECEIVED
 } from "Actions";
 import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation, login, localLogin, register, logout } from "Api";
@@ -11,12 +11,6 @@ import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation,
 export function OPEN_LOGIN_DIALOG(state) {
 	return {
 		type: LOGIN_DIALOG,
-		state
-	};
-}
-export function DISPATCH_IS_REGISTERING(state) {
-	return {
-		type: IS_REGISTERING,
 		state
 	};
 }
@@ -121,7 +115,7 @@ export function DISPATCH_LOGIN(data) {
 				if (json.status !== 200) {
 					return dispatch(loginFail(json.data));
 				}
-				dispatch(loginUser(json.data));
+				return dispatch(loginUser(json.data));
 			})
 			.catch(error => dispatch(loginFail(error)));
 	};
