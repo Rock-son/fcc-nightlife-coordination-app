@@ -1,10 +1,10 @@
 "use strict";
 
 import {
-	REGISTER, REGISTER_FAIL, LOGIN_DIALOG, LOGIN, LOGIN_FAIL, LOGOUT, LOGOUT_FAIL, INITIALIZE_GOING, GOING_START,
+	REGISTER, REGISTER_FAIL, LOGIN_DIALOG, LOGIN, LOGIN_CHECK, LOGIN_FAIL, LOGOUT, LOGOUT_FAIL, INITIALIZE_GOING, GOING_RESET,
 	GOING_FAIL, GOING_RECEIVED,	LOCATION_INPUT, FETCHING_START, FETCHING_FAIL, FETCHING_RECEIVED
 } from "Actions";
-import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation, login, localLogin, register, logout } from "Api";
+import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation, saveLastLocation, login, getLoggedUser, localLogin, register, logout } from "Api";
 
 
 // AUTHENTICATION action creater
@@ -25,6 +25,13 @@ function loginUser(data) {
 	return {
 		type: LOGIN,
 		user: data.user
+	};
+}
+function checkLoggedUser(data) {
+	return {
+		type: LOGIN_CHECK,
+		user: data.user,
+		authenticated: data.authenticated
 	};
 }
 function loginFail(error) {
@@ -51,25 +58,40 @@ function logoutFail(error) {
 		error
 	};
 }
-// TODO: LOGOUT by deleteing the authentication cookie
-export function DISPATCH_LOGOUT() {
+// Redux Thunk
+export function DISPATCH_LOGIN(data) {
 	return (dispatch, getState) => {
-		if (!getState().auth.authenticated) {
+		if (getState().auth.authenticated) {
 			return Promise.resolve;
 		}
 
-		return logout()
+		return login(data)
 			.then((json) => {
 				if (json.status !== 200) {
-					dispatch(logoutFail(json.data.error));
-				} else {
-					dispatch(logoutUser());
+					return dispatch(loginUser(json.data));
 				}
+				return dispatch(loginUser(json.data));
 			})
-			.catch(error => dispatch(logoutFail(error)));
+			.catch(error => dispatch(loginUser(error)));
 	};
 }
-// Redux Thunk
+
+export function DISPATCH_GET_USER() {
+	return (dispatch, getState) => {
+		if (getState().auth.authenticated) {
+			return Promise.resolve;
+		}
+
+		return getLoggedUser()
+			.then((json) => {
+				if (json.status !== 200) {
+					return dispatch(checkLoggedUser(json.data));
+				}
+				return dispatch(checkLoggedUser(json.data));
+			})
+			.catch(error => dispatch(checkLoggedUser(error)));
+	};
+}
 export function DISPATCH_REGISTRATION(user, p1, p2) {
 	return (dispatch, getState) => {
 		if (getState().auth.authenticated) {
@@ -87,6 +109,7 @@ export function DISPATCH_REGISTRATION(user, p1, p2) {
 			.catch(error => dispatch(registerFail(error)));
 	};
 }
+
 export function DISPATCH_LOCAL_LOGIN(data) {
 	return (dispatch, getState) => {
 		if (getState().auth.authenticated) {
@@ -104,20 +127,22 @@ export function DISPATCH_LOCAL_LOGIN(data) {
 			.catch(error => dispatch(loginFail(error)));
 	};
 }
-export function DISPATCH_LOGIN(data) {
+
+export function DISPATCH_LOGOUT() {
 	return (dispatch, getState) => {
-		if (getState().auth.authenticated) {
+		if (!getState().auth.authenticated) {
 			return Promise.resolve;
 		}
 
-		return login(data)
+		return logout()
 			.then((json) => {
 				if (json.status !== 200) {
-					return dispatch(loginFail(json.data));
+					dispatch(logoutFail(json.data.error));
+				} else {
+					dispatch(logoutUser());
 				}
-				return dispatch(loginUser(json.data));
 			})
-			.catch(error => dispatch(loginFail(error)));
+			.catch(error => dispatch(logoutFail(error)));
 	};
 }
 
