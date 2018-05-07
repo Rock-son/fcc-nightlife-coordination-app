@@ -38,9 +38,10 @@ export default class Login extends React.PureComponent {
 	}
 	handleSubmit(e) {
 		e.preventDefault();
+		this.props.openLoginDialog(false);
 		this.props.localLogin({ user: this.state[USER], pass: this.state[PASS] });
 	}
-
+	// TODO: FIX ERROR AT login failure (-> register)
 	render() {
 		if (this.props.authState.redirect) { return <Redirect to="/" />; }
 		return (
@@ -52,13 +53,13 @@ export default class Login extends React.PureComponent {
 					<form className="form" onSubmit={this.handleSubmit}>
 						<input id={USER} className="form__control" type="text" ref={this.username} onChange={this.handleChange} value={this.state[USER]} name="user" placeholder="Username" />
 						<input id={PASS} className="form__control" type="password" onChange={this.handleChange} value={this.state[PASS]} name="password" placeholder="Password" />
-						<input id="login" type="submit" className="form__control form__submit" value="Login" />
+						<input type="submit" className="form__control form__submit" value="Login" />
 					</form>
 					<div className="form__container__footnote" >
 						<div className="form__container__footnote__txt">Don`t have an account?</div>
 						<Link id={SIGNUP} to={`/${SIGNUP}`} className="form__container__footnote__link" >Sign Up</Link>
 					</div>
-					<div style={{ color: "red", margin: "1% auto" }}>{this.props.authState.error}</div>
+					<div className={`form__container__error ${this.props.authState.error ? "active" : ""}`} >{this.props.authState.error ? `Error: "${this.props.authState.error}"` : ""}</div>
 				</div>
 			</section>
 		);
@@ -68,5 +69,6 @@ export default class Login extends React.PureComponent {
 
 Login.propTypes = {
 	authState: PropTypes.instanceOf(Object).isRequired,
-	localLogin: PropTypes.func.isRequired
+	localLogin: PropTypes.func.isRequired,
+	openLoginDialog: PropTypes.func.isRequired
 };

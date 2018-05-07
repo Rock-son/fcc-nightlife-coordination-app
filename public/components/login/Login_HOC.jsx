@@ -8,7 +8,7 @@ import { whyDidYouUpdate } from "why-did-you-update";
 import Navbar from "Navbar";
 import Login from "Login";
 import Footer from "Footer";
-import css from "../../style/Login/index";
+import "../../style/Login/index";
 
 if (process.env.NODE_ENV !== 'production') {
 	whyDidYouUpdate(React);
@@ -35,7 +35,7 @@ class Login_HOC extends React.Component {
 		return (
 			<div>
 				<Navbar authState={this.props.auth} openLoginDialog={this.props.openLoginDialog} login={this.props.login} logout={this.props.logout} />
-				<Login authState={this.props.auth} login={this.props.login} localLogin={this.props.localLogin} error={this.state.hasError} />
+				<Login authState={this.props.auth} login={this.props.login} localLogin={this.props.localLogin} error={this.state.hasError} openLoginDialog={this.props.openLoginDialog} />
 				<Footer />
 			</div>
 		);
