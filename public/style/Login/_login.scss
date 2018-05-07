@@ -77,7 +77,15 @@
         & {
             width: 25%;
         }
-    }
+	}
+	&__error {
+		color: red;
+		background-color: #fff;
+		text-align: center;
+		&.active {
+			animation: error .4s;
+		}
+	}
 }
 
 .form {
@@ -117,4 +125,9 @@
             background: linear-gradient(to bottom, #c9f5fd 0%,#b3e0f7 17%,#a3caf3 50%,#a4c8ee 63%,#a3c6e9 75%,#b9daf5 90%,#c5e7fd 100%);
         }
     }
+}
+
+@keyframes error {
+    from {background-color: red;}
+    to {background-color: #fff;}
 }

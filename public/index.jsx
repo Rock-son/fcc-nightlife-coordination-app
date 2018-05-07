@@ -14,14 +14,19 @@ import rootReducer from "RootReducer";
 import Home from "Home_MapState";
 import Login from "Login_MapState";
 import Register from "Register_MapState";
-
-// TODO: CHECK IF PRODUCTION!!
+import { DISPATCH_GET_USER } from "ActionCreators";
 
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+/* eslint-enable */
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware, loggerMiddleware)));
 
+
+store.dispatch(DISPATCH_GET_USER());
+
+// TODO: CHECK IF PRODUCTION - put out loggerMiddleware
 ReactDOM.render(
-	<Provider store={createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware, loggerMiddleware)))}>
+	<Provider store={store}>
 		<Router>
 			<Switch>
 				<Route exact path="/" component={Home} />
@@ -32,4 +37,4 @@ ReactDOM.render(
 		</Router>
 	</Provider>,
 	document.getElementById("root")
-);/* eslint-enable */
+);

@@ -2,12 +2,12 @@
 
 import Login from "Login_HOC";
 import { connect } from "react-redux";
-import { DISPATCH_LOGIN, DISPATCH_LOCAL_LOGIN, DISPATCH_REGISTRATION, DISPATCH_IS_REGISTERING, OPEN_LOGIN_DIALOG, DISPATCH_LOGOUT } from "ActionCreators";
+import { DISPATCH_LOGIN, DISPATCH_LOCAL_LOGIN, OPEN_LOGIN_DIALOG, DISPATCH_LOGOUT } from "ActionCreators";
 
 
 // Redux connect to props and dispatch actions
 const mapStateToProps = function a(state) {
-	return { ...state };
+	return { auth: state.auth };
 };
 
 

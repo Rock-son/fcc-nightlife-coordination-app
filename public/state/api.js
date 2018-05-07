@@ -20,7 +20,7 @@ export default {
 	addGoingUsers: (location, id, user) =>
 		axios({
 			method: "post",
-			url: "api/addGoing",
+			url: `api/addGoing`,
 			data: {
 				location,
 				id,
@@ -34,7 +34,7 @@ export default {
 	removeGoingUsers: (location, id, user) =>
 		axios({
 			method: "post",
-			url: "api/removeGoing",
+			url: `api/removeGoing`,
 			data: {
 				location,
 				id,
@@ -48,7 +48,19 @@ export default {
 	initializeLocation: () =>
 		axios({
 			method: "post",
-			url: "api/initializeLocation",
+			url: `api/initializeLocation`,
+			headers: {
+				"Content-Type": "application/json"
+			},
+			validateStatus
+		}),
+	saveLastLocation: location =>
+		axios({
+			method: "post",
+			url: `api/saveLastLocation`,
+			data: {
+				location
+			},
 			headers: {
 				"Content-Type": "application/json"
 			},
@@ -59,17 +71,14 @@ export default {
 			method: "post",
 			url: `auth/${data.type}`,
 			headers: {
-				"Content-Type": "application/json",
-				"Access-Control-Allow-Origin": "*",
-				"Access-Control-Allow-Headers": "Origin, X-Requested-With, content-type, Accept, Authorization",
-				"Vary": "Origin"
+				"Content-Type": "application/json"
 			},
 			validateStatus
 		}),
 	localLogin: data =>
 		axios({
 			method: "post",
-			url: "auth/localAuth",
+			url: `auth/localAuth`,
 			headers: {
 				"Content-Type": "application/json"
 			},
@@ -79,10 +88,19 @@ export default {
 			},
 			validateStatus
 		}),
+	getLoggedUser: () =>
+		axios({
+			method: "post",
+			url: `auth/getLoggedUser`,
+			headers: {
+				"Content-Type": "application/json"
+			},
+			validateStatus
+		}),
 	register: data =>
 		axios({
 			method: "post",
-			url: "auth/register",
+			url: `auth/register`,
 			headers: {
 				"Content-Type": "application/json"
 			},
@@ -96,7 +114,7 @@ export default {
 	logout: () =>
 		axios({
 			method: "post",
-			url: "auth/logout",
+			url: `auth/logout`,
 			headers: {
 				"Content-Type": "application/json"
 			},

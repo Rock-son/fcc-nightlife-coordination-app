@@ -9,11 +9,13 @@ const { Schema } = mongoose;
 const localSchema = new Schema({
 	// unique String.toLowerCase() - so no doubles are possible
 	username: { type: Schema.Types.String, unique: true, lowercase: true },
-	password: String
+	password: String,
+	lastSrcLocation: { type: Schema.Types.String, default: "", lowercase: true },
 });
 const randomSchema = new Schema({
 	userID: { type: Schema.Types.String, unique: true, lowercase: false },
-	displayName: String
+	displayName: String,
+	lastSrcLocation: { type: Schema.Types.String, default: "", lowercase: true },
 });
 
 

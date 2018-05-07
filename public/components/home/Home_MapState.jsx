@@ -2,7 +2,7 @@
 
 import Home from "Home_HOC";
 import { connect } from "react-redux";
-import { DISPATCH_LOGIN, DISPATCH_IS_REGISTERING, OPEN_LOGIN_DIALOG, DISPATCH_LOGOUT, DISPATCH_GOING, DISPATCH_NOT_GOING, INITIALIZE_LOCATION, LOCATION_INPUT_SRC, FETCH_BUSINESSES } from "ActionCreators";
+import { DISPATCH_LOGIN, DISPATCH_IS_REGISTERING, OPEN_LOGIN_DIALOG, DISPATCH_LOGOUT, GOING_RESETING, DISPATCH_GOING, DISPATCH_NOT_GOING, INITIALIZE_LOCATION, LOCATION_INPUT_SRC, FETCH_BUSINESSES } from "ActionCreators";
 
 
 // Redux connect to props and dispatch actions
@@ -18,8 +18,9 @@ const mapDispatchToProps = function b(dispatch) {
 		login: data => dispatch(DISPATCH_LOGIN(data)),
 		logout: () => dispatch(DISPATCH_LOGOUT()),
 
-		going: (city, id, user) => dispatch(DISPATCH_GOING(city, id, user)),
-		notGoing: (city, id, user) => dispatch(DISPATCH_NOT_GOING(city, id, user)),
+		goingReset: () => dispatch(GOING_RESETING()),
+		going: (city, id) => dispatch(DISPATCH_GOING(city, id)),
+		notGoing: (city, id) => dispatch(DISPATCH_NOT_GOING(city, id)),
 
 		renderLocation: () => dispatch(INITIALIZE_LOCATION()),
 		locationInput: input => dispatch(LOCATION_INPUT_SRC(input)),

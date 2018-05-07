@@ -27,4 +27,4 @@ goingUsersSchema.pre("save", function a(next) {
 	return next();
 });
 
-module.exports.GoingUsersSchema = mongoose.model("GoingUsersSchema", goingUsersSchema, "going_users");
+module.exports.GoingUsersSchema = mongoose.model("GoingUsersSchema", goingUsersSchema, "nightlife_going_users");

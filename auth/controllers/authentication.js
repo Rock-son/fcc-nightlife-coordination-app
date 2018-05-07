@@ -61,7 +61,7 @@ exports.schemaLogin = function a(req, res, user, type) {
 	const token = (function b(userT, typeT, tokenForUserT) { return tokenForUserT(userT, typeT); }(user, type, tokenForUser));
 	// User has already auth'd their email and password with verifyLogin - local strategy
 	res.cookie("t1", token, cookieOptions);
-	return res.send({ user: req.user.username });
+	return res.status(302).redirect("/");
 };
 /**
  * Logs out user, deleting his cookie

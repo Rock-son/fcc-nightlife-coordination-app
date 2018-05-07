@@ -14,8 +14,6 @@ const defaultCategoryArray = [{ name: "No category" }];
 const defaultContactObj = { phone: "", facebook: "" };
 const defaultStatsObj = { tipCount: 0, usersCount: 0, checkinsCount: 0 };
 
-const userMe = "Rok Z";
-
 
 export default class Card extends React.Component {
 	constructor(props) {
@@ -26,7 +24,7 @@ export default class Card extends React.Component {
 
 	shouldComponentUpdate(nextProps) {
 		// check if the bar's users stay the same or not
-		if (nextProps.barObj.bar && !this.props.barObj.bar) {
+		if ((nextProps.barObj.bar && !this.props.barObj.bar) || (!nextProps.barObj.bar && this.props.barObj.bar)) {
 			return true;
 		} else if (nextProps.barObj.bar && this.props.barObj.bar) {
 			return this.props.barObj.bar.users.length !== nextProps.barObj.bar.users.length;
@@ -38,13 +36,11 @@ export default class Card extends React.Component {
 		const city = e.currentTarget.getAttribute("data-city");
 		const id = e.currentTarget.getAttribute("data-id");
 
-		if (e.keyCode || e.type === "click") {
-			if (e.keyCode === 13 || e.type === "click") {
-				if (e.target.id.indexOf("no_go") > -1) {
-					this.props.notGoing(city, id, userMe);
-				} else {
-					this.props.going(city, id, userMe);
-				}
+		if ((e.keyCode || 0) === 13 || e.type === "click") {
+			if (e.target.getAttribute("data-go").indexOf("no_go") > -1) {
+				this.props.notGoing(city, id);
+			} else {
+				this.props.going(city, id);
 			}
 		}
 	}
@@ -69,9 +65,9 @@ export default class Card extends React.Component {
 			// handling going logic
 			const barUsers = ((this.props.barObj || defaultObj).bar || defaultObj).users || defaultArray;
 			const nrUsers = barUsers.length;
-			const isGoing = !!nrUsers;
-			const classGoing = isGoing ? "some" : "none";
-			const usersGoingTitle = isGoing ? barUsers.join("\n") : "0 going";
+			const isGoing = barUsers.indexOf(this.props.authState.user) > -1;
+			const classGoing = nrUsers ? "some" : "none";
+			const usersGoingTitle = nrUsers ? barUsers.join("\n") : "0 going";
 			const nrGoing = nrUsers.toString().concat(" going");
 			const isActive = isGoing ? "active" : "";
 
@@ -126,10 +122,10 @@ export default class Card extends React.Component {
 						</div>
 					</div>
 					<div className={`content__cards__card__footer__checkBox ${isActive}`} >
-						<div id="go" data-city={city} data-id={businessID} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__btn go ${isActive}`} onClick={this.handleGoing} onKeyUp={this.handleGoing} />
-						<div id="go1" data-city={city} data-id={businessID} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__label go ${isActive}`} onClick={this.handleGoing} onKeyUp={this.handleGoing} >Going</div>
-						<div id="no_go" data-city={city} data-id={businessID} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__btn nogo ${isActive}`} onClick={this.handleGoing} onKeyUp={this.handleGoing} />
-						<div id="no_go1" data-city={city} data-id={businessID} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__label nogo ${isActive}`} onClick={this.handleGoing} onKeyUp={this.handleGoing} >Not Going</div>
+						<div data-go="go" data-city={city} data-id={businessID} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__btn go ${isActive}`} onClick={this.handleGoing} onKeyUp={this.handleGoing} />
+						<div data-go="go" data-city={city} data-id={businessID} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__label go ${isActive}`} onClick={this.handleGoing} onKeyUp={this.handleGoing} >Going</div>
+						<div data-go="no_go" data-city={city} data-id={businessID} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__btn nogo ${isActive}`} onClick={this.handleGoing} onKeyUp={this.handleGoing} />
+						<div data-go="no_go" data-city={city} data-id={businessID} role="button" tabIndex={0} className={`content__cards__card__footer__checkBox__label nogo ${isActive}`} onClick={this.handleGoing} onKeyUp={this.handleGoing} >Not Going</div>
 					</div>
 				</div>
 			);
@@ -142,6 +138,7 @@ export default class Card extends React.Component {
 
 Card.propTypes = {
 	// STATES
+	authState: PropTypes.instanceOf(Object).isRequired,
 	business: PropTypes.instanceOf(Object).isRequired,
 	// DISPATCHED FUNCTIONS
 	going: PropTypes.func.isRequired,

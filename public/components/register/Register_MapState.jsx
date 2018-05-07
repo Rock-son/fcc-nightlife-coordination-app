@@ -7,7 +7,7 @@ import { DISPATCH_LOGIN, DISPATCH_REGISTRATION, OPEN_LOGIN_DIALOG, DISPATCH_LOGO
 
 // Redux connect to props and dispatch actions
 const mapStateToProps = function a(state) {
-	return { ...state };
+	return { auth: state.auth };
 };
 
 

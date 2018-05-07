@@ -29,18 +29,6 @@ export default class Navbar extends React.PureComponent {
 		case LOGOUT:
 			this.props.logout();
 			break;
-		case GOOGLE:
-			this.props.login({ type: GOOGLE });
-			break;
-		case FACEBOOK:
-			this.props.login({ type: FACEBOOK });
-			break;
-		case GITHUB:
-			this.props.login({ type: GITHUB });
-			break;
-		case TWITTER:
-			this.props.login({ type: TWITTER });
-			break;
 		default:
 			break;
 		}
@@ -60,27 +48,27 @@ export default class Navbar extends React.PureComponent {
 					<a id="user" href="https://twitter.com/settings/applications" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">{`Welcome, ${this.props.authState.user}`}</a>
 				</div>
 				<div className="navbar__login-dialog" style={{ display: this.props.authState.openDialog ? "block" : "none" }} >
-					<h2 className="navbar__login-dialog__header">Sign In</h2>
-					<button id={FACEBOOK} className="navbar__login-dialog__btn facebook" onClick={this.handleClick} >
+					<h2 className="navbar__login-dialog__header">Sign in</h2>
+					<a id={FACEBOOK} className="navbar__login-dialog__btn facebook" href={`/auth/${FACEBOOK}`} >
 						<div className="navbar__login-dialog__btn__container">
 							<i className="fa fa-facebook-square" />  Facebook
 						</div>
-					</button>
-					<button id={GOOGLE} className="navbar__login-dialog__btn google" onClick={this.handleClick} >
+					</a>
+					<a id={GOOGLE} className="navbar__login-dialog__btn google" href={`/auth/${GOOGLE}`} >
 						<div className="navbar__login-dialog__btn__container">
 							<i className="fa fa-google-plus-square" /> Google
 						</div>
-					</button>
-					<button id={GITHUB} className="navbar__login-dialog__btn github" onClick={this.handleClick} >
+					</a>
+					<a id={GITHUB} className="navbar__login-dialog__btn github" href={`/auth/${GITHUB}`} >
 						<div className="navbar__login-dialog__btn__container">
 							<i className="fa fa-github-square" /> Github
 						</div>
-					</button>
-					<button id={TWITTER} className="navbar__login-dialog__btn twitter" onClick={this.handleClick} >
+					</a>
+					<a id={TWITTER} className="navbar__login-dialog__btn twitter" href={`/auth/${TWITTER}`} >
 						<div className="navbar__login-dialog__btn__container">
 							<i className="fa fa-twitter-square" /> Twitter
 						</div>
-					</button>
+					</a>
 					<hr className="navbar__login-dialog__line" />
 					<div className="navbar__login-dialog__footer">
 						<Link id={SIGNIN} to={`/${SIGNIN}`} onClick={this.handleClick} className="navbar__login-dialog__footer__link" >Sign In</Link>
