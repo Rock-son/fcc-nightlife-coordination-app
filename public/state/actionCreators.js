@@ -14,7 +14,7 @@ export function OPEN_LOGIN_DIALOG(state) {
 		state
 	};
 }
-	// REGISTER & LOGIN
+// REGISTER & LOGIN
 function registerUser(data) {
 	return {
 		type: REGISTER,
@@ -46,7 +46,7 @@ function registerFail(error) {
 		error
 	};
 }
-	// LOGOUT
+// LOGOUT
 function logoutUser() {
 	return {
 		type: LOGOUT
@@ -146,16 +146,17 @@ export function DISPATCH_LOGOUT() {
 	};
 }
 
-// ASYNC GOING
+
+// GOING REDUCER
 function initializeGoing(json) {
 	return {
 		type: INITIALIZE_GOING,
 		bars: json || []
 	};
 }
-function goingStart() {
+export function GOING_RESETING() {
 	return {
-		type: GOING_START
+		type: GOING_RESET
 	};
 }
 function goingFail(error) {
@@ -172,13 +173,12 @@ function goingReceived(json) {
 	};
 }
 
-
 // Redux Thunk
-export function DISPATCH_GOING(city, id, user) {
+export function DISPATCH_GOING(city, id) {
 	return (dispatch) => {
-		dispatch(goingStart());
+		dispatch(GOING_RESETING());
 
-		return addGoingUsers(city, id, user)
+		return addGoingUsers(city, id)
 			.then((json) => {
 				if (json.status !== 200) {
 					dispatch(goingFail(json.data));
@@ -189,11 +189,11 @@ export function DISPATCH_GOING(city, id, user) {
 			.catch(error => dispatch(goingFail(error)));
 	};
 }
-export function DISPATCH_NOT_GOING(city, id, user) {
+export function DISPATCH_NOT_GOING(city, id) {
 	return (dispatch) => {
-		dispatch(goingStart());
+		dispatch(GOING_RESETING());
 
-		return removeGoingUsers(city, id, user)
+		return removeGoingUsers(city, id)
 			.then((json) => {
 				if (json.status !== 200) {
 					dispatch(goingFail(json.data));
@@ -206,7 +206,7 @@ export function DISPATCH_NOT_GOING(city, id, user) {
 }
 
 
-// ASYNC SEARCH
+// SEARCH REDUCER
 function fetchStart() {
 	return {
 		type: FETCHING_START
@@ -260,7 +260,6 @@ export function INITIALIZE_LOCATION() {
 			.catch(error => dispatch(fetchFail(error)));
 	};
 }
-
 
 export function FETCH_BUSINESSES(location) {
 	return (dispatch, getState) => {
