@@ -6,7 +6,7 @@ export default {
 	REGISTER_FAIL: "register_fail",
 	LOGIN: "login",
 	LOGIN_CHECK: "login_check",
-	LOGIN_DIALOG: "login_dialog",
+	LOGIN_DIALOG_OPEN: "login_dialog_open",
 	LOGIN_FAIL: "login_fail",
 	LOGOUT: "logout",
 	LOGOUT_FAIL: "LOGOUT_FAIL",
