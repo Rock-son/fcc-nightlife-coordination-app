@@ -121,29 +121,47 @@ app.post("/auth/register", Authentication.register);
 app.post("/auth/logout", Authentication.logout);
 
 
-// TODO: add authenticate validation for add going!!
+// GOING REDUCER
 app.post("/api/addGoing", (req, res, next) => {
 	if (req.body.location.trim() === "") return setTimeout(() => res.status(400).send("You need to input location!"), 300);
 
+	passport.authenticate('jwt', {session: false}, function(err, user, info, status) {
+		if (err) { return next(err) }
+		if (!user) {
+			return res.status(401).send("unauthorized");
+		}
+
 	const data = {
-		city: mongoSanitize(req.body.location.trim()) || "no data",
+			city: mongoSanitize(req.body.location.trim()) || "",
 		id: mongoSanitize(req.body.id.trim()) || "",
-		user: mongoSanitize(req.body.user) || ""
+			user: mongoSanitize(user.username || user.displayName) || ""
 	};
-	db.addGoingUsers(req, res, next, data);
+		if (!data.city || !data.id) {
+			return res.status(200).send({ users: [], id: "" });
+		}
+		return db.addGoingUsers(req, res, next, data);
+	})(req, res, next);
 });
 
-
-// TODO: add authenticate validation for remove going!!
 app.post("/api/removeGoing", (req, res, next) => {
 	if (req.body.location.trim() === "") return setTimeout(() => res.status(400).send("You need to input location!"), 300);
 
+	passport.authenticate('jwt', {session: false}, function(err, user, info, status) {
+		if (err) { return next(err) }
+		if (!user) {
+			return res.status(401).send("unauthorized");
+		}
+
 	const data = {
-		city: mongoSanitize(req.body.location.trim()) || "no data",
+			city: mongoSanitize(req.body.location.trim()) || "",
 		id: mongoSanitize(req.body.id.trim()) || "",
-		user: mongoSanitize(req.body.user) || ""
+			user: mongoSanitize(user.username || user.displayName) || ""
 	};
-	db.removeGoingUsers(req, res, next, data)
+		if (!data.city || !data.id) {
+			return res.status(200).send({ users: [], id: "" });
+		}
+		return db.removeGoingUsers(req, res, next, data);
+	})(req, res, next);
 });
 
 // TODO: CHECK LAST SEARCHED LOCATION FROM AUTH-ED USER, ELSE FROM IP (db.getAuthedUser = > db.getLastLocation() ELSE IP)
