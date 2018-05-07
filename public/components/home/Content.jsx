@@ -57,6 +57,7 @@ export default class Content extends React.Component {
 		this.props.locationInput(e.target.value);
 	}
 
+	/* eslint-disable react/jsx-indent-props */
 	render() {
 		if (this.props.goState.errorMsg === "unauthorized") {
 			this.props.openLoginDialog(true);
@@ -109,7 +110,7 @@ export default class Content extends React.Component {
 		);
 	}
 }
-
+/* eslint-enable */
 Content.propTypes = {
 	// STATES
 	authState: PropTypes.instanceOf(Object).isRequired,
