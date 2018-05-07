@@ -2,7 +2,7 @@
 
 import { combineReducers } from "redux";
 import {
-	REGISTER, REGISTER_FAIL, LOGIN_DIALOG, LOGIN, LOGIN_FAIL, LOGOUT, LOGOUT_FAIL, INITIALIZE_GOING, GOING_START, GOING_FAIL,
+	REGISTER, REGISTER_FAIL, LOGIN_DIALOG, LOGIN, LOGIN_CHECK, LOGIN_FAIL, LOGOUT, LOGOUT_FAIL, INITIALIZE_GOING, GOING_RESET, GOING_FAIL,
 	GOING_RECEIVED, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED, LOCATION_INPUT
 } from "Actions";
 import { INITIAL_AUTH_STATE, INITIAL_GOING_STATE, INITIALIZE_BAR_STATE } from "InitialState";
@@ -14,8 +14,19 @@ const authReducer = (state = INITIAL_AUTH_STATE, action) => {
 	case LOGIN_DIALOG:
 		return {
 			...state,
+			hasError: false,
+			error: "",
 			openDialog: action.state,
 			redirect: false
+		};
+	case LOGIN_CHECK:
+		return {
+			...state,
+			hasError: false,
+			error: "",
+			openDialog: false,
+			user: action.user,
+			authenticated: action.authenticated
 		};
 	case LOGIN:
 	case REGISTER:
@@ -66,7 +77,7 @@ const goingReducer = (state = INITIAL_GOING_STATE, action) => {
 			...state,
 			bars: action.bars
 		};
-	case GOING_START:
+	case GOING_RESET:
 		return {
 			...state,
 			errorGoing: false,
@@ -79,6 +90,10 @@ const goingReducer = (state = INITIAL_GOING_STATE, action) => {
 			errorMsg: action.error
 		};
 	case GOING_RECEIVED:
+		// IF NO DATA RETURNED - return state
+		if (!action.id.trim()) {
+			return { ...state };
+		}
 		// IF BAR EXISTS - change value, else concatenate it to state.bars
 		idx = state.bars.map(e => e.bar.id).indexOf(action.id);
 		bar = { bar: { id: action.id, users: action.users } };
