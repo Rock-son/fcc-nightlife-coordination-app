@@ -6,12 +6,86 @@ const getClientIp = require("./modules/getIp").default;
 
 exports.getCityBarUsers = function (city) {
 
-	return GoingUsersSchema.find({city: city}, {"_id": 0, "bar": 1}, function(err, doc) {
-		if (err) { return err; }
 
-		return doc || [];
+exports.getLocation = function(req, res, next, type, data) {
+	switch (`${type}_auth`) {
+		case LocalUser.collection.collectionName:
+			LocalUser.findById(data._id, (err, user) => {
+				if (err) { return res.status(400).send(err); }
+				if (user) { return res.send({city: user.lastSrcLocation}); }
+			});
+			break;
+		case GitHubUser.collection.collectionName:
+			GitHubUser.findById(data._id, (err, user) => {
+				if (err) { return res.status(400).send(err); }
+				if (user) { return res.send({city: user.lastSrcLocation}); }
+			});
+			break;
+		case FacebookUser.collection.collectionName:
+			FacebookUser.findById(data._id, (err, user) => {
+				if (err) { return res.status(400).send(err); }
+				if (user) { return res.send({city: user.lastSrcLocation}); }
+			});
+			break;
+		case GoogleUser.collection.collectionName:
+			GoogleUser.findById(data._id, (err, user) => {
+				if (err) { return res.status(400).send(err); }
+				if (user) { return res.send({city: user.lastSrcLocation}); }
+			});
+			break;
+		default:
+			return res.status(400).send({city: ""});
+	}
+}
+
+exports.saveLastLocation = function(req, res, next, type, data) {
+	const location = req.body.location.trim() || "";
+	switch (`${type}_auth`) {
+		case LocalUser.collection.collectionName:
+			LocalUser.findById(data._id, (err, user) => {
+				if (err) { return next(err); }
+				
+				user.lastSrcLocation = location;
+				user.save(function (err) {
+					if (err) { return next(err); }
+				});
+			});
+			break;
+			break;
+		case GitHubUser.collection.collectionName:
+			GitHubUser.findById(data._id, (err, user) => {
+				if (err) { return next(err); }
+				
+				user.lastSrcLocation = location;
+				user.save(function (err) {
+					if (err) { return next(err); }
+				});
+			});
+			break;
+		case FacebookUser.collection.collectionName:
+			FacebookUser.findById(data._id, (err, user) => {
+				if (err) { return next(err); }
+
+				user.lastSrcLocation = location;
+				user.save(function (err) {
+					if (err) { return next(err); }
 	});
-};
+			});
+			break;
+		case GoogleUser.collection.collectionName:
+			GoogleUser.findById(data._id, (err, user) => {
+				if (err) { return next(err); }
+
+				user.lastSrcLocation = location;
+				user.save(function (err) {
+					if (err) { return next(err); }
+				});
+			});
+			break;
+		default:
+			return res.status(400).send({error: "No last location"});
+	}
+}
 
 exports.addGoingUsers = function (req, res, next, data) {
 
