@@ -17,12 +17,15 @@ export default class Login extends React.PureComponent {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.eraseError = this.eraseError.bind(this);
 	}
 
 	componentDidMount() {
 		this.username.current.focus();
 	}
-
+	eraseError() {
+		this.props.openLoginDialog(false);
+	}
 	handleChange(e) {
 		e.preventDefault();
 		switch (e.target.id) {
@@ -41,7 +44,7 @@ export default class Login extends React.PureComponent {
 		this.props.openLoginDialog(false);
 		this.props.localLogin({ user: this.state[USER], pass: this.state[PASS] });
 	}
-	// TODO: FIX ERROR AT login failure (-> register)
+
 	render() {
 		if (this.props.authState.redirect) { return <Redirect to="/" />; }
 		return (
@@ -57,7 +60,7 @@ export default class Login extends React.PureComponent {
 					</form>
 					<div className="form__container__footnote" >
 						<div className="form__container__footnote__txt">Don`t have an account?</div>
-						<Link id={SIGNUP} to={`/${SIGNUP}`} className="form__container__footnote__link" >Sign Up</Link>
+						<Link id={SIGNUP} to={`/${SIGNUP}`} className="form__container__footnote__link" onClick={this.eraseError} >Sign Up</Link>
 					</div>
 					<div className={`form__container__error ${this.props.authState.error ? "active" : ""}`} >{this.props.authState.error ? `Error: "${this.props.authState.error}"` : ""}</div>
 				</div>

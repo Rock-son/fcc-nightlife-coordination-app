@@ -18,10 +18,14 @@ export default class Register extends React.PureComponent {
 
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.eraseError = this.eraseError.bind(this);
 	}
 
 	componentDidMount() {
 		this.username.current.focus();
+	}
+	eraseError() {
+		this.props.openLoginDialog(false);
 	}
 
 	handleChange(e) {
@@ -62,7 +66,7 @@ export default class Register extends React.PureComponent {
 					</form>
 					<div className="form__container__footnote" >
 						<div className="form__container__footnote__txt">Already have an account?</div>
-						<Link id={SIGNIN} to={`/${SIGNIN}`} className="form__container__footnote__link" >Sign In</Link>
+						<Link id={SIGNIN} to={`/${SIGNIN}`} className="form__container__footnote__link" onClick={this.eraseError} >Sign In</Link>
 					</div>
 					<div className={`form__container__error ${this.props.authState.error ? "active" : ""}`} >{this.props.authState.error ? `Error: "${this.props.authState.error}"` : ""}</div>
 				</div>

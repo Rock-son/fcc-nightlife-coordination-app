@@ -54,18 +54,6 @@ export default {
 			},
 			validateStatus
 		}),
-	saveLastLocation: location =>
-		axios({
-			method: "post",
-			url: `api/saveLastLocation`,
-			data: {
-				location
-			},
-			headers: {
-				"Content-Type": "application/json"
-			},
-			validateStatus
-		}),
 	login: data =>
 		axios({
 			method: "post",

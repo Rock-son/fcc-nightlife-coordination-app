@@ -8,9 +8,16 @@ import { LOGIN, LOGOUT } from "Actions";
 const GOOGLE = "google";
 const FACEBOOK = "facebook";
 const GITHUB = "github";
-const TWITTER = "twitter";
+const LOCAL = "local";
 const SIGNIN = "signin";
 const SIGNUP = "signup";
+
+const SETTINGS_URL = {
+	[LOCAL]: "/",
+	[GOOGLE]: "https://myaccount.google.com/permissions",
+	[GITHUB]: "https://github.com/settings/applications",
+	[FACEBOOK]: "https://www.facebook.com/settings?tab=applications"
+};
 
 
 export default class Navbar extends React.PureComponent {
@@ -45,7 +52,7 @@ export default class Navbar extends React.PureComponent {
 				<div className="navbar__right">
 					<button id={LOGIN} tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "none" : "inline-block" }} className="navbar__right__login">{this.props.authState.openDialog ? "Close" : "Sign In" }</button>
 					<button id={LOGOUT} tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">Logout</button>
-					<a id="user" href="https://twitter.com/settings/applications" tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">{`Welcome, ${this.props.authState.user}`}</a>
+					<a id="user" href={this.props.authState.authType ? SETTINGS_URL[this.props.authState.authType] : "/"} tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">{`Welcome, ${this.props.authState.user}`}</a>
 				</div>
 				<div className="navbar__login-dialog" style={{ display: this.props.authState.openDialog ? "block" : "none" }} >
 					<h2 className="navbar__login-dialog__header">Sign in</h2>
@@ -62,11 +69,6 @@ export default class Navbar extends React.PureComponent {
 					<a id={GITHUB} className="navbar__login-dialog__btn github" href={`/auth/${GITHUB}`} >
 						<div className="navbar__login-dialog__btn__container">
 							<i className="fa fa-github-square" /> Github
-						</div>
-					</a>
-					<a id={TWITTER} className="navbar__login-dialog__btn twitter" href={`/auth/${TWITTER}`} >
-						<div className="navbar__login-dialog__btn__container">
-							<i className="fa fa-twitter-square" /> Twitter
 						</div>
 					</a>
 					<hr className="navbar__login-dialog__line" />
@@ -86,12 +88,9 @@ Navbar.propTypes = {
 	authState: PropTypes.instanceOf(Object).isRequired,
 	// FUNCTIONS
 	openLoginDialog: PropTypes.func.isRequired,
-	login: PropTypes.func,
 	logout: PropTypes.func
 };
 
 Navbar.defaultProps = {
-
-	login: () => {},
 	logout: () => true
 };

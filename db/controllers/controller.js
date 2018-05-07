@@ -13,34 +13,22 @@ exports.getCityBarUsers = function (city) {
 	});
 };
 
-exports.getLocation = function(req, res, next, type, data) {
+exports.getLocation = function(type, data) {
 	switch (`${type}_auth`) {
 		case LocalUser.collection.collectionName:
-			LocalUser.findById(data._id, (err, user) => {
-				if (err) { return res.status(400).send(err); }
-				if (user) { return res.send({city: user.lastSrcLocation}); }
-			});
-			break;
+			return LocalUser.findById(data._id);
+
 		case GitHubUser.collection.collectionName:
-			GitHubUser.findById(data._id, (err, user) => {
-				if (err) { return res.status(400).send(err); }
-				if (user) { return res.send({city: user.lastSrcLocation}); }
-			});
-			break;
+			return GitHubUser.findById(data._id);
+
 		case FacebookUser.collection.collectionName:
-			FacebookUser.findById(data._id, (err, user) => {
-				if (err) { return res.status(400).send(err); }
-				if (user) { return res.send({city: user.lastSrcLocation}); }
-			});
-			break;
+			return FacebookUser.findById(data._id);
+
 		case GoogleUser.collection.collectionName:
-			GoogleUser.findById(data._id, (err, user) => {
-				if (err) { return res.status(400).send(err); }
-				if (user) { return res.send({city: user.lastSrcLocation}); }
-			});
-			break;
+			return GoogleUser.findById(data._id);
+
 		default:
-			return res.status(400).send({city: ""});
+			return new Promise();
 	}
 }
 
@@ -50,18 +38,17 @@ exports.saveLastLocation = function(req, res, next, type, data) {
 		case LocalUser.collection.collectionName:
 			LocalUser.findById(data._id, (err, user) => {
 				if (err) { return next(err); }
-				
+
 				user.lastSrcLocation = location;
 				user.save(function (err) {
 					if (err) { return next(err); }
 				});
 			});
 			break;
-			break;
 		case GitHubUser.collection.collectionName:
 			GitHubUser.findById(data._id, (err, user) => {
 				if (err) { return next(err); }
-				
+
 				user.lastSrcLocation = location;
 				user.save(function (err) {
 					if (err) { return next(err); }
@@ -71,7 +58,7 @@ exports.saveLastLocation = function(req, res, next, type, data) {
 		case FacebookUser.collection.collectionName:
 			FacebookUser.findById(data._id, (err, user) => {
 				if (err) { return next(err); }
-				
+
 				user.lastSrcLocation = location;
 				user.save(function (err) {
 					if (err) { return next(err); }
@@ -81,7 +68,7 @@ exports.saveLastLocation = function(req, res, next, type, data) {
 		case GoogleUser.collection.collectionName:
 			GoogleUser.findById(data._id, (err, user) => {
 				if (err) { return next(err); }
-				
+
 				user.lastSrcLocation = location;
 				user.save(function (err) {
 					if (err) { return next(err); }

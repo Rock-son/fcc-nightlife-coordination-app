@@ -2,7 +2,7 @@
 
 import { combineReducers } from "redux";
 import {
-	REGISTER, REGISTER_FAIL, LOGIN_DIALOG, LOGIN, LOGIN_CHECK, LOGIN_FAIL, LOGOUT, LOGOUT_FAIL, INITIALIZE_GOING, GOING_RESET, GOING_FAIL,
+	REGISTER, REGISTER_FAIL, LOGIN_DIALOG_OPEN, LOGIN, LOGIN_CHECK, LOGIN_FAIL, LOGOUT, LOGOUT_FAIL, INITIALIZE_GOING, GOING_RESET, GOING_FAIL,
 	GOING_RECEIVED, FETCHING_START, FETCHING_FAILURE, FETCHING_RECEIVED, LOCATION_INPUT
 } from "Actions";
 import { INITIAL_AUTH_STATE, INITIAL_GOING_STATE, INITIALIZE_BAR_STATE } from "InitialState";
@@ -11,7 +11,7 @@ import { INITIAL_AUTH_STATE, INITIAL_GOING_STATE, INITIALIZE_BAR_STATE } from "I
 // TODO: REPLACE with function that will return true after successful login and logout!
 const authReducer = (state = INITIAL_AUTH_STATE, action) => {
 	switch (action.type) {
-	case LOGIN_DIALOG:
+	case LOGIN_DIALOG_OPEN:
 		return {
 			...state,
 			hasError: false,
@@ -26,7 +26,9 @@ const authReducer = (state = INITIAL_AUTH_STATE, action) => {
 			error: "",
 			openDialog: false,
 			user: action.user,
-			authenticated: action.authenticated
+			authenticated: action.authenticated,
+			authType: action.authType
+
 		};
 	case LOGIN:
 	case REGISTER:

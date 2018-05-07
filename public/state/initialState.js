@@ -3,6 +3,7 @@
 export default {
 	INITIAL_AUTH_STATE: {
 		authenticated: false,
+		authType: "",
 		openDialog: false,
 		hasError: false,
 		error: "",

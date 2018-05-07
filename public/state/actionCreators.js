@@ -1,16 +1,16 @@
 "use strict";
 
 import {
-	REGISTER, REGISTER_FAIL, LOGIN_DIALOG, LOGIN, LOGIN_CHECK, LOGIN_FAIL, LOGOUT, LOGOUT_FAIL, INITIALIZE_GOING, GOING_RESET,
+	REGISTER, REGISTER_FAIL, LOGIN_DIALOG_OPEN, LOGIN, LOGIN_CHECK, LOGIN_FAIL, LOGOUT, LOGOUT_FAIL, INITIALIZE_GOING, GOING_RESET,
 	GOING_FAIL, GOING_RECEIVED,	LOCATION_INPUT, FETCHING_START, FETCHING_FAIL, FETCHING_RECEIVED
 } from "Actions";
-import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation, saveLastLocation, login, getLoggedUser, localLogin, register, logout } from "Api";
+import { addGoingUsers, removeGoingUsers, initializeLocation, getBarsOnLocation, login, getLoggedUser, localLogin, register, logout } from "Api";
 
 
 // AUTHENTICATION action creater
 export function OPEN_LOGIN_DIALOG(state) {
 	return {
-		type: LOGIN_DIALOG,
+		type: LOGIN_DIALOG_OPEN,
 		state
 	};
 }
@@ -31,7 +31,8 @@ function checkLoggedUser(data) {
 	return {
 		type: LOGIN_CHECK,
 		user: data.user,
-		authenticated: data.authenticated
+		authenticated: data.authenticated,
+		authType: data.authType
 	};
 }
 function loginFail(error) {
