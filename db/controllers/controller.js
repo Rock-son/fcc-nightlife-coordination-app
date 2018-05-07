@@ -1,11 +1,17 @@
 "use strict";
 
 const { GoingUsersSchema } = require("../models/GoingUsers");
+const { LocalUser, GitHubUser, FacebookUser, GoogleUser } = require("../../auth/models/users");
 const createHash = require("./modules/_createHash").default;
 const getClientIp = require("./modules/getIp").default;
 
 exports.getCityBarUsers = function (city) {
+	return GoingUsersSchema.find({city: city.toLowerCase()}, {"_id": 0, "bar": 1}, function(err, results) {
+		if (err) { return res.status(400).send(err); }
 
+		return results || [];
+	});
+};
 
 exports.getLocation = function(req, res, next, type, data) {
 	switch (`${type}_auth`) {
@@ -65,17 +71,17 @@ exports.saveLastLocation = function(req, res, next, type, data) {
 		case FacebookUser.collection.collectionName:
 			FacebookUser.findById(data._id, (err, user) => {
 				if (err) { return next(err); }
-
+				
 				user.lastSrcLocation = location;
 				user.save(function (err) {
 					if (err) { return next(err); }
-	});
+				});
 			});
 			break;
 		case GoogleUser.collection.collectionName:
 			GoogleUser.findById(data._id, (err, user) => {
 				if (err) { return next(err); }
-
+				
 				user.lastSrcLocation = location;
 				user.save(function (err) {
 					if (err) { return next(err); }
@@ -89,20 +95,20 @@ exports.saveLastLocation = function(req, res, next, type, data) {
 
 exports.addGoingUsers = function (req, res, next, data) {
 
-	GoingUsersSchema.findOne({ 'bar.id': data.id }, function(err, doc) {
+	GoingUsersSchema.findOne({ 'bar.id': data.id }, function(err, result) {
 		if (err) { return res.status(400).send(err); }
 
 		// IF BAR exists
-		if (doc) {
-			// if USER exist - return unchanged, else add and save
-			if (doc.bar.users.indexOf(data.user) > -1) {
-				return res.status(200).send({ users: doc.bar.users.slice(), id: data.id });
+		if (result) {
+			// if USER exist in bar array - return unchanged, else add and save
+			if (result.bar.users.indexOf(data.user) > -1) {
+				return res.status(200).send({ users: result.bar.users.slice(), id: data.id });
 			} else {
-				doc.bar.users = doc.bar.users.slice().concat(data.user);
-				doc.save(function (err) {
+				result.bar.users = result.bar.users.slice().concat(data.user);
+				result.save(function (err) {
 					if (err) { return res.status(400).send(err); }
 
-					return res.status(200).send({ users: doc.bar.users, id: data.id });
+					return res.status(200).send({ users: result.bar.users, id: data.id });
 				});
 			}
 		} else {
@@ -126,25 +132,26 @@ exports.addGoingUsers = function (req, res, next, data) {
 
 exports.removeGoingUsers = function (req, res, next, data) {
 
-	GoingUsersSchema.findOne({ "bar.id": data.id }, function(err, doc) {
+	GoingUsersSchema.findOne({ "bar.id": data.id }, function(err, result) {
 		if (err) { return err; }
 
 		// if BAR exists
-		if (doc) {
+		if (result) {
 			// if USER exist - remove them and save, else return same array
 			let idx = null;
-			if ((idx = doc.bar.users.indexOf(data.user)) > -1) {
-				doc.bar.users = doc.bar.users.slice(0, idx).concat(doc.bar.users.slice(idx + 1));
-				doc.save(function (err) {
+			if ((idx = result.bar.users.indexOf(data.user)) > -1) {
+				result.bar.users = result.bar.users.slice(0, idx).concat(result.bar.users.slice(idx + 1));
+				result.save(function (err) {
 					if (err) { return res.status(402).send(err); }
 
-					return res.status(200).send({ users: doc.bar.users.slice(0), id: data.id });
+					return res.status(200).send({ users: result.bar.users.slice(0), id: data.id });
 				});
+				return;
 			} else {
-				return doc.bar.users.slice();
+				return res.status(200).send({ users: [], id: "" });
 			}
 		}
 		// IF BAR NOT exists
-		return [];
+		return res.status(200).send({ users: [], id: "" });
 	});
 };
