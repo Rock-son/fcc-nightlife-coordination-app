@@ -84,24 +84,31 @@ mongoose.connect(dbUrl, { useMongoClient: true, autoIndex: false });
 
 // AUTHENTICATION - Facebook, Google, Github, Twitter
 app.get("/auth/github", passport.authenticate("github", { session: false }));
-app.get("/auth/github/return", (req, res) => {
+app.get("/auth/github/return", (req, res, next) => {
 		passport.authenticate("github", { session: false, failureRedirect: "/" }, function(err, user, info, status) {
+			if (err) { return next(err);}
+
 			Authentication.schemaLogin(req, res, user, "github");
 		})(req, res);
 	}
 );
 
 app.get("/auth/google", passport.authenticate("google", { session: false }));
-app.get("/auth/google/return", (req, res) => {
+app.get("/auth/google/return", (req, res, next) => {
 		passport.authenticate("google", { session: false, failureRedirect: "/" }, function(err, user, info, status) {
+			if (err) { return next(err);}
+
 			Authentication.schemaLogin(req, res, user, "google");
 		})(req, res);
 	}
 );
 
 app.get("/auth/facebook", passport.authenticate("facebook", { session: false }));
-app.get("/auth/facebook/return", (req, res) => {
+app.get("/auth/facebook/return", (req, res, next) => {
 		passport.authenticate("facebook", { session: false, failureRedirect: "/" }, function(err, user, info, status) {
+			console.log(err, user, info, status);
+			if (err) { return next(err);}
+
 			Authentication.schemaLogin(req, res, user, "facebook");
 		})(req, res);
 	}
