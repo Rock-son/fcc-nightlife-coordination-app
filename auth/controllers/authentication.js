@@ -3,10 +3,10 @@
 const { LocalUser } = require("../models/users");
 const jwt = require("jsonwebtoken");
 const mongoSanitize = require("mongo-sanitize");
-// TODO: change httpOnly & secure: true
+
 const cookieOptions = {
-	httpOnly: false,
-	secure: false,
+	httpOnly: true,
+	secure: true,
 	sameSite: false,
 	maxAge: 60 * 60 * 24000// 24 hours
 };
