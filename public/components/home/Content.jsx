@@ -2,6 +2,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import { Redirect } from "react-router";
 import Card from "./_Card";
 
 const defaultObj = {};
@@ -25,7 +26,14 @@ export default class Content extends React.Component {
 
 	componentDidMount() {
 		this.props.renderLocation();
-		setTimeout(() => this.inputField.current.click(), 500);
+		setTimeout(
+			() => {
+				if (this.inputField) {
+					this.inputField.current.click();
+				}
+			},
+			500
+		);
 	}
 
 	handleEnterPress(e) {
@@ -50,6 +58,11 @@ export default class Content extends React.Component {
 	}
 
 	render() {
+		if (this.props.goState.errorMsg === "unauthorized") {
+			this.props.openLoginDialog(true);
+			this.props.goingReset();
+			return <Redirect to="/signin" />;
+		}
 		const responseImg = "./assets/images/pexels-photo-260920.jpeg 640w, ./assets/images/pexels-photo-260921.jpeg 1280w, ./assets/images/pexels-photo-260922.jpeg 1920w";
 
 		return (
@@ -84,6 +97,8 @@ export default class Content extends React.Component {
 								business={business}
 								handleGoing={this.handleGoing}
 								barObj={this.props.goState.bars ? this.props.goState.bars[(this.props.goState.bars || defaultArray).map(e => (e ? ((e || defaultObj).bar || defaultObj).id : "")).indexOf(business.venue.id)] : defaultObj}
+								authState={this.props.authState}
+								openLoginDialog={this.props.openLoginDialog}
 								goState={this.props.goState}
 								going={this.props.going}
 								notGoing={this.props.notGoing}
@@ -97,12 +112,15 @@ export default class Content extends React.Component {
 
 Content.propTypes = {
 	// STATES
+	authState: PropTypes.instanceOf(Object).isRequired,
 	barState: PropTypes.instanceOf(Object).isRequired,
 	goState: PropTypes.instanceOf(Object).isRequired,
 	// ACTIONS
+	openLoginDialog: PropTypes.func.isRequired,
 	search: PropTypes.func.isRequired,
 	renderLocation: PropTypes.func.isRequired,
 	locationInput: PropTypes.func.isRequired,
+	goingReset: PropTypes.func.isRequired,
 	going: PropTypes.func.isRequired,
 	notGoing: PropTypes.func.isRequired,
 	// ERRORS
