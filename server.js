@@ -37,8 +37,8 @@ const limiter = new RateLimiter({
 );
 
 // AUTHENTICATION
+require("./auth/services/passport");
 const Authentication = require("./auth/controllers/authentication");
-const passportService = require("./auth/services/passport");
 const passport = require("passport");
 const ensureAuthenticated = passport.authenticate("jwt", { session: false, failureRedirect: "/signin"});
 const verifyLoginData = passport.authenticate("local", { session: false });
@@ -120,6 +120,15 @@ app.post("/auth/register", Authentication.register);
 
 app.post("/auth/logout", Authentication.logout);
 
+app.post("/auth/getLoggedUser",  (req, res, next) => {
+	passport.authenticate('jwt', {session: false}, function(err, user, info, status) {
+		if (err) { return next(err) }
+		if (!user) {
+			return res.status(401).send({ user: "", authenticated: false });
+		}
+		return res.status(200).send({ user: user.username || user.displayName, authenticated: true });
+	})(req, res, next);
+});
 
 // GOING REDUCER
 app.post("/api/addGoing", (req, res, next) => {
@@ -131,11 +140,11 @@ app.post("/api/addGoing", (req, res, next) => {
 			return res.status(401).send("unauthorized");
 		}
 
-	const data = {
+		const data = {
 			city: mongoSanitize(req.body.location.trim()) || "",
-		id: mongoSanitize(req.body.id.trim()) || "",
+			id: mongoSanitize(req.body.id.trim()) || "",
 			user: mongoSanitize(user.username || user.displayName) || ""
-	};
+		};
 		if (!data.city || !data.id) {
 			return res.status(200).send({ users: [], id: "" });
 		}
@@ -152,49 +161,61 @@ app.post("/api/removeGoing", (req, res, next) => {
 			return res.status(401).send("unauthorized");
 		}
 
-	const data = {
+		const data = {
 			city: mongoSanitize(req.body.location.trim()) || "",
-		id: mongoSanitize(req.body.id.trim()) || "",
+			id: mongoSanitize(req.body.id.trim()) || "",
 			user: mongoSanitize(user.username || user.displayName) || ""
-	};
+		};
 		if (!data.city || !data.id) {
 			return res.status(200).send({ users: [], id: "" });
 		}
 		return db.removeGoingUsers(req, res, next, data);
 	})(req, res, next);
 });
-
-// TODO: CHECK LAST SEARCHED LOCATION FROM AUTH-ED USER, ELSE FROM IP (db.getAuthedUser = > db.getLastLocation() ELSE IP)
+// TODO: if new user registers, he gets no location (default = "")
+// INITIALIZE LOCATION
 app.post("/api/initializeLocation", async (req, res, next) => {
+	let location = "";
+	let ip = "";
+	passport.authenticate('jwt', {session: false}, async function(err, user, info, status) {
+		if (err) { return next(err) }
+		if (user) {
+			db.getLocation(req, res, next, info, user);
+		} else {
+			let ip = await getClientIp(req);
+			ip = ip === "::1" ? "" : ip; // "" is the same as getting WAN IP (on request)
 
-	let ip = await getClientIp(req);
-	ip = ip === "::1" ? "": ip;
-
-	axios({
-		method: "get",
-		url: `http://ip-api.com/json${ip}`,
-		timeout: 2000,
-		validateStatus: status => status < 500 // Reject if the status code < 500
-		})
-		.then(response => res.status(200).send(response.data))
-		.catch(error => {
-			if (error.response) {
-				// The request was made and the server responded with a status code that falls out of the range of 2xx
-				return res.status(error.response.status).send(error.response.data, error.response.header);
-			}
-			if (error.request) {
-				// The request was made but no response was received `error.request` is an instance of http.ClientRequest in node.js
-				return res.status(400).send(error.request);
-			}
-			return res.status(400).send(error.message);
-		});
+			axios({
+				method: "get",
+				url: `http://ip-api.com/json${ip}`,
+				timeout: 2000,
+				validateStatus: status => status < 500 // Reject if the status code < 500
+				})
+				.then(response => res.status(200).send(response.data))
+				.catch(error => {
+					if (error.response) {
+						// The request was made and the server responded with a status code that falls out of the range of 2xx
+						return res.status(error.response.status).send(error.response.data, error.response.header);
+					}
+					if (error.request) {
+						// The request was made but no response was received `error.request` is an instance of http.ClientRequest in node.js
+						return res.status(400).send(error.request);
+					}
+					return res.status(400).send(error.message);
+				});
+		}
+	})(req, res, next);
 });
-
-
-// in case of Async function, use try - catch block!!! and no need for then -> catch block
+// SEARCH BARS AND SAVE LAST LOCATION
 app.post("/api/searchBars", (req, res, next) => {
 	if (req.body.location.trim() === "") return setTimeout(() => res.status(400).send("You need to input location!"), 300);
 
+	passport.authenticate('jwt', {session: false}, function(err, user, info, status) {
+		if (err) { return next(err) }
+		if (user) {
+			db.saveLastLocation(req, res, next, info, user);
+		}
+	})(req, res, next);
 	const city = mongoSanitize(req.body.location.trim());
 	const cityPromise = db.getCityBarUsers(city);
 	const foursquarePromise = axios({
@@ -251,9 +272,7 @@ if (process.env.NODE_ENV !== "production") {
 	);
 } else {
 	// NEEDED FOR REACT ROUTER HISTORY LIB
-	app.get("*", (req, res) => {
-		res.sendFile(path.join(__dirname, "dist", "index.html"));
-	});
+	app.get("*", (req, res) => res.sendFile(path.join(__dirname, "dist", "index.html")));
 }
 
 
