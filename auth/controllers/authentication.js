@@ -5,8 +5,8 @@ const jwt = require("jsonwebtoken");
 const mongoSanitize = require("mongo-sanitize");
 
 const cookieOptions = {
-	httpOnly: true,
-	secure: true,
+	httpOnly: false,
+	secure: false,
 	sameSite: false,
 	maxAge: 60 * 60 * 24000// 24 hours
 };

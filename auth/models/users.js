@@ -22,7 +22,8 @@ const randomSchema = new Schema({
 // On Save Hook, encrypt password with bcrypt
 localSchema.pre("save", function a(next) {
 	const user = this; // user is an instance of userSchema - a context (this)
-	bcrypt.genSalt(10, (err, salt) => {
+	if (user.lastSrcLocation) { return next(); }
+	return bcrypt.genSalt(10, (err, salt) => {
 		if (err) { return next(err); }
 
 		return bcrypt.hash(user.password, salt, null, (errB, hash) => {

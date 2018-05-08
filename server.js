@@ -194,9 +194,11 @@ app.post("/api/initializeLocation", (req, res, next) => {
 					}
 				})
 				.catch(error => res.status(400).send({ error }));
-			}
+		} else {
+			return getIpLocation();
+		}
 
-			async function  getIpLocation() {
+			async function getIpLocation() {
 				let ip = await getClientIp(req);
 				ip = ip === "::1" ? "" : ip; // "" is the same as getting WAN IP (on request)
 
