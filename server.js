@@ -200,12 +200,11 @@ app.post("/api/initializeLocation", (req, res, next) => {
 
 			async function getIpLocation() {
 				let ip = await getClientIp(req);
-				console.log(ip);
 				ip = ip === "::1" ? "" : ip; // "" is the same as getting WAN IP (on request)
-				console.log(ip);
+
 				axios({
 					method: "get",
-					url: `http://ip-api.com/json${ip}`,
+					url: `http://ip-api.com/json/${ip}`,
 					timeout: 2000,
 					validateStatus: status => status < 500 // Reject if the status code < 500
 					})
