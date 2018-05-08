@@ -69,6 +69,7 @@ export default class Content extends React.Component {
 		return (
 			<section className="content">
 				<img className="content__hero" srcSet={responseImg} alt="barcle" />
+				<h1 className="content__header" >Nightlife coordination App</h1>
 				<article className="content__search">
 					<h2 className="content__search__header">Ready for a party night out?</h2>
 					<div className="content__search__img-container">
