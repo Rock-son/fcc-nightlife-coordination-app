@@ -404,7 +404,7 @@ template {
 
 .navbar__left {
   display: inline-block;
-  width: 50%;
+  width: 25%;
   height: 100%;
 }
 
@@ -442,28 +442,54 @@ template {
 
 .navbar__right {
   display: inline-block;
-  width: 50%;
+  width: 75%;
   height: 100%;
 }
 
 .navbar__right__login {
   float: right;
-  margin-right: 5%;
-  font-size: 1.1rem;
+  margin-right: 0;
+  font-size: 1rem;
   -webkit-transform: translateY(50%);
   transform: translateY(50%);
   text-decoration: none;
-  color: #fff;
+  color: #333;
   cursor: pointer;
+  padding: 1px 5px;
   width: 5rem;
-  border-radius: 5px;
-  background-color: #d72355;
+  outline: 0;
+  border-radius: 50px;
+  background-color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;
 }
 
 .navbar__right__login:hover {
-  cursor: pointer;
   color: #fff;
-  background-color: #b90e3e;
+  background-color: #d72355;
+}
+
+@media (min-width: 500px) {
+  .navbar__right__login {
+    font-size: 1.1rem;
+    margin-right: 5%;
+  }
+}
+
+.navbar__right__user {
+  float: right;
+  margin-right: 5%;
+  font-size: 1.1rem;
+  -webkit-transform: translateY(80%);
+  transform: translateY(80%);
+  text-decoration: none;
+  color: #804913;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.navbar__right__user:hover {
+  color: #fff;
 }
 
 .navbar__right__logout {
@@ -533,10 +559,8 @@ template {
   border: 1px solid #ccc;
   border-radius: 5px;
   text-decoration: none;
-  -webkit-transition: -webkit-transform .3s;
-  transition: -webkit-transform .3s;
-  transition: transform .3s;
-  transition: transform .3s, -webkit-transform .3s;
+  -webkit-transition: all .1s ease-out;
+  transition: all .1s ease-out;
 }
 
 .navbar__login-dialog__btn:hover {
@@ -1645,7 +1669,7 @@ template {
 
 .navbar__left {
   display: inline-block;
-  width: 50%;
+  width: 25%;
   height: 100%;
 }
 
@@ -1683,28 +1707,54 @@ template {
 
 .navbar__right {
   display: inline-block;
-  width: 50%;
+  width: 75%;
   height: 100%;
 }
 
 .navbar__right__login {
   float: right;
-  margin-right: 5%;
-  font-size: 1.1rem;
+  margin-right: 0;
+  font-size: 1rem;
   -webkit-transform: translateY(50%);
   transform: translateY(50%);
   text-decoration: none;
-  color: #fff;
+  color: #333;
   cursor: pointer;
+  padding: 1px 5px;
   width: 5rem;
-  border-radius: 5px;
-  background-color: #d72355;
+  outline: 0;
+  border-radius: 50px;
+  background-color: #fff;
+  -webkit-transition: all .3s;
+  transition: all .3s;
 }
 
 .navbar__right__login:hover {
-  cursor: pointer;
   color: #fff;
-  background-color: #b90e3e;
+  background-color: #d72355;
+}
+
+@media (min-width: 500px) {
+  .navbar__right__login {
+    font-size: 1.1rem;
+    margin-right: 5%;
+  }
+}
+
+.navbar__right__user {
+  float: right;
+  margin-right: 5%;
+  font-size: 1.1rem;
+  -webkit-transform: translateY(80%);
+  transform: translateY(80%);
+  text-decoration: none;
+  color: #804913;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.navbar__right__user:hover {
+  color: #fff;
 }
 
 .navbar__right__logout {
@@ -1774,10 +1824,8 @@ template {
   border: 1px solid #ccc;
   border-radius: 5px;
   text-decoration: none;
-  -webkit-transition: -webkit-transform .3s;
-  transition: -webkit-transform .3s;
-  transition: transform .3s;
-  transition: transform .3s, -webkit-transform .3s;
+  -webkit-transition: all .1s ease-out;
+  transition: all .1s ease-out;
 }
 
 .navbar__login-dialog__btn:hover {
@@ -2088,4 +2136,4 @@ template {
 .footer {
   z-index: 1;
 }
-/*# sourceMappingURL=bundle.c12d8fcc5ef343a2b0144d4b7c3f8764.css.map*/
+/*# sourceMappingURL=bundle.b442719a0cccdca2642c309f80b3f689.css.map*/

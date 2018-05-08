@@ -9,7 +9,7 @@
     background-color: #e88565;
     &__left {
         display: inline-block;
-        width: 50%;
+        width: 25%;
         height: 100%;
         & .fa-home {
             color: #222;
@@ -40,25 +40,46 @@
     }
     &__right {
         display: inline-block;
-        width: 50%;
+        width: 75%;
         height: 100%;
         &__login {
             float: right;
-            margin-right: 5%;
-            font-size: 1.1rem;
+            margin-right: 0;
+            font-size: 1rem;
             transform: translateY(50%);
             text-decoration: none;
-			color: #fff;
+			color: #333;
 			cursor: pointer;
+			padding: 1px 5px;
 			width: 5rem;
-			border-radius: 5px;
-			background-color: #d72355;
+			outline: 0;
+			border-radius: 50px;
+			background-color: #fff;
+			transition: all .3s;
             &:hover {
-                cursor: pointer;
 				color: #fff;
-				background-color: #b90e3e;
-            }
-        }
+				background-color: #d72355;
+			}
+			@include atSmall {
+				& {
+					font-size: 1.1rem;
+					margin-right: 5%;
+				}
+			}
+		}
+		&__user {
+			float: right;
+			margin-right: 5%;
+			font-size: 1.1rem;
+			transform: translateY(80%);
+			text-decoration: none;
+			color: #804913;
+			cursor: pointer;
+			border-radius: 5px;
+			&:hover {
+				color: #fff;
+			}
+		}
         &__logout {
             display: none;
             float: right;
