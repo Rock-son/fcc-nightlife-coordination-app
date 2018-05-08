@@ -16,7 +16,7 @@
             display: inline-block;
             top: 0;
             width: 2rem;
-            margin-left: 5rem;
+            margin-left: 1rem;
             font-size: 2rem;
 			transform: translateY(-40%);
 			transition: color .3s;
@@ -31,6 +31,11 @@
 				margin-left: 2px;
 				font-family: "Helvetica Neue", Calibri, sans-serif;
 			}
+			@include atSmall {
+				& {
+					margin-left: 5rem;
+				}
+			}
         }
     }
     &__right {
@@ -43,10 +48,15 @@
             font-size: 1.1rem;
             transform: translateY(50%);
             text-decoration: none;
-            color: #555;
+			color: #fff;
+			cursor: pointer;
+			width: 5rem;
+			border-radius: 5px;
+			background-color: #d72355;
             &:hover {
                 cursor: pointer;
-				color: #eceaea;;
+				color: #fff;
+				background-color: #b90e3e;
             }
         }
         &__logout {

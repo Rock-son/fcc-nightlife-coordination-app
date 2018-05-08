@@ -5,6 +5,8 @@ $cardMarginLeft: 3%;
 	display: inline-flex;
 	flex-wrap: wrap;
 	justify-content: space-evenly;
+	width: 100%;
+	margin-left: 0;
 	&__error {
 		text-align: center;
 		margin: 10% auto;
@@ -315,5 +317,17 @@ $cardMarginLeft: 3%;
 				}
 			}
 		}
+	}
+	@media (min-width: 1220px) {
+        & {
+            width: 80%;
+			margin-left: 10%;
+        }
+	}
+	@include atXLarge {
+        & {
+            width: 100%;
+			margin-left: 0;
+        }
 	}
 }

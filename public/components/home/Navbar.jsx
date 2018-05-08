@@ -24,6 +24,13 @@ export default class Navbar extends React.PureComponent {
 	constructor(props) {
 		super(props);
 		this.handleClick = this.handleClick.bind(this);
+		this.onMouseEnter = this.onMouseEnter.bind(this);
+	}
+
+	onMouseEnter(e) {
+		if (!this.props.authState.openDialog) {
+			this.props.openLoginDialog(true);
+		}
 	}
 
 	handleClick(e) {
@@ -50,7 +57,7 @@ export default class Navbar extends React.PureComponent {
 					</Link>
 				</div>
 				<div className="navbar__right">
-					<button id={LOGIN} tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "none" : "inline-block" }} className="navbar__right__login">{this.props.authState.openDialog ? "Close" : "Sign In" }</button>
+					<button id={LOGIN} tabIndex="0" onClick={this.handleClick} onMouseEnter={this.onMouseEnter} style={{ display: this.props.authState.authenticated ? "none" : "inline-block" }} className="navbar__right__login">{this.props.authState.openDialog ? "Close" : "Sign In" }</button>
 					<button id={LOGOUT} tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">Logout</button>
 					<a id="user" href={this.props.authState.authType ? SETTINGS_URL[this.props.authState.authType] : "/"} tabIndex="0" onClick={this.handleClick} style={{ display: this.props.authState.authenticated ? "inline-block" : "none" }} className="navbar__right__login">{`Welcome, ${this.props.authState.user}`}</a>
 				</div>

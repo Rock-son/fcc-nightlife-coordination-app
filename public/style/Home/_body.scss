@@ -19,7 +19,7 @@
 		margin: 20vh auto 0 auto;
 		transform: translateY(-40%);
 		height: 20vh;
-		width: 35%;
+		width: 90%;
 		&__header {
 			display: block;
 			text-align: center;
@@ -101,6 +101,32 @@
 				font-weight: 700;
 			}
 		}
+		@include atSmall {
+			& {
+				width: 80%;
+			}
+		}
+		@include atMedium {
+			& {
+				width: 60%;
+			}
+		}
+		@include atLarge {
+			& {
+				width: 50%;
+			}
+		}
+		@include atXLarge {
+			& {
+				width: 40%;
+			}
+		}
+		@include atXLarge {
+			& {
+				width: 35%;
+			}
+		}
 	}
+
 	@import "./_body-cards.scss";
 }

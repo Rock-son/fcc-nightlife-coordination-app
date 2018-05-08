@@ -413,7 +413,7 @@ template {
   display: inline-block;
   top: 0;
   width: 2rem;
-  margin-left: 5rem;
+  margin-left: 1rem;
   font-size: 2rem;
   -webkit-transform: translateY(-40%);
   transform: translateY(-40%);
@@ -434,6 +434,12 @@ template {
   font-family: "Helvetica Neue", Calibri, sans-serif;
 }
 
+@media (min-width: 500px) {
+  .navbar__left .fa-home {
+    margin-left: 5rem;
+  }
+}
+
 .navbar__right {
   display: inline-block;
   width: 50%;
@@ -447,12 +453,17 @@ template {
   -webkit-transform: translateY(50%);
   transform: translateY(50%);
   text-decoration: none;
-  color: #555;
+  color: #fff;
+  cursor: pointer;
+  width: 5rem;
+  border-radius: 5px;
+  background-color: #d72355;
 }
 
 .navbar__right__login:hover {
   cursor: pointer;
-  color: #eceaea;
+  color: #fff;
+  background-color: #b90e3e;
 }
 
 .navbar__right__logout {
@@ -474,16 +485,42 @@ template {
 .navbar__login-dialog {
   position: absolute;
   background-color: #eee;
-  width: 15vw;
-  margin-top: -1.1%;
+  width: 50%;
+  margin-top: -20px;
   right: 0;
   border-radius: 2px;
+  background-color: #e88565;
+  border: 1px solid #634d4d;
+}
+
+@media (min-width: 500px) {
+  .navbar__login-dialog {
+    width: 35%;
+  }
+}
+
+@media (min-width: 660px) {
+  .navbar__login-dialog {
+    width: 25%;
+  }
+}
+
+@media (min-width: 1000px) {
+  .navbar__login-dialog {
+    width: 20%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .navbar__login-dialog {
+    width: 15%;
+  }
 }
 
 .navbar__login-dialog__header {
   margin: 4% auto;
   text-align: center;
-  color: #999;
+  color: #151313;
 }
 
 .navbar__login-dialog__btn {
@@ -560,7 +597,7 @@ template {
 .navbar__login-dialog__line {
   width: 60%;
   margin-top: 10%;
-  border: .5px solid #999;
+  border: .5px solid #887c7c;
 }
 
 .navbar__login-dialog__footer {
@@ -572,7 +609,7 @@ template {
 
 .navbar__login-dialog__footer span {
   font-size: 1.1rem;
-  color: #555;
+  color: #887c7c;
   font-weight: 100;
 }
 
@@ -589,7 +626,7 @@ template {
 }
 
 .navbar__login-dialog__footer__link:hover {
-  color: #000;
+  color: #fff;
 }
 
 .content {
@@ -618,7 +655,7 @@ template {
   -webkit-transform: translateY(-40%);
   transform: translateY(-40%);
   height: 20vh;
-  width: 35%;
+  width: 90%;
 }
 
 .content__search__header {
@@ -722,6 +759,36 @@ template {
   font-weight: 700;
 }
 
+@media (min-width: 500px) {
+  .content__search {
+    width: 80%;
+  }
+}
+
+@media (min-width: 660px) {
+  .content__search {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1000px) {
+  .content__search {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .content__search {
+    width: 40%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .content__search {
+    width: 35%;
+  }
+}
+
 .content__cards {
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -731,6 +798,8 @@ template {
   -webkit-box-pack: space-evenly;
   -ms-flex-pack: space-evenly;
   justify-content: space-evenly;
+  width: 100%;
+  margin-left: 0;
 }
 
 .content__cards__error {
@@ -1124,6 +1193,20 @@ template {
 
 .content__cards__card__footer__checkBox__label.nogo.active {
   color: #999;
+}
+
+@media (min-width: 1220px) {
+  .content__cards {
+    width: 80%;
+    margin-left: 10%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .content__cards {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 
 .footer {
@@ -1571,7 +1654,7 @@ template {
   display: inline-block;
   top: 0;
   width: 2rem;
-  margin-left: 5rem;
+  margin-left: 1rem;
   font-size: 2rem;
   -webkit-transform: translateY(-40%);
   transform: translateY(-40%);
@@ -1592,6 +1675,12 @@ template {
   font-family: "Helvetica Neue", Calibri, sans-serif;
 }
 
+@media (min-width: 500px) {
+  .navbar__left .fa-home {
+    margin-left: 5rem;
+  }
+}
+
 .navbar__right {
   display: inline-block;
   width: 50%;
@@ -1605,12 +1694,17 @@ template {
   -webkit-transform: translateY(50%);
   transform: translateY(50%);
   text-decoration: none;
-  color: #555;
+  color: #fff;
+  cursor: pointer;
+  width: 5rem;
+  border-radius: 5px;
+  background-color: #d72355;
 }
 
 .navbar__right__login:hover {
   cursor: pointer;
-  color: #eceaea;
+  color: #fff;
+  background-color: #b90e3e;
 }
 
 .navbar__right__logout {
@@ -1632,16 +1726,42 @@ template {
 .navbar__login-dialog {
   position: absolute;
   background-color: #eee;
-  width: 15vw;
-  margin-top: -1.1%;
+  width: 50%;
+  margin-top: -20px;
   right: 0;
   border-radius: 2px;
+  background-color: #e88565;
+  border: 1px solid #634d4d;
+}
+
+@media (min-width: 500px) {
+  .navbar__login-dialog {
+    width: 35%;
+  }
+}
+
+@media (min-width: 660px) {
+  .navbar__login-dialog {
+    width: 25%;
+  }
+}
+
+@media (min-width: 1000px) {
+  .navbar__login-dialog {
+    width: 20%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .navbar__login-dialog {
+    width: 15%;
+  }
 }
 
 .navbar__login-dialog__header {
   margin: 4% auto;
   text-align: center;
-  color: #999;
+  color: #151313;
 }
 
 .navbar__login-dialog__btn {
@@ -1718,7 +1838,7 @@ template {
 .navbar__login-dialog__line {
   width: 60%;
   margin-top: 10%;
-  border: .5px solid #999;
+  border: .5px solid #887c7c;
 }
 
 .navbar__login-dialog__footer {
@@ -1730,7 +1850,7 @@ template {
 
 .navbar__login-dialog__footer span {
   font-size: 1.1rem;
-  color: #555;
+  color: #887c7c;
   font-weight: 100;
 }
 
@@ -1747,7 +1867,7 @@ template {
 }
 
 .navbar__login-dialog__footer__link:hover {
-  color: #000;
+  color: #fff;
 }
 
 .context {
@@ -1759,7 +1879,7 @@ template {
 .form__container {
   position: relative;
   height: auto;
-  width: 80%;
+  width: 97%;
   margin: auto;
   top: 40%;
   -webkit-transform: translateY(-50%);
@@ -1838,11 +1958,17 @@ template {
 
 @media (min-width: 1000px) {
   .form__container {
+    width: 40%;
+  }
+}
+
+@media (min-width: 1400px) {
+  .form__container {
     width: 35%;
   }
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1750px) {
   .form__container {
     width: 25%;
   }
@@ -1962,4 +2088,4 @@ template {
 .footer {
   z-index: 1;
 }
-/*# sourceMappingURL=bundle.5a9238922c156cf61f3c4cca0b9d2e3c.css.map*/
+/*# sourceMappingURL=bundle.c12d8fcc5ef343a2b0144d4b7c3f8764.css.map*/
