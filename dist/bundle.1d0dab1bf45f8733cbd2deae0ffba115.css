@@ -478,7 +478,7 @@ template {
 
 .navbar__right__user {
   float: right;
-  margin-right: 5%;
+  margin-right: 2%;
   font-size: 1.1rem;
   -webkit-transform: translateY(80%);
   transform: translateY(80%);
@@ -1743,7 +1743,7 @@ template {
 
 .navbar__right__user {
   float: right;
-  margin-right: 5%;
+  margin-right: 2%;
   font-size: 1.1rem;
   -webkit-transform: translateY(80%);
   transform: translateY(80%);
@@ -2136,4 +2136,4 @@ template {
 .footer {
   z-index: 1;
 }
-/*# sourceMappingURL=bundle.b442719a0cccdca2642c309f80b3f689.css.map*/
+/*# sourceMappingURL=bundle.1d0dab1bf45f8733cbd2deae0ffba115.css.map*/
