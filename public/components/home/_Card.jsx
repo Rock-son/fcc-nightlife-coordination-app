@@ -81,7 +81,7 @@ export default class Card extends React.Component {
 			})();
 
 			this.container = (
-				<div className="content__cards__card" >
+				<div className="content__cards__card" style={nrUsers ? { boxShadow: "-1px 1px 25px #21ef0e" } : {}} >
 					<div className="content__cards__card__header" >
 						<div className="content__cards__card__header__container">
 							<a className="content__cards__card__header__container__name" href={website} target="_blank" rel="noreferrer noopener" >{venueName}</a>
