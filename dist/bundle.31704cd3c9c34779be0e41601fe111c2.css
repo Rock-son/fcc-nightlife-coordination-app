@@ -511,7 +511,7 @@ template {
 .navbar__login-dialog {
   position: absolute;
   background-color: #eee;
-  width: 50%;
+  width: 55%;
   margin-top: -20px;
   right: 0;
   border-radius: 2px;
@@ -614,7 +614,7 @@ template {
 
 .navbar__login-dialog__btn__container {
   display: block;
-  width: 5.5rem;
+  width: 6rem;
   margin: auto;
 }
 
@@ -669,8 +669,14 @@ template {
   right: 0;
   left: 0;
   margin: 6.5vh auto 0 auto;
-  font-size: 2rem;
+  font-size: 1.55rem;
   text-shadow: 1px 1px 20px #e88565, 1px 1px 2px #e88565, 0px 1px 15px #e88565;
+}
+
+@media (min-width: 500px) {
+  .content__header {
+    font-size: 2rem;
+  }
 }
 
 .content__hero {
@@ -699,7 +705,14 @@ template {
   display: block;
   text-align: center;
   color: #e88565;
+  font-size: 1.2rem;
   text-shadow: 1px 1px 2px #f3f3f3, 1px 1px 2px #cc4f27, 0px 1px 15px #2f2a29;
+}
+
+@media (min-width: 500px) {
+  .content__search__header {
+    font-size: 1.5rem;
+  }
 }
 
 .content__search__img-container {
@@ -740,20 +753,32 @@ template {
 
 .content__search__input-container__input {
   display: inline-block;
-  width: 80%;
+  width: 70%;
   padding: .4rem;
   border-radius: 5px 0 0 5px;
 }
 
+@media (min-width: 500px) {
+  .content__search__input-container__input {
+    width: 80%;
+  }
+}
+
 .content__search__input-container__button {
   display: inline-block;
-  width: 15%;
+  width: 30%;
   padding: .5rem;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
   background-color: #d72355;
   color: #fff;
   border: none;
+}
+
+@media (min-width: 500px) {
+  .content__search__input-container__button {
+    width: 20%;
+  }
 }
 
 .content__search__input-container__button:hover {
@@ -1147,6 +1172,7 @@ template {
 .content__cards__card__footer__checkBox {
   font-variant: small-caps;
   font-size: .8rem;
+  min-width: 150px;
   width: 35%;
   margin-left: 3%;
   height: 1.35rem;
@@ -1789,7 +1815,7 @@ template {
 .navbar__login-dialog {
   position: absolute;
   background-color: #eee;
-  width: 50%;
+  width: 55%;
   margin-top: -20px;
   right: 0;
   border-radius: 2px;
@@ -1892,7 +1918,7 @@ template {
 
 .navbar__login-dialog__btn__container {
   display: block;
-  width: 5.5rem;
+  width: 6rem;
   margin: auto;
 }
 
@@ -2149,4 +2175,4 @@ template {
 .footer {
   z-index: 1;
 }
-/*# sourceMappingURL=bundle.7350452d768aefc1b8b09a3e5dc5d649.css.map*/
+/*# sourceMappingURL=bundle.31704cd3c9c34779be0e41601fe111c2.css.map*/
