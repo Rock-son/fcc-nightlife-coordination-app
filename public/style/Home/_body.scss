@@ -12,8 +12,13 @@
 		right: 0;
 		left: 0;
 		margin: 6.5vh auto 0 auto;
-		font-size: 2rem;
+		font-size: 1.55rem;
 		text-shadow: 1px 1px 20px #e88565, 1px 1px 2px #e88565, 0px 1px 15px #e88565;
+		@include atSmall {
+			& {
+				font-size: 2rem;
+			}
+		}
 	}
 	&__hero {
 		top: 0;
@@ -36,7 +41,13 @@
 			display: block;
 			text-align: center;
 			color: #e88565;
+			font-size: 1.2rem;
 			text-shadow: 1px 1px 2px #f3f3f3, 1px 1px 2px #cc4f27, 0px 1px 15px #2f2a29;
+			@include atSmall {
+				& {
+					font-size: 1.5rem;
+				}
+			}
 		}
 		&__img-container {
 			display: block;
@@ -68,19 +79,29 @@
 			width: 100%;
 			&__input {
 				display: inline-block;
-				width: 80%;
+				width: 70%;
 				padding: .4rem;
 				border-radius: 5px 0 0 5px;
+				@include atSmall {
+					& {
+						width: 80%;
+					}
+				}
 			}
 			&__button {
 				display: inline-block;
-				width: 15%;
+				width: 30%;
 				padding: .5rem;
 				border-radius: 0 5px 5px 0;
 				cursor: pointer;
 				background-color: #d72355;
 				color: #fff;
 				border: none;
+				@include atSmall {
+					& {
+						width: 20%;
+					}
+				}
 				&:hover {
 					background-color: #bb1040;
 				}
