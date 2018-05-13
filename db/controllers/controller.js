@@ -7,7 +7,7 @@ const getClientIp = require("./modules/getIp").default;
 
 exports.getCityBarUsers = function (city) {
 	return GoingUsersSchema.find({city: city.toLowerCase()}, {"_id": 0, "bar": 1}, function(err, results) {
-		if (err) { return res.status(400).send(err); }
+		if (err) { return err; }
 
 		return results || [];
 	});
