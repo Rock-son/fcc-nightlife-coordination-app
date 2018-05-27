@@ -7,8 +7,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");/* webpack --json > stats.json */
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
-const isDevEnv = process.env.NODE_ENV === "development" || false;
-
 
 // HTML_WEBPACK_PLUGIN
 const TEMPLATE_IN = "./public/template.html";
@@ -71,24 +69,15 @@ const config = {
 			{
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract({
-
 					fallback: "style-loader",
 					use: [{
 						loader: "css-loader",
-						options: { importLoaders: 1, sourceMap: isDevEnv }
+						options: { importLoaders: 1 }
 					},
-					{
-						loader: "resolve-url-loader",
-						options: { sourceMap: isDevEnv }
-					},
-					{
-						loader: "postcss-loader",
-						options: { sourceMap: isDevEnv }
-					},
-					{
-						loader: "sass-loader",
-						options: { sourceMap: isDevEnv }
-					}]
+					"resolve-url-loader",
+					"postcss-loader",
+					"sass-loader"
+					]
 				})
 			}
 		]
@@ -99,8 +88,16 @@ const config = {
 			// disable: isDevEnv
 		}),
 		new FriendlyErrorsWebpackPlugin(),
+		// extract vendor and webpack's module manifest and inline it in the dist HTML
 		new webpack.optimize.CommonsChunkPlugin({
-			names: ["vendor", "manifest"]
+			names: ["vendor", "manifest"],
+			minChunks: Infinity
+		}),
+		// extract common modules from all the chunks (requires no 'name' property)
+		new webpack.optimize.CommonsChunkPlugin({
+			async: true,
+			children: true,
+			minChunks: 4
 		}),
 		new HtmlWebpackPlugin({
 			template: TEMPLATE_IN,
