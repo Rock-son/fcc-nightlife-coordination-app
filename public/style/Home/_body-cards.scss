@@ -21,6 +21,7 @@ $cardMarginLeft: 3%;
 		border: 1px solid $edgeColor;
 		border-radius: 5px;
 		box-shadow: -1px 1px 25px #555;
+		transition: box-shadow .5s;
 		&__header {
 			display: block;
 			width: 100%;
