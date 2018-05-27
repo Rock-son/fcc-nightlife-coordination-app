@@ -7,8 +7,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
-const isDevEnv = process.env.NODE_ENV === "development" || false;
-
 
 // HTML_WEBPACK_PLUGIN
 const TEMPLATE_IN = "./public/template.html";
@@ -18,8 +16,6 @@ const BUNDLE = path.join(__dirname, "public", "index.jsx");
 const OUTPUT = path.join(__dirname, "dist");
 // LIBS (files that don't change much)
 const VENDOR_LIBS = ["react", "react-dom", "redux", "react-redux", "react-router", "react-router-dom", "redux-thunk"];
-
-
 
 
 
@@ -58,35 +54,24 @@ const config = {
 		},
 		extensions: [".js", ".jsx", ".scss"]
 	},
-	devtool: "#source-map",
 	module: {
 		rules: [
 			{
 				test: /\.jsx?$/,
 				use: "babel-loader",
-				exclude: /(node_modules)/
-			},
+				exclude: /(node_modules)/},
 			{
 				test: /\.scss$/,
 				use: ExtractTextPlugin.extract({
-
 					fallback: "style-loader",
 					use: [{
 						loader: "css-loader",
-						options: { importLoaders: 1, sourceMap: isDevEnv }
+						options: { importLoaders: 1 }
 					},
-					{
-						loader: "resolve-url-loader",
-						options: { sourceMap: isDevEnv }
-					},
-					{
-						loader: "postcss-loader",
-						options: { sourceMap: isDevEnv }
-					},
-					{
-						loader: "sass-loader",
-						options: { sourceMap: isDevEnv }
-					}]
+					"resolve-url-loader",
+					"postcss-loader",
+					"sass-loader"
+					]
 				})
 			}
 		]
@@ -94,10 +79,17 @@ const config = {
 	plugins: [
 		new ExtractTextPlugin({
 			filename: "[name].[contenthash].css"
-			//disable: isDevEnv
 		}),
+		// extract vendor and webpack's module manifest and inline it in the dist HTML
 		new webpack.optimize.CommonsChunkPlugin({
-			names: ["vendor", "manifest"]
+			names: ["vendor", "manifest"],
+			minChunks: Infinity
+		}),
+		// extract common modules from all the chunks (requires no 'name' property)
+		new webpack.optimize.CommonsChunkPlugin({
+			async: true,
+			children: true,
+			minChunks: 4
 		}),
 		new HtmlWebpackPlugin({
 			template: TEMPLATE_IN,
