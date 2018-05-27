@@ -880,6 +880,10 @@ template {
   border-radius: 5px;
   -webkit-box-shadow: -1px 1px 25px #555;
   box-shadow: -1px 1px 25px #555;
+  -webkit-transition: -webkit-box-shadow .5s;
+  transition: -webkit-box-shadow .5s;
+  transition: box-shadow .5s;
+  transition: box-shadow .5s, -webkit-box-shadow .5s;
 }
 
 .content__cards__card__header {
@@ -2175,4 +2179,3 @@ template {
 .footer {
   z-index: 1;
 }
-/*# sourceMappingURL=bundle.31704cd3c9c34779be0e41601fe111c2.css.map*/
