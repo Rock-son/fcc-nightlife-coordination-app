@@ -13,6 +13,7 @@ const TEMPLATE_IN = "./public/template.html";
 const TEMPLATE_OUT = "./index.html";
 // BUNDLE ENTRY & OUTPUT
 const BUNDLE = path.join(__dirname, "public", "index.jsx");
+//const LAZYLOAD = path.join(__dirname, "public", "assets", "scripts", "vendor.js");
 const OUTPUT = path.join(__dirname, "dist");
 // LIBS (files that don't change much)
 const VENDOR_LIBS = ["react", "react-dom", "redux", "react-redux", "react-router", "react-router-dom", "redux-thunk"];
@@ -22,6 +23,7 @@ const VENDOR_LIBS = ["react", "react-dom", "redux", "react-redux", "react-router
 const config = {
 	entry: {
 		bundle: BUNDLE,
+		//lazyLoad: LAZYLOAD,
 		vendor: VENDOR_LIBS
 	},
 	output: {
