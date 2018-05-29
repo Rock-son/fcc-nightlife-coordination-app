@@ -95,8 +95,8 @@ export default class Card extends React.Component {
 							<div className={`content__cards__card__body__hours ${formattedIsOpen}`} title={status || "No data"} >{`${formattedIsOpen.replace("-", " ")}`}</div>
 							<div className={`content__cards__card__body__going ${classGoing}`} title={usersGoingTitle} >{nrGoing}</div>
 						</div>
-						<a href={fsqUrl} target="_blank" rel="noreferrer noopener" >
-							<img src={imagePath} className="content__cards__card__body__image" alt={venueName} title="CONTINUE TO FOURSQUARE" />
+						<a href={fsqUrl} target="_blank" rel="noreferrer noopener" className="content__cards__card__body__image" >
+							<img data-src={imagePath} className="lazyload" alt={venueName} title="CONTINUE TO FOURSQUARE" />
 						</a>
 						<div className="content__cards__card__body__special" >
 							<a className={`content__cards__card__body__special__menu${menuUrl ? "" : "-no-show"}`} href={menuUrl} target="_blank" rel="noreferrer noopener" >Menu</a>
