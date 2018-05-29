@@ -103,7 +103,7 @@ export default class Card extends React.Component {
 							<a className={`content__cards__card__body__special__fb${fbNr ? "" : "-no-show"}`} href={`https://facebook.com/${fbNr}`} target="_blank" rel="noreferrer noopener" >
 								<i className="fa fa-facebook-square fa-2x" />
 							</a>
-							<div className="content__cards__card__body__special__phone1" style={phone ? ({ display: 'block' }) : ({ display: 'none' })}>Phone:</div>
+							<div className="content__cards__card__body__special__phone1" style={phone ? ({ display: 'block' }) : ({ display: 'none' })} >Phone:</div>
 							<a className="content__cards__card__body__special__phone2" href={`callto://${phone}`} target="_blank" rel="noreferrer noopener" >{phone}</a>
 						</div>
 						<div className="content__cards__card__body__underImage" >
@@ -130,7 +130,7 @@ export default class Card extends React.Component {
 				</div>
 			);
 		} catch (error) {
-			this.container = <div key={error} className="content__cards__card" >{`No data available! ${error}`}</div>;
+			this.container = <div key={error} className="content__cards__card" >{`No data available! (${error})`}</div>;
 		}
 		return this.container;
 	}
