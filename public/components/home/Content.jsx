@@ -26,14 +26,6 @@ export default class Content extends React.Component {
 
 	componentDidMount() {
 		this.props.renderLocation();
-		setTimeout(
-			() => {
-				if (this.inputField) {
-					this.inputField.current.click();
-				}
-			},
-			500
-		);
 	}
 
 	handleEnterPress(e) {
