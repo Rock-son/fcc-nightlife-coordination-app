@@ -21,7 +21,15 @@ $cardMarginLeft: 3%;
 		border: 1px solid $edgeColor;
 		border-radius: 5px;
 		box-shadow: -1px 1px 25px #555;
-		transition: box-shadow .5s;
+		transform: scale(1.05);
+		transition: transform .5s ease-out, opacity 1.5s ease-out, box-shadow .5s;
+		&.reveal-item {
+			opacity: 0;
+			&--is-visible {
+				opacity: 1;
+				transform: scale(1);
+			}
+		}
 		&__header {
 			display: block;
 			width: 100%;
