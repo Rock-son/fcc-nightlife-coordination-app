@@ -2,6 +2,7 @@
 
 import React from "react";
 import PropTypes from "prop-types";
+import waypoints from "../../../node_modules/waypoints/lib/noframework.waypoints";
 
 const defaultObj = {};
 const defaultArray = [];
@@ -19,7 +20,17 @@ export default class Card extends React.Component {
 	constructor(props) {
 		super(props);
 		this.container = null;
+		this.element = React.createRef();
 		this.handleGoing = this.handleGoing.bind(this);
+	}
+
+	componentDidMount() {
+		const element = this.element.current;
+		new Waypoint({
+			element,
+			handler: () => element.setAttribute("class", "content__cards__card reveal-item--is-visible"),
+			offset: "65%"
+		});
 	}
 
 	shouldComponentUpdate(nextProps) {
@@ -81,7 +92,7 @@ export default class Card extends React.Component {
 			})();
 
 			this.container = (
-				<div className="content__cards__card" style={nrUsers ? { boxShadow: "-1px 1px 25px #21ef0e" } : {}} >
+				<div className="content__cards__card reveal-item" ref={this.element} style={nrUsers ? { boxShadow: "-1px 1px 25px #21ef0e" } : {}} >
 					<div className="content__cards__card__header" >
 						<div className="content__cards__card__header__container">
 							<a className="content__cards__card__header__container__name" href={website} target="_blank" rel="noreferrer noopener" >{venueName}</a>
@@ -95,8 +106,8 @@ export default class Card extends React.Component {
 							<div className={`content__cards__card__body__hours ${formattedIsOpen}`} title={status || "No data"} >{`${formattedIsOpen.replace("-", " ")}`}</div>
 							<div className={`content__cards__card__body__going ${classGoing}`} title={usersGoingTitle} >{nrGoing}</div>
 						</div>
-						<a href={fsqUrl} target="_blank" rel="noreferrer noopener" className="content__cards__card__body__image" >
-							<img data-src={imagePath} className="lazyload" alt={venueName} title="CONTINUE TO FOURSQUARE" />
+						<a href={fsqUrl} target="_blank" rel="noreferrer noopener" >
+							<img data-src={imagePath} className="content__cards__card__body__image lazyload" alt={venueName} title="CONTINUE TO FOURSQUARE" />
 						</a>
 						<div className="content__cards__card__body__special" >
 							<a className={`content__cards__card__body__special__menu${menuUrl ? "" : "-no-show"}`} href={menuUrl} target="_blank" rel="noreferrer noopener" >Menu</a>
