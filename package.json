@@ -66,6 +66,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "validator": "^9.4.1",
+    "waypoints": "^4.0.1",
     "why-did-you-update": "^0.1.1",
     "xss-filters": "^1.2.7"
   },
