@@ -880,10 +880,22 @@ template {
   border-radius: 5px;
   -webkit-box-shadow: -1px 1px 25px #555;
   box-shadow: -1px 1px 25px #555;
-  -webkit-transition: -webkit-box-shadow .5s;
-  transition: -webkit-box-shadow .5s;
-  transition: box-shadow .5s;
-  transition: box-shadow .5s, -webkit-box-shadow .5s;
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
+  -webkit-transition: opacity 1.5s ease-out, -webkit-transform .5s ease-out, -webkit-box-shadow .5s;
+  transition: opacity 1.5s ease-out, -webkit-transform .5s ease-out, -webkit-box-shadow .5s;
+  transition: transform .5s ease-out, opacity 1.5s ease-out, box-shadow .5s;
+  transition: transform .5s ease-out, opacity 1.5s ease-out, box-shadow .5s, -webkit-transform .5s ease-out, -webkit-box-shadow .5s;
+}
+
+.content__cards__card.reveal-item {
+  opacity: 0;
+}
+
+.content__cards__card.reveal-item--is-visible {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  transform: scale(1);
 }
 
 .content__cards__card__header {
