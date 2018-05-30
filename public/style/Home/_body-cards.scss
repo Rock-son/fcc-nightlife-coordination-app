@@ -22,7 +22,7 @@ $cardMarginLeft: 3%;
 		border-radius: 5px;
 		box-shadow: -1px 1px 25px #555;
 		transform: scale(1.05);
-		transition: transform .5s ease-out, opacity 1.5s ease-out, box-shadow .5s;
+		transition: transform .5s ease-out, opacity .5s ease-out, box-shadow .5s;
 		&.reveal-item {
 			opacity: 0;
 			&--is-visible {
@@ -72,6 +72,7 @@ $cardMarginLeft: 3%;
 						transform: translate(-25%, 100%);
 						font-size: .8rem;
 						text-shadow: none;
+     					white-space: nowrap;
 					}
 					&[data~="Cheap"]:after {
 						transform: translate(-15%, 100%);

@@ -29,7 +29,7 @@ export default class Card extends React.Component {
 		new Waypoint({
 			element,
 			handler: () => element.setAttribute("class", "content__cards__card reveal-item--is-visible"),
-			offset: "65%"
+			offset: "60%"
 		});
 	}
 
