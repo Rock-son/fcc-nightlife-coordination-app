@@ -23,16 +23,22 @@ export default class Card extends React.Component {
 		this.element = React.createRef();
 		this.handleGoing = this.handleGoing.bind(this);
 	}
-
+	/* eslint-disable no-new, no-undef */
 	componentDidMount() {
 		const element = this.element.current;
 		new Waypoint({
 			element,
-			handler: () => element.setAttribute("class", "content__cards__card reveal-item--is-visible"),
+			handler: (direction) => {
+				if (direction === "down") {
+					element.setAttribute("class", "content__cards__card reveal-item--is-visible");
+				} else {
+					element.setAttribute("class", "content__cards__card reveal-item");
+				}
+			},
 			offset: "60%"
 		});
 	}
-
+	/* eslint-enable */
 	shouldComponentUpdate(nextProps) {
 		// check if the bar's users stay the same or not
 		if ((nextProps.barObj.bar && !this.props.barObj.bar) || (!nextProps.barObj.bar && this.props.barObj.bar)) {
