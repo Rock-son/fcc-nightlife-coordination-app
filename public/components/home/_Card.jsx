@@ -14,6 +14,7 @@ const defaultCountObj = { count: 0 };
 const defaultCategoryArray = [{ name: "No category" }];
 const defaultContactObj = { phone: "", facebook: "" };
 const defaultStatsObj = { tipCount: 0, usersCount: 0, checkinsCount: 0 };
+const ftPhts = { items: [{ prefix:"", suffix: "" }] };
 
 
 export default class Card extends React.Component {
@@ -63,9 +64,9 @@ export default class Card extends React.Component {
 	}
 	render() {
 		try {
-			const imagePath = `${this.props.business.venue.featuredPhotos.items[0].prefix}350x200${this.props.business.venue.featuredPhotos.items[0].suffix}`;
-			const ratingColorStyle = { backgroundColor: `#${this.props.business.venue.ratingColor}` };
-			const ratingCount = this.props.business.venue.ratingSignals;
+			const imagePath = `${(this.props.business.venue.featuredPhotos || ftPhts).items[0].prefix}350x200${(this.props.business.venue.featuredPhotos || ftPhts).items[0].suffix}`;
+			const ratingColorStyle = { backgroundColor: `#${this.props.business.venue.ratingColor || "125"}` };
+			const ratingCount = this.props.business.venue.ratingSignals || "";
 
 			const { text: tip, user: { firstName: user }, canonicalUrl: fsqUrl } = (this.props.business.tips || defaultTipsArray)[0];
 			const { count } = (this.props.business.tips || defaultTipsArray)[0].likes || defaultCountObj;
