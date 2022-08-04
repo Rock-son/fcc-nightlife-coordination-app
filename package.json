@@ -47,7 +47,7 @@
     "jsonwebtoken": "^8.2.1",
     "lazysizes": "^4.0.2",
     "mongo-sanitize": "^1.0.0",
-    "mongoose": "^5.10.10",
+    "mongoose": "^5.7.5",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-github": "^1.1.0",
