@@ -66,7 +66,7 @@ app.use(limiter);
 
 // DB
 mongoose.Promise = global.Promise;
-mongoose.connect(dbUrl, { useMongoClient: true, autoIndex: false });
+mongoose.connect(dbUrl, { useNewUrlParser: true, autoIndex: false, useUnifiedTopology: true });
 
 // LOG (Helmet-csp) CSP blocked requests
 // app.post("/report-violation", Log.logged);
