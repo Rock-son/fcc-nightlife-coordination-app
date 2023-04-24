@@ -2,7 +2,7 @@
   "name": "fcc-nightlife-coordination-app",
   "version": "1.0.0",
   "engines": {
-    "node": "8.9.1"
+    "node": "8.17.0"
   },
   "description": "night-life-coordination-app",
   "main": "server.js",
